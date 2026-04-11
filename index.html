@@ -28,12 +28,19 @@
 
     /* LOGIN */
     #login {
+      position: fixed;
+      inset: 0;
+      background: #000;
       display: flex;
-      height: 100vh;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 12px;
+      z-index: 1000;
+    }
+
+    #login.hidden {
+      display: none;
     }
 
     #login input {
@@ -63,6 +70,40 @@
 
     <input id="code" placeholder="Код">
     <button onclick="verifyCode()">Увійти</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <header class="topbar">
+      <h1 class="logo">Довідник БК</h1>
+    </header>
+
+    <main class="center">
+      <p class="lead">Оберіть категорію:</p>
+
+      <div class="grid-3">
+        <a class="card big" href="rozvidka.html">
+          <h2>Mavic/Autel</h2>
+          <p class="muted">скиди</p>
+        </a>
+
+        <a class="card big" href="bombers.html">
+          <h2>Бомбери</h2>
+          <p class="muted">скиди</p>
+        </a>
+
+        <a class="card big" href="fpv.html">
+          <h2>FPV</h2>
+          <p class="muted">радіо/опта</p>
+        </a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <small>Власність 125 ОВМБр</small>
+    </footer>
+
   </div>
 
   <script>
@@ -106,8 +147,8 @@
         return;
       }
 
-      // 🔥 cookie вже встановлений сервером
-      location.reload();
+      // 🔥 cookie встановлено → перезапит сторінки
+      window.location.href = "/";
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -117,18 +158,21 @@
 
       if (alreadyShown) {
         splash.remove();
-        return;
+      } else {
+        setTimeout(() => {
+          splash.classList.add("hidden");
+
+          setTimeout(() => {
+            splash.remove();
+          }, 600);
+
+          localStorage.setItem("splashShown", "1");
+        }, 1500);
       }
 
-      setTimeout(() => {
-        splash.classList.add("hidden");
-
-        setTimeout(() => {
-          splash.remove();
-        }, 600);
-
-        localStorage.setItem("splashShown", "1");
-      }, 1500);
+      // 🔥 якщо middleware пропустив → значить авторизований
+      // просто ховаємо login
+      document.getElementById("login").classList.add("hidden");
     });
   </script>
 
