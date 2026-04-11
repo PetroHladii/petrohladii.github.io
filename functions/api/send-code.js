@@ -23,6 +23,9 @@ export async function onRequestPost(context) {
 
     // 🧪 поки що просто в консоль
     console.log(`Login code for ${email}: ${code}`);
+    
+    console.log("ENV:", env);
+    console.log("USERST:", env.USERST);
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { "Content-Type": "application/json" }
