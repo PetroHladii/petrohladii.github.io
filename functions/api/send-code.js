@@ -1,9 +1,31 @@
 export async function onRequestPost(context) {
-  const { env } = context;
+  const { request, env } = context;
 
-  if (!env.USERST) {
-    return new Response("NO USERST", { status: 500 });
+  try {
+    const data = await request.json();
+    const email = data.email;
+
+    if (!email) {
+      return new Response("Email required", { status: 400 });
+    }
+
+    const allowed = await env.USERST.get(email);
+
+    if (!allowed) {
+      return new Response("Not allowed", { status: 403 });
+    }
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await env.CODEST.put(email, code, { expirationTtl: 300 });
+
+    console.log(`Code for ${email}: ${code}`);
+
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { "Content-Type": "application/json" }
+    });
+
+  } catch (err) {
+    return new Response("Server error", { status: 500 });
   }
-
-  return new Response("OK");
 }
