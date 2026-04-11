@@ -28,9 +28,8 @@
 
     /* LOGIN */
     #login {
-      display: none;
-      height: 100vh;
       display: flex;
+      height: 100vh;
       flex-direction: column;
       justify-content: center;
       align-items: center;
@@ -66,69 +65,7 @@
     <button onclick="verifyCode()">Увійти</button>
   </div>
 
-  <!-- CONTENT -->
-  <div id="content" style="display:none;">
-
-    <header class="topbar">
-      <h1 class="logo">Довідник БК</h1>
-    </header>
-
-    <main class="center">
-      <p class="lead">Оберіть категорію:</p>
-
-      <div class="grid-3">
-        <a class="card big" href="rozvidka.html">
-          <h2>Mavic/Autel</h2>
-          <p class="muted">скиди</p>
-        </a>
-
-        <a class="card big" href="bombers.html">
-          <h2>Бомбери</h2>
-          <p class="muted">скиди</p>
-        </a>
-
-        <a class="card big" href="fpv.html">
-          <h2>FPV</h2>
-          <p class="muted">радіо/опта</p>
-        </a>
-      </div>
-    </main>
-
-    <footer class="footer">
-      <small>Власність 125 ОВМБр</small>
-    </footer>
-
-  </div>
-
   <script>
-    // 🔐 універсальний fetch з токеном
-    function authFetch(url, options = {}) {
-      const token = localStorage.getItem("token");
-
-      return fetch(url, {
-        ...options,
-        headers: {
-          ...(options.headers || {}),
-          ...(token ? { "Authorization": "Bearer " + token } : {})
-        }
-      });
-    }
-
-    function updateUI() {
-      const token = localStorage.getItem("token");
-
-      const login = document.getElementById("login");
-      const content = document.getElementById("content");
-
-      if (token) {
-        login.style.display = "none";
-        content.style.display = "block";
-      } else {
-        login.style.display = "flex";
-        content.style.display = "none";
-      }
-    }
-
     async function sendCode() {
       const email = document.getElementById("email").value;
 
@@ -137,13 +74,13 @@
         return;
       }
 
-      const res = await authFetch("/api/send-code", {
+      const res = await fetch("/api/send-code", {
         method: "POST",
         body: JSON.stringify({ email })
       });
 
       if (!res.ok) {
-        alert("Помилка доступу або email не дозволений");
+        alert("Email не дозволений");
         return;
       }
 
@@ -159,34 +96,21 @@
         return;
       }
 
-      const res = await authFetch("/api/verify-code", {
+      const res = await fetch("/api/verify-code", {
         method: "POST",
         body: JSON.stringify({ email, code })
       });
 
-      const text = await res.text();
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        alert("Помилка сервера");
-        return;
-      }
-
-      if (!data.token) {
+      if (!res.ok) {
         alert("Невірний код");
         return;
       }
 
-      localStorage.setItem("token", data.token);
-
-      updateUI();
+      // 🔥 cookie вже встановлений сервером
+      location.reload();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      updateUI();
-
       const splash = document.getElementById("splash");
 
       const alreadyShown = localStorage.getItem("splashShown") === "1";
