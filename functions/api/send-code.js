@@ -9,7 +9,7 @@ export async function onRequestPost(context) {
     }
 
     // 🔐 перевірка whitelist
-    const allowed = await env.USERS.get(email);
+    const allowed = await env.USERST.get(email);
 
     if (!allowed) {
       return new Response("Not allowed", { status: 403 });
