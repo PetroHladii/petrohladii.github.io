@@ -142,10 +142,29 @@
         body: JSON.stringify({ email, code })
       });
 
-      if (!res.ok) {
-        alert("Невірний код");
+      async function verifyCode() {
+        const email = document.getElementById("email").value;
+        const code = document.getElementById("code").value;
+
+      if (!email || !code) {
+        alert("Введи email і код");
         return;
       }
+
+      const res = await fetch("/api/verify-code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, code })
+      });
+
+      const text = await res.text();
+      console.log("verify response:", text);
+
+      // 🔥 просто редірект — без перевірок
+      window.location.href = "/";
+    }
 
       // 🔥 cookie встановлено → перезапит сторінки
       window.location.href = "/";
