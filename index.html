@@ -25,7 +25,48 @@
       opacity: 0;
       pointer-events: none;
     }
+
+    /* LOGIN */
+    #login {
+      display: none;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #login input {
+      padding: 10px;
+      font-size: 16px;
+      width: 250px;
+    }
+
+    #login button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
+
+  <script>
+    // 🔐 Перевірка доступу ДО рендеру сторінки
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      document.write(`
+        <div id="login">
+          <h2>Вхід</h2>
+          <input id="email" placeholder="Email">
+          <button onclick="sendCode()">Отримати код</button>
+          <input id="code" placeholder="Код">
+          <button onclick="verifyCode()">Увійти</button>
+        </div>
+      `);
+    }
+  </script>
+
 </head>
 
 <body class="page-root">
@@ -33,63 +74,92 @@
   <!-- SPLASH -->
   <div id="splash"></div>
 
-  <header class="topbar">
-    <h1 class="logo">Довідник БК</h1>
-  </header>
+  <div id="content" style="display:none;">
 
-  <main class="center">
-    <p class="lead">Оберіть категорію:</p>
+    <header class="topbar">
+      <h1 class="logo">Довідник БК</h1>
+    </header>
 
-    <div class="grid-3">
-      <a class="card big" href="rozvidka.html">
-        <h2>Mavic/Autel</h2>
-        <p class="muted">скиди</p>
-      </a>
+    <main class="center">
+      <p class="lead">Оберіть категорію:</p>
 
-      <a class="card big" href="bombers.html">
-        <h2>Бомбери</h2>
-        <p class="muted">скиди</p>
-      </a>
+      <div class="grid-3">
+        <a class="card big" href="rozvidka.html">
+          <h2>Mavic/Autel</h2>
+          <p class="muted">скиди</p>
+        </a>
 
-      <a class="card big" href="fpv.html">
-        <h2>FPV</h2>
-        <p class="muted">радіо/опта</p>
-      </a>
-    </div>
-  </main>
+        <a class="card big" href="bombers.html">
+          <h2>Бомбери</h2>
+          <p class="muted">скиди</p>
+        </a>
 
-  <footer class="footer">
-    <small>Власність 125 ОВМБр</small>
-  </footer>
+        <a class="card big" href="fpv.html">
+          <h2>FPV</h2>
+          <p class="muted">радіо/опта</p>
+        </a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <small>Власність 125 ОВМБр</small>
+    </footer>
+
+  </div>
 
   <script>
+    const token = localStorage.getItem("token");
+
+    // якщо є токен → показуємо сайт
+    if (token) {
+      document.getElementById("content").style.display = "block";
+    }
+
+    async function sendCode() {
+      const email = document.getElementById("email").value;
+
+      await fetch("/api/send-code", {
+        method: "POST",
+        body: JSON.stringify({ email })
+      });
+
+      alert("Код відправлено (дивись logs)");
+    }
+
+    async function verifyCode() {
+      const email = document.getElementById("email").value;
+      const code = document.getElementById("code").value;
+
+      const res = await fetch("/api/verify-code", {
+        method: "POST",
+        body: JSON.stringify({ email, code })
+      });
+
+      const data = await res.json();
+
+      localStorage.setItem("token", data.token);
+
+      location.reload();
+    }
+
+    // SPLASH (залишаємо як є)
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("splash");
 
-      /*
-       * Показуємо splash лише якщо:
-       * - НЕ існує ключ "splashShown"
-       * (навігація між сторінками splash НЕ запускає)
-       */
       const alreadyShown = localStorage.getItem("splashShown") === "1";
 
       if (alreadyShown) {
-        // миттєво прибрати splash без видимого миготіння
         splash.remove();
         return;
       }
 
-      // показуємо splash тільки при першому відкритті
       setTimeout(() => {
         splash.classList.add("hidden");
 
-        // даємо анімації завершитись
         setTimeout(() => {
           splash.remove();
         }, 600);
 
-        // важливо: встановлюємо ключ ДО завершення анімації,
-        // щоб при поверненні з інших сторінок не було заставки.
         localStorage.setItem("splashShown", "1");
       }, 1500);
     });
