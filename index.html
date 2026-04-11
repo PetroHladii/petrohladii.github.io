@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
-    /* FULLSCREEN SPLASH */
     #splash {
       position: fixed;
       inset: 0;
@@ -26,7 +25,6 @@
       pointer-events: none;
     }
 
-    /* LOGIN */
     #login {
       display: none;
       height: 100vh;
@@ -49,24 +47,6 @@
       cursor: pointer;
     }
   </style>
-
-  <script>
-    // 🔐 Перевірка доступу ДО рендеру сторінки
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      document.write(`
-        <div id="login">
-          <h2>Вхід</h2>
-          <input id="email" placeholder="Email">
-          <button onclick="sendCode()">Отримати код</button>
-          <input id="code" placeholder="Код">
-          <button onclick="verifyCode()">Увійти</button>
-        </div>
-      `);
-    }
-  </script>
-
 </head>
 
 <body class="page-root">
@@ -74,6 +54,17 @@
   <!-- SPLASH -->
   <div id="splash"></div>
 
+  <!-- LOGIN -->
+  <div id="login">
+    <h2>Вхід</h2>
+    <input id="email" placeholder="Email">
+    <button onclick="sendCode()">Отримати код</button>
+
+    <input id="code" placeholder="Код">
+    <button onclick="verifyCode()">Увійти</button>
+  </div>
+
+  <!-- CONTENT -->
   <div id="content" style="display:none;">
 
     <header class="topbar">
@@ -110,8 +101,11 @@
   <script>
     const token = localStorage.getItem("token");
 
-    // якщо є токен → показуємо сайт
-    if (token) {
+    function showLogin() {
+      document.getElementById("login").style.display = "flex";
+    }
+
+    function showContent() {
       document.getElementById("content").style.display = "block";
     }
 
@@ -142,10 +136,17 @@
       location.reload();
     }
 
-    // SPLASH (залишаємо як є)
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("splash");
 
+      // логіка доступу
+      if (token) {
+        showContent();
+      } else {
+        showLogin();
+      }
+
+      // splash логіка
       const alreadyShown = localStorage.getItem("splashShown") === "1";
 
       if (alreadyShown) {
