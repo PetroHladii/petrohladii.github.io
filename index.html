@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
+    /* SPLASH */
     #splash {
       position: fixed;
       inset: 0;
@@ -25,6 +26,7 @@
       pointer-events: none;
     }
 
+    /* LOGIN */
     #login {
       display: none;
       height: 100vh;
@@ -32,13 +34,13 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     #login input {
       padding: 10px;
       font-size: 16px;
-      width: 250px;
+      width: 260px;
     }
 
     #login button {
@@ -99,18 +101,28 @@
   </div>
 
   <script>
-    const token = localStorage.getItem("token");
+    function updateUI() {
+      const token = localStorage.getItem("token");
 
-    function showLogin() {
-      document.getElementById("login").style.display = "flex";
-    }
+      const login = document.getElementById("login");
+      const content = document.getElementById("content");
 
-    function showContent() {
-      document.getElementById("content").style.display = "block";
+      if (token) {
+        login.style.display = "none";
+        content.style.display = "block";
+      } else {
+        login.style.display = "flex";
+        content.style.display = "none";
+      }
     }
 
     async function sendCode() {
       const email = document.getElementById("email").value;
+
+      if (!email) {
+        alert("Введи email");
+        return;
+      }
 
       await fetch("/api/send-code", {
         method: "POST",
@@ -124,6 +136,11 @@
       const email = document.getElementById("email").value;
       const code = document.getElementById("code").value;
 
+      if (!email || !code) {
+        alert("Введи email і код");
+        return;
+      }
+
       const res = await fetch("/api/verify-code", {
         method: "POST",
         body: JSON.stringify({ email, code })
@@ -131,22 +148,21 @@
 
       const data = await res.json();
 
+      if (!data.token) {
+        alert("Невірний код");
+        return;
+      }
+
       localStorage.setItem("token", data.token);
 
-      location.reload();
+      updateUI();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      updateUI();
+
       const splash = document.getElementById("splash");
 
-      // логіка доступу
-      if (token) {
-        showContent();
-      } else {
-        showLogin();
-      }
-
-      // splash логіка
       const alreadyShown = localStorage.getItem("splashShown") === "1";
 
       if (alreadyShown) {
