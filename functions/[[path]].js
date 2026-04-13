@@ -3,32 +3,31 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const path = url.pathname;
 
-  // 🔓 дозволяємо сторінку логіну
-  if (path === "/login.html") {
+  // 🔓 ДОЗВОЛЯЄМО ЛОГІН (усі варіанти)
+  if (
+    path === "/login" ||
+    path === "/login.html" ||
+    path.startsWith("/login")
+  ) {
     return context.next();
   }
 
-  // 🔓 дозволяємо API
+  // 🔓 ДОЗВОЛЯЄМО API
   if (path.startsWith("/api")) {
     return context.next();
   }
 
-  // 🔓 дозволяємо статику
-  if (/\.(css|js|png|jpg|webp|ico)$/.test(path)) {
+  // 🔓 ДОЗВОЛЯЄМО СТАТИКУ
+  if (/\.(css|js|png|jpg|jpeg|webp|ico|svg)$/.test(path)) {
     return context.next();
   }
 
-  // 🔐 перевіряємо cookie
+  // 🔐 ПЕРЕВІРКА COOKIE
   const cookie = request.headers.get("Cookie") || "";
 
-  const hasAuth = cookie
-    .split(";")
-    .some(c => c.trim().startsWith("auth="));
-
-  if (!hasAuth) {
+  if (!cookie.includes("auth=")) {
     return Response.redirect(url.origin + "/login.html", 302);
   }
 
-  // 🟢 усе ок
   return context.next();
 }
