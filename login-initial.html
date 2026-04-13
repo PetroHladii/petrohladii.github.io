@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="uk">
+<body>
+
+<h2>Вхід</h2>
+
+<input id="email" placeholder="Email">
+<button onclick="sendCode()">Отримати код</button>
+
+<input id="code" placeholder="Код">
+<button onclick="verifyCode()">Увійти</button>
+
+<script>
+async function sendCode() {
+  const email = document.getElementById("email").value;
+
+  await fetch("/api/send-code", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+
+  alert("Код надіслано");
+}
+
+async function verifyCode() {
+  const email = document.getElementById("email").value;
+  const code = document.getElementById("code").value;
+
+  await fetch("/api/verify-code", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, code })
+  });
+
+  window.location.href = "/";
+}
+</script>
+
+</body>
+</html>
