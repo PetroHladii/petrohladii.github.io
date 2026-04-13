@@ -25,35 +25,6 @@
       opacity: 0;
       pointer-events: none;
     }
-
-    /* LOGIN */
-    #login {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      z-index: 1000;
-    }
-
-    #login.hidden {
-      display: none;
-    }
-
-    #login input {
-      padding: 10px;
-      font-size: 16px;
-      width: 260px;
-    }
-
-    #login button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
   </style>
 </head>
 
@@ -62,114 +33,37 @@
   <!-- SPLASH -->
   <div id="splash"></div>
 
-  <!-- LOGIN -->
-  <div id="login">
-    <h2>Вхід</h2>
-    <input id="email" placeholder="Email">
-    <button onclick="sendCode()">Отримати код</button>
-
-    <input id="code" placeholder="Код">
-    <button onclick="verifyCode()">Увійти</button>
-  </div>
-
   <!-- CONTENT -->
-  <div id="content">
+  <header class="topbar">
+    <h1 class="logo">Довідник БК</h1>
+  </header>
 
-    <header class="topbar">
-      <h1 class="logo">Довідник БК</h1>
-    </header>
+  <main class="center">
+    <p class="lead">Оберіть категорію:</p>
 
-    <main class="center">
-      <p class="lead">Оберіть категорію:</p>
+    <div class="grid-3">
+      <a class="card big" href="rozvidka.html">
+        <h2>Mavic/Autel</h2>
+        <p class="muted">скиди</p>
+      </a>
 
-      <div class="grid-3">
-        <a class="card big" href="rozvidka.html">
-          <h2>Mavic/Autel</h2>
-          <p class="muted">скиди</p>
-        </a>
+      <a class="card big" href="bombers.html">
+        <h2>Бомбери</h2>
+        <p class="muted">скиди</p>
+      </a>
 
-        <a class="card big" href="bombers.html">
-          <h2>Бомбери</h2>
-          <p class="muted">скиди</p>
-        </a>
+      <a class="card big" href="fpv.html">
+        <h2>FPV</h2>
+        <p class="muted">радіо/опта</p>
+      </a>
+    </div>
+  </main>
 
-        <a class="card big" href="fpv.html">
-          <h2>FPV</h2>
-          <p class="muted">радіо/опта</p>
-        </a>
-      </div>
-    </main>
-
-    <footer class="footer">
-      <small>Власність 125 ОВМБр</small>
-    </footer>
-
-  </div>
+  <footer class="footer">
+    <small>Власність 125 ОВМБр</small>
+  </footer>
 
   <script>
-    async function sendCode() {
-      const email = document.getElementById("email").value;
-
-      if (!email) {
-        alert("Введи email");
-        return;
-      }
-
-      const res = await fetch("/api/send-code", {
-        method: "POST",
-        body: JSON.stringify({ email })
-      });
-
-      if (!res.ok) {
-        alert("Email не дозволений");
-        return;
-      }
-
-      alert("Код відправлено (дивись logs)");
-    }
-
-    async function verifyCode() {
-      const email = document.getElementById("email").value;
-      const code = document.getElementById("code").value;
-
-      if (!email || !code) {
-        alert("Введи email і код");
-        return;
-      }
-
-      const res = await fetch("/api/verify-code", {
-        method: "POST",
-        body: JSON.stringify({ email, code })
-      });
-
-      async function verifyCode() {
-        const email = document.getElementById("email").value;
-        const code = document.getElementById("code").value;
-
-      if (!email || !code) {
-        alert("Введи email і код");
-        return;
-      }
-
-      const res = await fetch("/api/verify-code", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, code })
-      });
-
-      const text = await res.text();
-      console.log("verify response:", text);
-
-      // 🔥 просто редірект — без перевірок
-      window.location.href = "/";
-    }
-
-      // 🔥 cookie встановлено → перезапит сторінки
-      window.location.href = "/";
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("splash");
 
@@ -177,21 +71,18 @@
 
       if (alreadyShown) {
         splash.remove();
-      } else {
-        setTimeout(() => {
-          splash.classList.add("hidden");
-
-          setTimeout(() => {
-            splash.remove();
-          }, 600);
-
-          localStorage.setItem("splashShown", "1");
-        }, 1500);
+        return;
       }
 
-      // 🔥 якщо middleware пропустив → значить авторизований
-      // просто ховаємо login
-      document.getElementById("login").classList.add("hidden");
+      setTimeout(() => {
+        splash.classList.add("hidden");
+
+        setTimeout(() => {
+          splash.remove();
+        }, 600);
+
+        localStorage.setItem("splashShown", "1");
+      }, 1500);
     });
   </script>
 
