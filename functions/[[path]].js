@@ -1,36 +1,38 @@
 export async function onRequest(context) {
   const { request } = context;
-
   const url = new URL(request.url);
 
-  console.log("MIDDLEWARE HIT:", url.pathname);
+  const path = url.pathname;
 
-  // API не чіпаємо
-  if (url.pathname.startsWith("/api")) {
+  // ✅ дозволяємо логін сторінку
+  if (path === "/" || path === "/index.html") {
     return context.next();
   }
 
-  // статика
+  // ✅ дозволяємо API
+  if (path.startsWith("/api")) {
+    return context.next();
+  }
+
+  // ✅ дозволяємо статику
   if (
-    url.pathname.endsWith(".css") ||
-    url.pathname.endsWith(".js") ||
-    url.pathname.endsWith(".png") ||
-    url.pathname.endsWith(".jpg") ||
-    url.pathname.endsWith(".webp") ||
-    url.pathname.endsWith(".ico")
+    path.endsWith(".css") ||
+    path.endsWith(".js") ||
+    path.endsWith(".png") ||
+    path.endsWith(".jpg") ||
+    path.endsWith(".webp") ||
+    path.endsWith(".ico")
   ) {
     return context.next();
   }
 
+  // 🔐 перевіряємо cookie
   const cookie = request.headers.get("Cookie") || "";
   const match = cookie.match(/auth=([^;]+)/);
 
   if (!match) {
-    console.log("NO COOKIE");
     return new Response("Unauthorized", { status: 401 });
   }
-
-  console.log("COOKIE OK");
 
   return context.next();
 }
