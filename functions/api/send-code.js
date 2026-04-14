@@ -49,7 +49,7 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "onboarding@resend.dev",
+        from: "noreply@mail.125.co.ua",
         to: email,
         subject: "Код доступу",
         html: `
