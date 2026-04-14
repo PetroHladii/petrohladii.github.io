@@ -3,7 +3,7 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const path = url.pathname;
 
-  // 🔓 ДОЗВОЛЯЄМО ЛОГІН (усі варіанти)
+  // 🔓 ДОЗВОЛЯЄМО ЛОГІН
   if (
     path === "/login" ||
     path === "/login.html" ||
@@ -12,7 +12,7 @@ export async function onRequest(context) {
     return context.next();
   }
 
-  // 🔓 ДОЗВОЛЯЄМО API
+  // 🔓 ДОЗВОЛЯЄМО API (включно з logout)
   if (path.startsWith("/api")) {
     return context.next();
   }
@@ -25,9 +25,12 @@ export async function onRequest(context) {
   // 🔐 ПЕРЕВІРКА COOKIE
   const cookie = request.headers.get("Cookie") || "";
 
-  if (!cookie.includes("auth=")) {
+  const hasAuth = cookie.includes("auth=");
+
+  if (!hasAuth) {
     return Response.redirect(url.origin + "/login.html", 302);
   }
 
+  // 🟢 ДОЗВОЛЯЄМО
   return context.next();
 }
