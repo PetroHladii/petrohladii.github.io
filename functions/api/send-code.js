@@ -2,19 +2,25 @@ export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
-    const { email } = await request.json();
+    // ✅ читаємо body ОДИН раз
+    const body = await request.json();
+    const email = body.email?.toLowerCase().trim();
 
     if (!email) {
       return new Response("Missing email", { status: 400 });
     }
 
-    // 🔐 1. перевірка доступу
+    console.log("EMAIL:", email);
+
+    // 🔐 перевірка доступу
     const allowed = await env.USERST.get(email);
+
     if (!allowed) {
+      console.log("NOT ALLOWED:", email);
       return new Response("Not allowed", { status: 403 });
     }
 
-    // 🛑 2. rate limit (1 раз / 60 сек)
+    // 🛑 rate limit
     const lastKey = "last_" + email;
     const last = await env.CODEST.get(lastKey);
 
@@ -26,14 +32,16 @@ export async function onRequestPost(context) {
       expirationTtl: 60
     });
 
-    // 🔢 3. генеруємо код
+    // 🔢 код
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
     await env.CODEST.put(email, code, {
-      expirationTtl: 300 // 5 хв
+      expirationTtl: 300
     });
 
-    // 📧 4. відправка email
+    console.log("CODE:", code);
+
+    // 📧 email
     const resendRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -64,7 +72,7 @@ export async function onRequestPost(context) {
     return new Response("OK");
 
   } catch (err) {
-    console.log(err);
+    console.log("ERROR:", err);
     return new Response("Server error", { status: 500 });
   }
 }
