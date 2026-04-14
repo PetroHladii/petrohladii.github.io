@@ -41,6 +41,12 @@ export async function onRequestPost(context) {
 
     console.log("CODE:", code);
 
+    console.log("EMAIL:", email);
+
+    const allowed = await env.USERST.get(email);
+
+    console.log("KV RESULT:", allowed);
+
     // 📧 email
     const resendRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
