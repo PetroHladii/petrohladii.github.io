@@ -19,7 +19,7 @@ export async function onRequestPost(context) {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
     // ⏱ зберігаємо на 5 хв
-    await env.CODES.put(email, code, { expirationTtl: 300 });
+    await env.CODEST.put(email, code, { expirationTtl: 300 });
 
     // 🧪 поки що просто в консоль
     console.log(`Login code for ${email}: ${code}`);
