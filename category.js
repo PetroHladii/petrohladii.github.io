@@ -92,7 +92,7 @@
 
     // 🔥 ВІДЕО ЛОГІКА
     if (videoBtn) {
-      const videoId = (item.video || '').trim();
+      const videoId = (item.videoId || '').trim();
 
       if (videoId.length > 0) {
         videoBtn.classList.remove('hidden');
