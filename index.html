@@ -25,6 +25,23 @@
       opacity: 0;
       pointer-events: none;
     }
+
+    /* 🔥 КНОПКА ВИХОДУ */
+    .logout-btn {
+      padding: 8px 14px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid #ff3b3b;
+      background: transparent;
+      color: #ff3b3b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background: #ff3b3b;
+      color: #fff;
+    }
   </style>
 </head>
 
@@ -36,26 +53,25 @@
   <!-- CONTENT -->
   <header class="topbar">
     <h1 class="logo">Довідник БК</h1>
-    <button onclick="App.logout()">Вийти</button>
+
+    <!-- 🔥 ОНОВЛЕНА КНОПКА -->
+    <button class="logout-btn" onclick="App.logout()">
+      Вийти
+    </button>
   </header>
 
   <main class="center">
-    <p class="lead">Оберіть категорію:</p>
-
     <div class="grid-3">
       <a class="card big" href="rozvidka.html">
         <h2>Mavic/Autel</h2>
-        <p class="muted">скиди</p>
       </a>
 
       <a class="card big" href="bombers.html">
         <h2>Бомбери</h2>
-        <p class="muted">скиди</p>
       </a>
 
       <a class="card big" href="fpv.html">
         <h2>FPV</h2>
-        <p class="muted">радіо/опта</p>
       </a>
     </div>
   </main>
@@ -86,6 +102,7 @@
       }, 1500);
     });
   </script>
+
   <script src="main.js"></script>
 </body>
 </html>

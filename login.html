@@ -64,6 +64,11 @@
       margin-top: 6px;
     }
 
+    /* 🔥 НОВИЙ ВІДСТУП */
+    .code-block {
+      margin-top: 20px;
+    }
+
     .login-footer {
       margin-top: 18px;
       font-size: 12px;
@@ -83,8 +88,11 @@
     <input id="email" type="email" placeholder="Email">
     <button class="btn" onclick="sendCode()">Отримати код</button>
 
-    <input id="code" placeholder="Код">
-    <button class="btn" onclick="verifyCode()">Увійти</button>
+    <!-- 🔥 ОБГОРТКА ДЛЯ КОДУ -->
+    <div class="code-block">
+      <input id="code" placeholder="Код">
+      <button class="btn" onclick="verifyCode()">Увійти</button>
+    </div>
 
     <div class="login-footer">
       Доступ лише для авторизованих користувачів
