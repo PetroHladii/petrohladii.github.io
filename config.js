@@ -1,5 +1,5 @@
 const CONFIG = {
-  ENV: "prod", // "prod" або "test"
+  ENV: "test", // "prod" або "test"
 
   prod: {
     //codesDb: "CODES",
