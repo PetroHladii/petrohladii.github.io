@@ -3,11 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
   <title id="pageTitle"></title>
-
-  <!-- CONFIG -->
-  <script src="config.js"></script>
 
   <!-- твій загальний стиль -->
   <link rel="stylesheet" href="style.css" />
@@ -87,7 +83,6 @@
   <div class="login-card">
 
     <h2 id="loginHeader"></h2>
-
     <p>Введи email, щоб отримати код доступу</p>
 
     <input id="email" type="email" placeholder="Email">
@@ -105,11 +100,8 @@
 
   </div>
 </div>
-
+<script src="config.js"></script>
 <script>
-document.title = CONFIG.loginTitle;
-document.getElementById("loginHeader").textContent = CONFIG.loginHeader;
-
 async function sendCode() {
   const email = document.getElementById("email").value;
 

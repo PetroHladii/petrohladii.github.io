@@ -74,7 +74,6 @@
   // ---------------------- CLOUD COUNTS ----------------------
   async function loadCloudCounts(){
     try {
-
       const res = await fetch(
         CONFIG.cloudflareWorker,
         { cache: "no-store" }

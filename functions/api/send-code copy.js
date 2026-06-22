@@ -13,7 +13,7 @@ export async function onRequestPost(context) {
     console.log("EMAIL:", email);
 
     // 🔐 перевірка доступу
-    const allowed = await env[CONFIG.usersDb].get(email);
+    const allowed = await env.USERST.get(email);
 
     if (!allowed) {
       console.log("NOT ALLOWED:", email);
@@ -22,20 +22,20 @@ export async function onRequestPost(context) {
 
     // 🛑 rate limit
     const lastKey = "last_" + email;
-    const last = await env[CONFIG.codesDb].get(lastKey);
+    const last = await env.CODEST.get(lastKey);
 
     if (last && Date.now() - parseInt(last) < 60000) {
       return new Response("Too many requests", { status: 429 });
     }
 
-    await env[CONFIG.codesDb].put(lastKey, Date.now().toString(), {
+    await env.CODEST.put(lastKey, Date.now().toString(), {
       expirationTtl: 60
     });
 
     // 🔢 код
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    await env[CONFIG.codesDb].put(email, code, {
+    await env.CODEST.put(email, code, {
       expirationTtl: 300
     });
 
@@ -49,7 +49,7 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: CONFIG.mailSender,
+        from: "testnoreply@mail.125.co.ua",
         to: email,
         subject: "Код доступу",
         html: `
