@@ -1,10 +1,10 @@
 const CONFIG = {
-  ENV: "test", // "prod" або "test"
+  ENV: "prod", // "prod" або "test"
 
   prod: {
-    codesDb: "CODES",
-    usersDb: "USERS",
-    mailSender: "noreply@mail.125.co.ua",
+    //codesDb: "CODES",
+    //usersDb: "USERS",
+    //mailSender: "noreply@mail.125.co.ua",
 
     cloudflareWorker:
       "https://old-fog-c80a.tantsa98.workers.dev",
@@ -29,9 +29,9 @@ const CONFIG = {
   },
 
   test: {
-    codesDb: "CODEST",
-    usersDb: "USERST",
-    mailSender: "testnoreply@mail.125.co.ua",
+    //codesDb: "CODEST",
+    //usersDb: "USERST",
+    //mailSender: "testnoreply@mail.125.co.ua",
 
     cloudflareWorker:
       "https://silent-sun-7c28.tantsa98.workers.dev",

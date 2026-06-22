@@ -1,5 +1,5 @@
 export const CONFIG = {
-  ENV: "test"
+  ENV: "prod" // альбо "prod"
 };
 
 CONFIG.codesDb =
