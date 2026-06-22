@@ -1,3 +1,5 @@
+import { CONFIG } from "./config.js";
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -33,7 +35,9 @@ export async function onRequestPost(context) {
     });
 
     // 🔢 код
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const code = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
 
     await env[CONFIG.codesDb].put(email, code, {
       expirationTtl: 300
@@ -42,37 +46,51 @@ export async function onRequestPost(context) {
     console.log("CODE:", code);
 
     // 📧 email
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${env.RESEND_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from: CONFIG.mailSender,
-        to: email,
-        subject: "Код доступу",
-        html: `
-          <div style="font-family:sans-serif">
-            <h2>Код входу</h2>
-            <p>Твій код:</p>
-            <h1>${code}</h1>
-            <p>Дійсний 5 хвилин</p>
-          </div>
-        `
-      })
-    });
+    const resendRes = await fetch(
+      "https://api.resend.com/emails",
+      {
+        method: "POST",
+        headers: {
+          "Authorization":
+            `Bearer ${env.RESEND_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          from: CONFIG.mailSender,
+          to: email,
+          subject: "Код доступу",
+          html: `
+            <div style="font-family:sans-serif">
+              <h2>Код входу</h2>
+              <p>Твій код:</p>
+              <h1>${code}</h1>
+              <p>Дійсний 5 хвилин</p>
+            </div>
+          `
+        })
+      }
+    );
 
     if (!resendRes.ok) {
       const err = await resendRes.text();
+
       console.log("Resend error:", err);
-      return new Response("Email error", { status: 500 });
+
+      return new Response(
+        "Email error",
+        { status: 500 }
+      );
     }
 
     return new Response("OK");
 
   } catch (err) {
+
     console.log("ERROR:", err);
-    return new Response("Server error", { status: 500 });
+
+    return new Response(
+      "Server error",
+      { status: 500 }
+    );
   }
 }
