@@ -75,7 +75,7 @@
   async function loadCloudCounts(){
     try {
       const res = await fetch(
-        CONFIG.cloudflareWorker,
+        'https://silent-sun-7c28.tantsa98.workers.dev',
         { cache: "no-store" }
       );
 
