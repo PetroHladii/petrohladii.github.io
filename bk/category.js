@@ -23,6 +23,12 @@
   const nextBtn = document.getElementById('nextImg');
   const imgCount = document.getElementById('imgCount');
   let carouselEl = document.getElementById('carouselImg');
+  //added
+  const fullscreenBtn =
+  document.getElementById('fullscreenBtn');
+  //added
+  const carousel =
+  document.getElementById('imageCarousel');
 
   let currentImages = [];
   let currentIndex = 0;
@@ -409,6 +415,40 @@
     if(nextBtn){
       nextBtn.addEventListener('click', nextImage);
     }
+    // added start
+    if(fullscreenBtn && carousel){
+
+      fullscreenBtn.addEventListener(
+        'click',
+        async () => {
+
+          try {
+
+            if (!document.fullscreenElement) {
+              await carousel.requestFullscreen();
+            } else {
+              await document.exitFullscreen();
+            }
+
+          } catch(err){
+            console.error(err);
+          }
+
+        }
+      );
+
+      document.addEventListener(
+        'fullscreenchange',
+        () => {
+
+          fullscreenBtn.textContent =
+            document.fullscreenElement
+              ? '✕'
+              : '⛶';
+
+        }
+      );
+    } //end
   }
 
   attachEvents();
