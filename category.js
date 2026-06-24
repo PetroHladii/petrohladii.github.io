@@ -27,6 +27,8 @@
   let currentImages = [];
   let currentIndex = 0;
   let categoryData = [];
+  // added
+  let currentItem = null;
 
   let mediaIndex = null;
   let cloudCounts = null;
@@ -68,7 +70,8 @@
 
     if(!imgId) return [];
 
-    return all.filter(name => name.startsWith(imgId + "#"));
+    //return all.filter(name => name.startsWith(imgId + "#"));
+    return all.filter(name => name.startsWith(imgId + "-"));
   }
 
   // ---------------------- CLOUD COUNTS ----------------------
@@ -116,6 +119,8 @@
     mType.textContent = item.Type || '';
     mAff.textContent = item.Affiliation || '';
     mDesc.textContent = item.Desc || '';
+    // added
+    currentItem = item;
 
     // VIDEO
     if (videoBtn) {
@@ -155,7 +160,8 @@
 
     const file = currentImages[currentIndex];
     const ext = file.split('.').pop().toLowerCase();
-    const url = 'media/' + encodeURIComponent(file);
+    //const url = 'media/' + encodeURIComponent(file);
+    const url = `${CONFIG.mediaBase}/bk/${currentItem?.Affiliation || ""}/${encodeURIComponent(file)}`;
 
     let newEl;
 
