@@ -415,41 +415,6 @@
     if(nextBtn){
       nextBtn.addEventListener('click', nextImage);
     }
-    // added start
-    if(fullscreenBtn && carousel){
-
-      fullscreenBtn.addEventListener(
-        'click',
-        async () => {
-
-          try {
-
-            if (!document.fullscreenElement) {
-              await carousel.requestFullscreen();
-            } else {
-              await document.exitFullscreen();
-            }
-
-          } catch(err){
-            console.error(err);
-          }
-
-        }
-      );
-
-      document.addEventListener(
-        'fullscreenchange',
-        () => {
-
-          fullscreenBtn.textContent =
-            document.fullscreenElement
-              ? '✕'
-              : '⛶';
-
-        }
-      );
-    } 
-    //end
   }
 
   attachEvents();
