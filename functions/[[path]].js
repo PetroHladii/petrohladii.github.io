@@ -18,7 +18,7 @@ export async function onRequest(context) {
   }
 
   // 🔓 ДОЗВОЛЯЄМО СТАТИКУ
-  if (/\.(css|js|png|jpg|jpeg|webp|ico|svg)$/.test(path)) {
+  if (/\.(css|js|png|jpg|jpeg|webp|ico|svg|woff|woff2)$/.test(path)) {
     return context.next();
   }
 

@@ -6,14 +6,6 @@ export async function onRequestPost(context) {
   try {
     const { email, code } = await request.json();
 
-    // 🔥 DEBUG
-    console.log("EMAIL RAW:", email);
-    console.log("EMAIL LENGTH:", email.length);
-    console.log(
-      "EMAIL CHARS:",
-      [...email].map(c => c.charCodeAt(0))
-    );
-
     if (!email || !code) {
       return new Response(
         "Missing data",
@@ -22,12 +14,6 @@ export async function onRequestPost(context) {
     }
 
     const saved = await env[CONFIG.codesDb].get(email);
-
-    // 🔥 DEBUG
-    console.log("SAVED FROM KV:", saved);
-    console.log("CODE FROM USER:", code);
-    console.log("CODE LENGTH:", code.length);
-    console.log("EQUAL:", saved === code);
 
     if (!saved || saved !== code) {
       return new Response(

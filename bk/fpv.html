@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="uk" data-category="bombers">
+<html lang="uk" data-category="fpv">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <title id="pageTitle"></title>
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 
-<body class="page-category" data-page="bombers">
+<body class="page-category" data-page="fpv">
 
   <header class="topbar">
     <!--<a class="back" href="index.html">На головну</a>-->
@@ -19,8 +19,10 @@
   </header>
 
   <main class="container">
+
     <aside class="sidebar">
       <section class="panel">
+
         <h3>Фільтр по типу</h3>
 
         <div id="filters" class="filters">
@@ -31,38 +33,51 @@
         <button id="clearFilters" class="btn small">
           Скинути
         </button>
+
       </section>
     </aside>
 
     <section class="content">
+
       <div id="gallery" class="gallery">
         <!-- картки будуть виводитись сюди -->
       </div>
+
     </section>
+
   </main>
 
   <!-- POPUP -->
   <div id="overlay" class="overlay hidden" aria-hidden="true">
+
     <div class="modal" role="dialog" aria-modal="true">
 
-      <button id="closeModal" class="modal-close" aria-label="Закрити">
+      <button id="closeModal"
+              class="modal-close"
+              aria-label="Закрити">
         ×
       </button>
 
       <div class="modal-body">
 
         <div class="modal-left">
+
           <div id="imageCarousel" class="carousel">
 
-            <button id="prevImg" class="carousel-btn">‹</button>
+            <button id="prevImg" class="carousel-btn">
+              ‹
+            </button>
 
             <img id="carouselImg" src="" alt="" />
 
-            <button id="nextImg" class="carousel-btn">›</button>
+            <button id="nextImg" class="carousel-btn">
+              ›
+            </button>
 
           </div>
 
           <p id="imgCount" class="muted small"></p>
+
         </div>
 
         <div class="modal-right">
@@ -89,16 +104,19 @@
           </button>
 
         </div>
+
       </div>
+
     </div>
+
   </div>
 
   <script src="main.js"></script>
-  <script src="config.js"></script>
+  <script src="../js/config.js"></script>
 
   <script>
-    document.getElementById("pageTitle").textContent = CONFIG.bombersTitle;
-    document.getElementById("pageHeader").textContent = CONFIG.bombersTitle;
+    document.getElementById("pageTitle").textContent = CONFIG.fpvTitle;
+    document.getElementById("pageHeader").textContent = CONFIG.fpvTitle;
   </script>
 
   <script src="category.js"></script>

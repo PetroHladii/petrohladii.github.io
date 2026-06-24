@@ -55,7 +55,7 @@
     if (mediaIndex) return mediaIndex;
 
     try {
-      const res = await fetch('data/media-index.json', { cache: "no-store" });
+      const res = await fetch('../data/bk/media-index.json', { cache: "no-store" });
       mediaIndex = await res.json();
       return mediaIndex;
     } catch (e){
@@ -345,12 +345,10 @@
     categoryData = all.filter(it =>
       (it.Affiliation || '')
         .trim()
-        .toLowerCase()
-        .includes(
+        .toLowerCase() ===
           (categoryLabel || '')
             .trim()
             .toLowerCase()
-        )
     );
 
     const types = [

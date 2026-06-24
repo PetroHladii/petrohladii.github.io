@@ -43,7 +43,9 @@ export async function onRequestPost(context) {
       expirationTtl: 300
     });
 
-    console.log("CODE:", code);
+    if (CONFIG.ENV === "test") {
+      console.log("CODE:", code);
+    }
 
     // 📧 email
     const resendRes = await fetch(

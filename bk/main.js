@@ -35,7 +35,7 @@ const App = (function(){
     return out;
   }
 
-  async function loadCSV(path = 'data/BK.csv'){
+  async function loadCSV(path = '../data/bk/BK.csv'){
     if(_data) return _data;
 
     try{
