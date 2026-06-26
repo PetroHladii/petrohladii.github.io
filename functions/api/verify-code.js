@@ -1,4 +1,4 @@
-import { CONFIG } from "./config.js";
+import { CONFIG } from "../../config/login-config.js";
 
 export async function onRequestPost(context) {
   const { request, env } = context;
