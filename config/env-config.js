@@ -16,7 +16,7 @@ const CONFIG = {
       "Вхід",
 
     indexTitle:
-      "Довідник БК",
+      "Довідник",
 
     bombersTitle:
       "Бомбери",
@@ -43,7 +43,7 @@ const CONFIG = {
       "Вхід (тест)",
 
     indexTitle:
-      "Довідник БК (тест)",
+      "Довідник (тест)",
 
     bombersTitle:
       "Бомбери (тест)",
