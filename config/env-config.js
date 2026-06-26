@@ -25,7 +25,10 @@ const CONFIG = {
       "FPV",
 
     rozvidkaTitle:
-      "Mavic/Autel"
+      "Mavic/Autel",
+
+    knowledgeTitle:
+    "Знання"
   },
 
   test: {
@@ -52,7 +55,10 @@ const CONFIG = {
       "FPV (тест)",
 
     rozvidkaTitle:
-      "Mavic/Autel (тест)"
+      "Mavic/Autel (тест)",
+
+    knowledgeTitle:
+    "Знання (тест)"
   }
 };
 
