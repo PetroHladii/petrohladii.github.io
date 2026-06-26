@@ -393,6 +393,22 @@ body{
   margin-top:60px;
 }
 
+.results-info{
+
+  margin-bottom:18px;
+
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+.articles-list{
+
+  display:grid;
+
+  gap:16px;
+}
+
 /* LEFT SIDE */
 .modal-left{
   width:100%;
