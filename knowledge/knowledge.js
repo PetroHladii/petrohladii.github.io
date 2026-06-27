@@ -47,9 +47,7 @@ const Knowledge = {
         document.createElement("input");
 
       checkbox.type = "checkbox";
-
       checkbox.value = key;
-
       checkbox.className = "author-filter";
 
       label.appendChild(checkbox);
@@ -82,9 +80,7 @@ const Knowledge = {
         document.createElement("input");
 
       checkbox.type = "checkbox";
-
       checkbox.value = key;
-
       checkbox.className = "category-filter";
 
       label.appendChild(checkbox);
@@ -102,8 +98,6 @@ const Knowledge = {
   renderArticles() {
 
     console.log("Render articles");
-
-    console.table(this.filteredArticles);
 
     const container =
       document.getElementById("articles");
@@ -138,17 +132,111 @@ const Knowledge = {
 
     });
 
+    this.renderResultsInfo();
+
+  },
+
+  renderResultsInfo() {
+
+    const container =
+      document.getElementById("resultsInfo");
+
+    const shown =
+      this.filteredArticles.length;
+
+    const total =
+      this.articles.length;
+
+    container.textContent =
+      `Показано ${shown} із ${total} статей`;
+
   },
 
   applyFilters() {
 
     console.log("Apply filters");
 
+    const search =
+      document
+        .getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const authors =
+      [...document.querySelectorAll(".author-filter:checked")]
+        .map(item => item.value);
+
+    const categories =
+      [...document.querySelectorAll(".category-filter:checked")]
+        .map(item => item.value);
+
+    this.filteredArticles =
+      this.articles.filter(article => {
+
+        const authorMatch =
+          authors.length === 0 ||
+          authors.includes(article.author);
+
+        const categoryMatch =
+          categories.length === 0 ||
+          categories.includes(article.category);
+
+        const searchMatch =
+          search === "" ||
+
+          article.title
+            .toLowerCase()
+            .includes(search) ||
+
+          CATEGORIES[article.category]
+            .toLowerCase()
+            .includes(search);
+
+        return (
+          authorMatch &&
+          categoryMatch &&
+          searchMatch
+        );
+
+      });
+
+    this.renderArticles();
+
   },
 
   bindEvents() {
 
     console.log("Bind events");
+
+    document
+      .getElementById("searchInput")
+      .addEventListener(
+        "input",
+        () => this.applyFilters()
+      );
+
+    document
+      .querySelectorAll(".author-filter")
+      .forEach(filter => {
+
+        filter.addEventListener(
+          "change",
+          () => this.applyFilters()
+        );
+
+      });
+
+    document
+      .querySelectorAll(".category-filter")
+      .forEach(filter => {
+
+        filter.addEventListener(
+          "change",
+          () => this.applyFilters()
+        );
+
+      });
 
   }
 
