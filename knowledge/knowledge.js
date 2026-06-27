@@ -33,11 +33,69 @@ const Knowledge = {
 
     console.log("Render authors");
 
+    const container =
+      document.getElementById("authorFilters");
+
+    container.innerHTML = "";
+
+    Object.entries(AUTHORS).forEach(([key, name]) => {
+
+      const label =
+        document.createElement("label");
+
+      const checkbox =
+        document.createElement("input");
+
+      checkbox.type = "checkbox";
+
+      checkbox.value = key;
+
+      checkbox.className = "author-filter";
+
+      label.appendChild(checkbox);
+
+      label.append(
+        document.createTextNode(" " + name)
+      );
+
+      container.appendChild(label);
+
+    });
+
   },
 
   renderCategories() {
 
     console.log("Render categories");
+
+    const container =
+      document.getElementById("categoryFilters");
+
+    container.innerHTML = "";
+
+    Object.entries(CATEGORIES).forEach(([key, name]) => {
+
+      const label =
+        document.createElement("label");
+
+      const checkbox =
+        document.createElement("input");
+
+      checkbox.type = "checkbox";
+
+      checkbox.value = key;
+
+      checkbox.className = "category-filter";
+
+      label.appendChild(checkbox);
+
+      label.append(
+        document.createTextNode(" " + name)
+      );
+
+      container.appendChild(label);
+
+    });
 
   },
 
@@ -72,6 +130,7 @@ const Knowledge = {
           window.location.assign(
             `article.html?id=${article.id}`
           );
+
         }
       );
 
