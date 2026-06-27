@@ -232,6 +232,7 @@ body{
   background:#111;
   border-radius:var(--radius);
   padding:16px;
+  margin-bottom:16px;
   border:1px solid #222;
   box-shadow:0 2px 8px rgba(0,0,0,0.4);
 }
