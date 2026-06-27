@@ -47,6 +47,38 @@ const Knowledge = {
 
     console.table(this.filteredArticles);
 
+    const container =
+      document.getElementById("articles");
+
+    container.innerHTML = "";
+
+    this.filteredArticles.forEach(article => {
+
+      const button =
+        document.createElement("button");
+
+      button.type = "button";
+
+      button.className =
+        "article-item";
+
+      button.textContent =
+        article.title;
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          window.location.assign(
+            `article.html?id=${article.id}`
+          );
+        }
+      );
+
+      container.appendChild(button);
+
+    });
+
   },
 
   applyFilters() {
