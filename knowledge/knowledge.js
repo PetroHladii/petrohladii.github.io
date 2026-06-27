@@ -3,11 +3,11 @@ const Knowledge = {
   articles: [],
   filteredArticles: [],
 
-  async init() {
+  init() {
 
     console.log("Knowledge module initialized");
 
-    await this.loadData();
+    this.loadData();
 
     this.renderAuthors();
     this.renderCategories();
@@ -17,9 +17,15 @@ const Knowledge = {
 
   },
 
-  async loadData() {
+  loadData() {
 
-    console.log("Loading Knowledge.csv...");
+    console.log("Loading Knowledge data...");
+
+    this.articles = [...KNOWLEDGE];
+
+    this.filteredArticles = [...this.articles];
+
+    console.table(this.articles);
 
   },
 
@@ -38,6 +44,8 @@ const Knowledge = {
   renderArticles() {
 
     console.log("Render articles");
+
+    console.table(this.filteredArticles);
 
   },
 
