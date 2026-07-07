@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1" />
+
+  <title></title>
+
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <script src="../config/env-config.js"></script>
+  <script src="../config/config.js"></script>
+
+</head>
+
+<body class="page-knowledge">
+
+  <!-- HEADER -->
+  <header class="topbar">
+
+    <button
+      id="backButton"
+      class="back-icon"
+      title="Назад">
+    </button>
+
+    <h1
+      class="logo"
+      id="pageHeader">
+    </h1>
+
+    <button
+      class="logout-btn"
+      onclick="App.logout()">
+      Вийти
+    </button>
+
+  </header>
+
+  <!-- APP NAVIGATION -->
+  <nav class="app-nav">
+
+    <a
+      href="../bk/index.html"
+      class="app-nav-btn">
+      БК
+    </a>
+
+    <a
+      href="index.html"
+      class="app-nav-btn active">
+      Знання
+    </a>
+
+  </nav>
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <section class="content">
+
+      <!-- ARTICLE TITLE -->
+      <h2 id="contentTitle">
+      </h2>
+
+      <!-- MARKDOWN -->
+      <section
+        id="contentBody"
+        class="panel">
+      </section>
+
+      <!-- PHOTOS -->
+      <section
+        id="photosSection"
+        class="panel">
+
+        <h3>Фото</h3>
+
+        <div
+          id="contentPhotos"
+          class="gallery">
+        </div>
+
+      </section>
+
+      <!-- DOCUMENTS -->
+      <section
+        id="filesSection"
+        class="panel">
+
+        <h3>Документи</h3>
+
+        <div
+          id="contentFiles">
+        </div>
+
+      </section>
+
+      <!-- VIDEOS -->
+      <section
+        id="videosSection"
+        class="panel">
+
+        <h3>Відео</h3>
+
+        <div
+          id="contentVideos">
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+  <script src="../bk/main.js"></script>
+
+  <script src="../data/knowledge/knowledge-data.js"></script>
+
+  <script src="article.js"></script>
+
+  <script>
+
+    document.title =
+      CONFIG.knowledgeTitle;
+
+    document
+      .getElementById("pageHeader")
+      .textContent =
+      CONFIG.indexTitle;
+
+  </script>
+
+</body>
+</html>
