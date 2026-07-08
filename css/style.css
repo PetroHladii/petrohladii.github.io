@@ -538,6 +538,18 @@ body{
   color:#aaa;
 }
 
+#contentTitle {
+
+  margin: 0 0 20px;
+
+  color: var(--accent);
+
+  font-size: 28px;
+
+  font-weight: 700;
+
+}
+
 /* ========================================= */
 /*               RESPONSIVE                  */
 /* ========================================= */

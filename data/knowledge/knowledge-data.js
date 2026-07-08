@@ -42,7 +42,7 @@ const KNOWLEDGE = [
 
     title: "FPV: Основи",
 
-    textFile: "1.md",
+    contentFile: "1.html",
 
     files: [
       {
@@ -97,7 +97,7 @@ const KNOWLEDGE = [
 
     title: "Документація VAMPIRE",
 
-    textFile: "2.md",
+    contentFile: "2.html",
 
     files: [
       {
