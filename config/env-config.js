@@ -9,6 +9,9 @@ const CONFIG = {
     knowledgeBase:
     "https://media.125.co.ua/knowledge",
 
+    streamBase:
+    "https://customer-ovprf67dzg1lp1nk.cloudflarestream.com",
+
     cloudflareWorker:
       "https://old-fog-c80a.tantsa98.workers.dev",
 
@@ -41,6 +44,9 @@ const CONFIG = {
 
     knowledgeBase:
     "https://media.125.co.ua/knowledge",
+
+    streamBase:
+    "https://customer-ovprf67dzg1lp1nk.cloudflarestream.com",
 
     cloudflareWorker:
       "https://silent-sun-7c28.tantsa98.workers.dev",
