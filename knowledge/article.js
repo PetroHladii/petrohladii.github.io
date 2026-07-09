@@ -211,6 +211,11 @@ const Article = {
       .textContent =
       photo.title;
 
+    document
+      .getElementById("photoCounter")
+      .textContent =
+      `${this.viewerIndex + 1} / ${this.viewerPhotos.length}`;
+
   },
 
   prevPhoto() {
