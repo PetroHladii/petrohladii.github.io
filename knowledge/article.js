@@ -37,6 +37,8 @@ const Article = {
 
     await this.loadContent();
 
+    this.renderFiles();
+
     this.bindEvents();
 
   },
@@ -66,9 +68,11 @@ const Article = {
         );
 
       if (!response.ok) {
+
         throw new Error(
           "Content file not found"
         );
+
       }
 
       const html =
@@ -89,6 +93,61 @@ const Article = {
       `;
 
     }
+
+  },
+
+  renderFiles() {
+
+    const container =
+      document.getElementById("contentFiles");
+
+    container.innerHTML = "";
+
+    if (
+      !this.article.files ||
+      this.article.files.length === 0
+    ) {
+
+      return;
+
+    }
+
+    const title =
+      document.createElement("h3");
+
+    title.textContent =
+      "Документи";
+
+    container.appendChild(title);
+
+    this.article.files.forEach(file => {
+
+      const button =
+        document.createElement("button");
+
+      button.type = "button";
+
+      button.className =
+        "article-file";
+
+      button.textContent =
+        `📄 ${file.title}`;
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          window.open(
+            `files/${file.file}`,
+            "_blank"
+          );
+
+        }
+      );
+
+      container.appendChild(button);
+
+    });
 
   },
 

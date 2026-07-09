@@ -6,6 +6,9 @@ const CONFIG = {
     mediaBase:
     "https://media.125.co.ua",
 
+    knowledgeBase:
+    "https://media.125.co.ua/knowledge",
+
     cloudflareWorker:
       "https://old-fog-c80a.tantsa98.workers.dev",
 
@@ -35,6 +38,9 @@ const CONFIG = {
 
     mediaBase:
     "https://media.125.co.ua",
+
+    knowledgeBase:
+    "https://media.125.co.ua/knowledge",
 
     cloudflareWorker:
       "https://silent-sun-7c28.tantsa98.workers.dev",
