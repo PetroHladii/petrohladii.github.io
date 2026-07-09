@@ -2,10 +2,6 @@ const Article = {
 
   article: null,
 
-  viewerPhotos: [],
-
-  viewerIndex: 0,
-
   async init() {
 
     console.log("Article module initialized");
@@ -121,13 +117,12 @@ const Article = {
 
     }
 
-    this.viewerPhotos =
+    const photos =
       this.article.photos.filter(photo =>
-        photo.file &&
-        photo.file.trim() !== ""
+        photo.file && photo.file.trim() !== ""
       );
 
-    if (this.viewerPhotos.length === 0) {
+    if (photos.length === 0) {
 
       return;
 
@@ -135,7 +130,7 @@ const Article = {
 
     section.classList.remove("hidden");
 
-    this.viewerPhotos.forEach((photo, index) => {
+    photos.forEach(photo => {
 
       const card =
         document.createElement("div");
@@ -157,7 +152,14 @@ const Article = {
 
       image.addEventListener(
         "click",
-        () => this.openPhotoViewer(index)
+        () => {
+
+          window.open(
+            image.src,
+            "_blank"
+          );
+
+        }
       );
 
       const caption =
@@ -176,97 +178,6 @@ const Article = {
       container.appendChild(card);
 
     });
-
-  },
-
-  openPhotoViewer(index) {
-
-    this.viewerIndex = index;
-
-    document
-      .getElementById("photoViewer")
-      .classList
-      .remove("hidden");
-
-    this.showPhoto();
-
-  },
-
-  showPhoto() {
-
-    const photo =
-      this.viewerPhotos[this.viewerIndex];
-
-    const image =
-      document.getElementById("photoImage");
-
-    image.src =
-      `${CONFIG.knowledgeBase}/${this.article.id}/photos/${photo.file}`;
-
-    image.alt =
-      photo.title;
-
-    document
-      .getElementById("photoCaption")
-      .textContent =
-      photo.title;
-
-  },
-
-  prevPhoto() {
-
-    if (
-      this.viewerPhotos.length === 0
-    ) {
-
-      return;
-
-    }
-
-    this.viewerIndex--;
-
-    if (this.viewerIndex < 0) {
-
-      this.viewerIndex =
-        this.viewerPhotos.length - 1;
-
-    }
-
-    this.showPhoto();
-
-  },
-
-  nextPhoto() {
-
-    if (
-      this.viewerPhotos.length === 0
-    ) {
-
-      return;
-
-    }
-
-    this.viewerIndex++;
-
-    if (
-      this.viewerIndex >=
-      this.viewerPhotos.length
-    ) {
-
-      this.viewerIndex = 0;
-
-    }
-
-    this.showPhoto();
-
-  },
-
-  closePhotoViewer() {
-
-    document
-      .getElementById("photoViewer")
-      .classList
-      .add("hidden");
 
   },
 
@@ -291,8 +202,7 @@ const Article = {
 
     const files =
       this.article.files.filter(file =>
-        file.file &&
-        file.file.trim() !== ""
+        file.file && file.file.trim() !== ""
       );
 
     if (files.length === 0) {
@@ -342,67 +252,6 @@ const Article = {
         "click",
         () => history.back()
       );
-
-    document
-      .getElementById("photoClose")
-      .addEventListener(
-        "click",
-        () => this.closePhotoViewer()
-      );
-
-    document
-      .getElementById("photoPrev")
-      .addEventListener(
-        "click",
-        () => this.prevPhoto()
-      );
-
-    document
-      .getElementById("photoNext")
-      .addEventListener(
-        "click",
-        () => this.nextPhoto()
-      );
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        const viewer =
-          document.getElementById("photoViewer");
-
-        if (
-          viewer.classList.contains("hidden")
-        ) {
-
-          return;
-
-        }
-
-        switch (event.key) {
-
-          case "Escape":
-
-            this.closePhotoViewer();
-
-            break;
-
-          case "ArrowLeft":
-
-            this.prevPhoto();
-
-            break;
-
-          case "ArrowRight":
-
-            this.nextPhoto();
-
-            break;
-
-        }
-
-      }
-    );
 
   }
 
