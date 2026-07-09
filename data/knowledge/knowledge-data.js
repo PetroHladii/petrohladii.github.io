@@ -74,23 +74,23 @@ const KNOWLEDGE = [
     photos: [
       {
         title: "FPV 1",
-        file: "fpv1test"
+        file: "fpv1test.webp"
       },
       {
         title: "FPV 2",
-        file: "fpv2test"
+        file: "fpv2test.webp"
       },
       {
         title: "FPV 3",
-        file: "fpv3test"
+        file: "fpv3test.webp"
       },
       {
         title: "FPV 4",
-        file: "fpv4test"
+        file: "fpv4test.webp"
       },
       {
         title: "FPV 5",
-        file: "fpv5test"
+        file: "fpv5test.webp"
       },
     ],
 
