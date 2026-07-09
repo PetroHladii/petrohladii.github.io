@@ -176,6 +176,42 @@
 
   </div>
 
+  <!-- VIDEO VIEWER -->
+
+  <div
+    id="videoViewer"
+    class="overlay hidden">
+
+    <div class="modal">
+
+      <button
+        id="videoClose"
+        class="modal-close">
+
+        ×
+
+      </button>
+
+      <div
+        class="video-container">
+
+        <iframe
+          id="videoFrame"
+          allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+
+      </div>
+
+      <div
+        id="videoCaption"
+        class="small">
+      </div>
+
+    </div>
+
+  </div>
+
   <script src="../bk/main.js"></script>
 
   <script src="../data/knowledge/knowledge-data.js"></script>

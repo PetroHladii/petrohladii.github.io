@@ -45,6 +45,8 @@ const Article = {
 
     this.renderFiles();
 
+    this.renderVideos();
+
     this.bindEvents();
 
   },
@@ -339,6 +341,98 @@ const Article = {
 
   },
 
+  renderVideos() {
+
+    const section =
+      document.getElementById("videosSection");
+
+    const container =
+      document.getElementById("contentVideos");
+
+    container.innerHTML = "";
+
+    if (
+      !this.article.videos ||
+      this.article.videos.length === 0
+    ) {
+
+      return;
+
+    }
+
+    const videos =
+      this.article.videos.filter(video =>
+        video.file &&
+        video.file.trim() !== ""
+      );
+
+    if (videos.length === 0) {
+
+      return;
+
+    }
+
+    section.classList.remove("hidden");
+
+    videos.forEach(video => {
+
+      const button =
+        document.createElement("button");
+
+      button.type = "button";
+
+      button.className =
+        "article-file";
+
+      button.textContent =
+        `🎬 ${video.title}`;
+
+      button.addEventListener(
+        "click",
+        () => this.openVideoViewer(video)
+      );
+
+      container.appendChild(button);
+
+    });
+
+  },
+
+  openVideoViewer(video) {
+
+    const viewer =
+      document.getElementById("videoViewer");
+
+    const frame =
+      document.getElementById("videoFrame");
+
+    const caption =
+      document.getElementById("videoCaption");
+
+    frame.src =
+      `${CONFIG.streamBase}/${video.file}/iframe`;
+
+    caption.textContent =
+      video.title;
+
+    viewer.classList.remove("hidden");
+
+  },
+
+  closeVideoViewer() {
+
+    const viewer =
+      document.getElementById("videoViewer");
+
+    const frame =
+      document.getElementById("videoFrame");
+
+    frame.src = "";
+
+    viewer.classList.add("hidden");
+
+  },
+
   bindEvents() {
 
     document
@@ -369,43 +463,59 @@ const Article = {
         () => this.nextPhoto()
       );
 
+    document
+      .getElementById("videoClose")
+      .addEventListener(
+        "click",
+        () => this.closeVideoViewer()
+      );
+
     document.addEventListener(
       "keydown",
       event => {
 
-        const viewer =
+        const photoViewer =
           document.getElementById("photoViewer");
 
+        const videoViewer =
+          document.getElementById("videoViewer");
+
         if (
-          viewer.classList.contains("hidden")
+          !photoViewer.classList.contains("hidden")
         ) {
 
-          return;
+          switch (event.key) {
+
+            case "Escape":
+
+              this.closePhotoViewer();
+
+              break;
+
+            case "ArrowLeft":
+
+              this.prevPhoto();
+
+              break;
+
+            case "ArrowRight":
+
+              this.nextPhoto();
+
+              break;
+
+          }
 
         }
 
-        switch (event.key) {
+        if (
+          !videoViewer.classList.contains("hidden") &&
+          event.key === "Escape"
+        ) {
 
-          case "Escape":
-
-            this.closePhotoViewer();
-
-            break;
-
-          case "ArrowLeft":
-
-            this.prevPhoto();
-
-            break;
-
-          case "ArrowRight":
-
-            this.nextPhoto();
-
-            break;
+          this.closeVideoViewer();
 
         }
-
       }
     );
 
