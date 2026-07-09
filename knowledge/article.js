@@ -439,7 +439,13 @@ const Article = {
       .getElementById("backButton")
       .addEventListener(
         "click",
-        () => history.back()
+        () => {
+
+          window.location.replace(
+            "index.html"
+          );
+
+        }
       );
 
     document
