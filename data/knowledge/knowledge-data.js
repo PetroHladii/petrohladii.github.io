@@ -108,7 +108,7 @@ const KNOWLEDGE = [
         file: "f974f322d1bf9c7f4438eb69aa63b70f"
       },
     ],
-    updated: "01.01.2026"
+    updated: "2026-01-01"
 
   },
 
@@ -147,7 +147,7 @@ const KNOWLEDGE = [
         file: ""
       }        
     ],
-    updated: "01.01.2026"
+    updated: "2026-01-01"
 
   }
 

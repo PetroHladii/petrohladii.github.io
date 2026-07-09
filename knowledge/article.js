@@ -138,7 +138,8 @@ const Article = {
         () => {
 
           window.open(
-            `files/${file.file}`,
+            //`files/${file.file}`,
+            `${CONFIG.knowledgeBase}/${this.article.id}/files/${file.file}`,
             "_blank"
           );
 
