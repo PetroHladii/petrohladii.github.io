@@ -637,3 +637,115 @@ body{
 .back-icon:active {
   transform: translateX(-1px) scale(0.96);
 }
+
+/* ========================================= */
+/*            KNOWLEDGE PHOTOS               */
+/* ========================================= */
+
+.photo-card{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+
+  padding:12px;
+
+  border:1px solid #222;
+
+  border-radius:var(--radius);
+
+  background:#111;
+
+  transition:
+    border-color .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.photo-card:hover{
+
+  border-color:var(--accent);
+
+  transform:translateY(-3px);
+
+  box-shadow:0 4px 16px rgba(253,137,6,.18);
+}
+
+.photo-card img{
+
+  width:100%;
+
+  aspect-ratio:16/9;
+
+  object-fit:cover;
+
+  border-radius:8px;
+
+  cursor:pointer;
+
+  display:block;
+}
+
+.photo-title{
+
+  color:#ffffff;
+
+  font-size:14px;
+
+  text-align:center;
+
+  line-height:1.4;
+}
+
+/* ========================================= */
+/*           KNOWLEDGE DOCUMENTS             */
+/* ========================================= */
+
+.article-file{
+
+  display:block;
+
+  width:100%;
+
+  margin-bottom:12px;
+
+  padding:14px 18px;
+
+  border:1px solid #222;
+
+  border-radius:var(--radius);
+
+  background:#111;
+
+  color:#ffffff;
+
+  font-size:15px;
+
+  text-align:left;
+
+  cursor:pointer;
+
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    transform .12s ease;
+}
+
+.article-file:hover{
+
+  background:#181818;
+
+  border-color:var(--accent);
+}
+
+.article-file:active{
+
+  transform:scale(.99);
+}
+
+.article-file:last-child{
+
+  margin-bottom:0;
+}

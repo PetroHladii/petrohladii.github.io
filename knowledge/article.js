@@ -37,6 +37,8 @@ const Article = {
 
     await this.loadContent();
 
+    this.renderPhotos();
+
     this.renderFiles();
 
     this.bindEvents();
@@ -96,7 +98,93 @@ const Article = {
 
   },
 
+  renderPhotos() {
+
+    const section =
+      document.getElementById("photosSection");
+
+    const container =
+      document.getElementById("contentPhotos");
+
+    container.innerHTML = "";
+
+    if (
+      !this.article.photos ||
+      this.article.photos.length === 0
+    ) {
+
+      return;
+
+    }
+
+    const photos =
+      this.article.photos.filter(photo =>
+        photo.file && photo.file.trim() !== ""
+      );
+
+    if (photos.length === 0) {
+
+      return;
+
+    }
+
+    section.classList.remove("hidden");
+
+    photos.forEach(photo => {
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "photo-card";
+
+      const image =
+        document.createElement("img");
+
+      image.src =
+        `${CONFIG.knowledgeBase}/${this.article.id}/photos/${photo.file}`;
+
+      image.alt =
+        photo.title;
+
+      image.loading =
+        "lazy";
+
+      image.addEventListener(
+        "click",
+        () => {
+
+          window.open(
+            image.src,
+            "_blank"
+          );
+
+        }
+      );
+
+      const caption =
+        document.createElement("div");
+
+      caption.className =
+        "photo-title";
+
+      caption.textContent =
+        photo.title;
+
+      card.appendChild(image);
+
+      card.appendChild(caption);
+
+      container.appendChild(card);
+
+    });
+
+  },
+
   renderFiles() {
+
+    const section =
+      document.getElementById("filesSection");
 
     const container =
       document.getElementById("contentFiles");
@@ -112,15 +200,20 @@ const Article = {
 
     }
 
-    const title =
-      document.createElement("h3");
+    const files =
+      this.article.files.filter(file =>
+        file.file && file.file.trim() !== ""
+      );
 
-    title.textContent =
-      "Документи";
+    if (files.length === 0) {
 
-    container.appendChild(title);
+      return;
 
-    this.article.files.forEach(file => {
+    }
+
+    section.classList.remove("hidden");
+
+    files.forEach(file => {
 
       const button =
         document.createElement("button");
@@ -138,7 +231,6 @@ const Article = {
         () => {
 
           window.open(
-            //`files/${file.file}`,
             `${CONFIG.knowledgeBase}/${this.article.id}/files/${file.file}`,
             "_blank"
           );
