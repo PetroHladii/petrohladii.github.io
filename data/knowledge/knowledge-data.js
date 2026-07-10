@@ -9,7 +9,7 @@ const AUTHORS = {
   "1tb": "1 ТБ",
   reb: "РЕБ",
   ppo: "ППО",
-  folk: "Народ"
+  brigade: "Бригада"
 
 };
 
