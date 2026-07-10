@@ -73,38 +73,38 @@ const KNOWLEDGE = [
 
     photos: [
       {
-        title: "FPV 1",
+        title: "FPV 1 сімка",
         file: "fpv1test.webp"
       },
       {
-        title: "FPV 2",
+        title: "FPV 2 десятка",
         file: "fpv2test.webp"
       },
       {
-        title: "FPV 3",
+        title: "FPV 3 п'ятірка",
         file: "fpv3test.webp"
       },
       {
-        title: "FPV 4",
+        title: "FPV 4 якась інфа",
         file: "fpv4test.webp"
       },
       {
-        title: "FPV 5",
+        title: "FPV 5 на ніжках",
         file: "fpv5test.webp"
       },
     ],
 
     videos: [
       {
-        title: "fpv1test",
+        title: "Перше відео",
         file: "9e8c6bd043c1afc365cbb48e5a7ccafd"
       },
       {
-        title: "fpv2test",
+        title: "Відео №2",
         file: "f0da5610a003d8c7b961a454c7b0d38c"
       },
       {
-        title: "fpv3test",
+        title: "Заключний відеофайл",
         file: "f974f322d1bf9c7f4438eb69aa63b70f"
       },
     ],
@@ -125,26 +125,30 @@ const KNOWLEDGE = [
 
     files: [
       {
-        title: "КЛЕ Vampire",
-        file: "КЛЕ Vampire.pdf"
+        title: "КЛЕ VAMPIRE",
+        file: "kle_vampire.pdf"
       },
       {
         title: "VAMPIRE Gen3",
-        file: "VAMPIRE Gen3.pdf"
+        file: "vampire_gen3.pdf"
       }
     ],
 
     photos: [
       {
-        title: "",
-        file: ""
+        title: "Загальна інформація",
+        file: "testVamp1.webp"
+      },
+      {
+        title: "В польоті",
+        file: "testVamp2.webp"
       }
     ],
 
     videos: [
       {
-        title: "",
-        file: ""
+        title: "Ось так виглядає втрата розвідувального крила...",
+        file: "729713f0b090f85a4286d65a2ce33c1e"
       }        
     ],
     updated: "2026-01-01"
