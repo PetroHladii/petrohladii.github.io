@@ -125,11 +125,11 @@ const KNOWLEDGE = [
 
     files: [
       {
-        title: "КЛЕ VAMPIRE",
+        title: "Vampire КЛЕ",
         file: "kle_vampire.pdf"
       },
       {
-        title: "VAMPIRE Gen3",
+        title: "VAMPIRE Gen3: Рекомендації з налаштування та використання",
         file: "vampire_gen3.pdf"
       }
     ],
