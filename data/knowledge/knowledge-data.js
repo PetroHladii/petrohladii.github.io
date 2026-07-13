@@ -73,39 +73,39 @@ const KNOWLEDGE = [
 
     photos: [
       {
-        title: "FPV 1 сімка",
-        file: "fpv1test.webp"
+        title: "",
+        file: ""
       },
       {
-        title: "FPV 2 десятка",
-        file: "fpv2test.webp"
+        title: "",
+        file: ""
       },
       {
-        title: "FPV 3 п'ятірка",
-        file: "fpv3test.webp"
+        title: "",
+        file: ""
       },
       {
-        title: "FPV 4 якась інфа",
-        file: "fpv4test.webp"
+        title: "",
+        file: ""
       },
       {
-        title: "FPV 5 на ніжках",
-        file: "fpv5test.webp"
+        title: "",
+        file: ""
       },
     ],
 
     videos: [
       {
-        title: "Перше відео",
-        file: "9e8c6bd043c1afc365cbb48e5a7ccafd"
+        title: "",
+        file: ""
       },
       {
-        title: "Відео №2",
-        file: "f0da5610a003d8c7b961a454c7b0d38c"
+        title: "",
+        file: ""
       },
       {
-        title: "Заключний відеофайл",
-        file: "f974f322d1bf9c7f4438eb69aa63b70f"
+        title: "",
+        file: ""
       },
     ],
     updated: "2026-01-01"
@@ -136,19 +136,70 @@ const KNOWLEDGE = [
 
     photos: [
       {
-        title: "Загальна інформація",
-        file: "testVamp1.webp"
+        title: "",
+        file: ""
       },
       {
-        title: "В польоті",
-        file: "testVamp2.webp"
+        title: "",
+        file: ""
       }
     ],
 
     videos: [
       {
-        title: "Ось так виглядає втрата розвідувального крила...",
-        file: "729713f0b090f85a4286d65a2ce33c1e"
+        title: "",
+        file: ""
+      }        
+    ],
+    updated: "2026-01-01"
+
+  },
+
+    {
+    id: 3,
+
+    author: "bbps",
+
+    category: "bomberh",
+
+    title: "Важкі бомбери: КЛЕ",
+
+    contentFile: "3.html",
+
+    files: [
+      {
+        title: "Важкі бомбери - шпаргалка",
+        file: "heavy_bombers_cheatsheet.pdf"
+      },
+      {
+        title: "Heavy Shot КЛЕ",
+        file: "kle_heavy_shot.pdf"
+      },
+      {
+        title: "Nemesis КЛЕ",
+        file: "kle_nemesis.pdf"
+      },
+      {
+        title: "Vampire КЛЕ",
+        file: "kle_vampire.pdf"
+      }
+    ],
+
+    photos: [
+      {
+        title: "",
+        file: ""
+      },
+      {
+        title: "",
+        file: ""
+      }
+    ],
+
+    videos: [
+      {
+        title: "",
+        file: ""
       }        
     ],
     updated: "2026-01-01"
