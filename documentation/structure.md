@@ -1,0 +1,44 @@
+bk/
+	bombers.html
+	category.js
+	fpv.html
+	index.html
+	main.js
+	rozvidka.html
+config/
+	config.js
+	env-config.js
+	login-config.js
+css/
+	style.css
+data/
+	bk/
+		BK.csv
+		media-index.json
+	knowledge/
+		knowledge-data.js
+documentation/
+	architecture.md
+	roles.md
+	structure.md
+functions/
+	api/
+		logout.js
+		send-code.js
+		verify-code.js
+	[[path]].js
+knowledge/
+	text/
+		1.html
+		2.html
+		3.html
+		...
+	article.html
+	article.js
+	index.html
+	knowledge.js
+index.html
+login.html
+logo.webp
+new-logo.png
+README.md
