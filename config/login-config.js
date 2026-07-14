@@ -12,6 +12,11 @@ CONFIG.usersDb =
     ? "USERS"
     : "USERST";
 
+CONFIG.sessionsDb =
+  CONFIG.ENV === "prod"
+    ? "SESSIONS"
+    : "SESSIONST";
+
 CONFIG.mailSender =
   CONFIG.ENV === "prod"
     ? "noreply@mail.125.co.ua"
