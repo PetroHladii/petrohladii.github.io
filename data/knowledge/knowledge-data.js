@@ -315,16 +315,27 @@ const KNOWLEDGE = [
 
     files: [
       {
-        title: "Vampire КЛЕ",
-        file: "kle_vampire.pdf"
+        title: "тест",
+        file: "testbtave.pdf"
       }
     ],
 
     photos: [
-      
+      {
+        title: "тест 1",
+        file: "testp1.jfif"
+      },
+      {
+        title: "тест 2",
+        file: "testp2.jfif"
+      }
     ],
 
     videos: [
+      {
+        title: "тест відео",
+        file: "3b746e54e1f8b861a44f73efc2b1c917"
+      }
               
     ],
     updated: "2026-01-01"
