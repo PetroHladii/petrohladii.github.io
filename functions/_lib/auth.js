@@ -9,7 +9,7 @@ const SESSION_TTL =
 
 /*
  * Отримуємо KV namespace
- * для серверних сесій
+ * серверних сесій
  */
 
 export function getSessionStore(
@@ -21,6 +21,7 @@ export function getSessionStore(
     config.sessionsDb;
 
   if (
+    typeof dbName !== "string" ||
     !dbName ||
     !env[dbName]
   ) {
@@ -37,13 +38,53 @@ export function getSessionStore(
 
 
 /*
- * Отримуємо cookie
+ * Отримуємо KV namespace
+ * користувачів
+ */
+
+export function getUsersStore(
+  env,
+  config
+) {
+
+  const dbName =
+    config.usersDb;
+
+  if (
+    typeof dbName !== "string" ||
+    !dbName ||
+    !env[dbName]
+  ) {
+
+    throw new Error(
+      `Users KV binding not found: ${dbName}`
+    );
+
+  }
+
+  return env[dbName];
+
+}
+
+
+/*
+ * Читаємо cookie
  */
 
 export function getCookie(
   request,
   name
 ) {
+
+  if (
+    !request ||
+    typeof name !== "string" ||
+    !name
+  ) {
+
+    return null;
+
+  }
 
   const cookieHeader =
     request.headers.get("Cookie") || "";
@@ -56,7 +97,9 @@ export function getCookie(
     const separatorIndex =
       cookie.indexOf("=");
 
-    if (separatorIndex === -1) {
+    if (
+      separatorIndex === -1
+    ) {
 
       continue;
 
@@ -67,15 +110,20 @@ export function getCookie(
         .slice(0, separatorIndex)
         .trim();
 
-    if (cookieName !== name) {
+    if (
+      cookieName !== name
+    ) {
 
       continue;
 
     }
 
-    return cookie
-      .slice(separatorIndex + 1)
-      .trim();
+    const cookieValue =
+      cookie
+        .slice(separatorIndex + 1)
+        .trim();
+
+    return cookieValue || null;
 
   }
 
@@ -86,24 +134,36 @@ export function getCookie(
 
 /*
  * Отримуємо session ID
- * з auth cookie
+ * з HttpOnly auth cookie
  */
 
 export function getSessionId(
   request
 ) {
 
-  return getCookie(
-    request,
-    "auth"
-  );
+  const sessionId =
+    getCookie(
+      request,
+      "auth"
+    );
+
+  if (
+    typeof sessionId !== "string" ||
+    !sessionId
+  ) {
+
+    return null;
+
+  }
+
+  return sessionId;
 
 }
 
 
 /*
- * Створюємо випадковий
- * session ID
+ * Створюємо криптографічно
+ * випадковий session ID
  */
 
 export function createSessionId() {
@@ -115,6 +175,13 @@ export function createSessionId() {
 
 /*
  * Створюємо серверну сесію
+ *
+ * ВАЖЛИВО:
+ * role та permissions
+ * у сесії не зберігаємо.
+ *
+ * Актуальний доступ завжди
+ * читається з USERS/USERST.
  */
 
 export async function createSession(
@@ -136,24 +203,43 @@ export async function createSession(
 
   }
 
+  if (
+    typeof email !== "string"
+  ) {
+
+    return null;
+
+  }
+
+  const normalizedEmail =
+    email
+      .toLowerCase()
+      .trim();
+
+  if (!normalizedEmail) {
+
+    return null;
+
+  }
+
   const sessionId =
     createSessionId();
 
-  const now =
+  const createdAt =
     Date.now();
+
+  const expiresAt =
+    createdAt +
+    SESSION_TTL * 1000;
 
   const session = {
 
     email:
-      email
-        .toLowerCase()
-        .trim(),
+      normalizedEmail,
 
-    createdAt:
-      now,
+    createdAt,
 
-    expiresAt:
-      now + SESSION_TTL * 1000
+    expiresAt
 
   };
 
@@ -185,6 +271,39 @@ export async function createSession(
       session
 
   };
+
+}
+
+
+/*
+ * Видаляємо серверну сесію
+ * за session ID
+ */
+
+export async function deleteSessionById(
+  sessionId,
+  env,
+  config
+) {
+
+  if (
+    typeof sessionId !== "string" ||
+    !sessionId
+  ) {
+
+    return;
+
+  }
+
+  const sessionStore =
+    getSessionStore(
+      env,
+      config
+    );
+
+  await sessionStore.delete(
+    sessionId
+  );
 
 }
 
@@ -248,7 +367,8 @@ export async function getSession(
 
   if (
     !session ||
-    typeof session !== "object"
+    typeof session !== "object" ||
+    Array.isArray(session)
   ) {
 
     await deleteSessionById(
@@ -263,7 +383,39 @@ export async function getSession(
 
   if (
     typeof session.email !== "string" ||
+    !session.email ||
+    typeof session.createdAt !== "number" ||
     typeof session.expiresAt !== "number"
+  ) {
+
+    await deleteSessionById(
+      sessionId,
+      env,
+      config
+    );
+
+    return null;
+
+  }
+
+  if (
+    !Number.isFinite(session.createdAt) ||
+    !Number.isFinite(session.expiresAt)
+  ) {
+
+    await deleteSessionById(
+      sessionId,
+      env,
+      config
+    );
+
+    return null;
+
+  }
+
+  if (
+    session.createdAt <= 0 ||
+    session.expiresAt <= session.createdAt
   ) {
 
     await deleteSessionById(
@@ -307,9 +459,11 @@ export async function getSession(
  * Отримуємо актуального
  * авторизованого користувача
  *
- * ВАЖЛИВО:
- * роль та permissions читаються
- * з USERS/USERST при кожному запиті
+ * SESSIONST/SESSIONS:
+ * тільки email та час сесії.
+ *
+ * USERST/USERS:
+ * актуальна роль та доступи.
  */
 
 export async function getAuthenticatedUser(
@@ -336,16 +490,23 @@ export async function getAuthenticatedUser(
       .toLowerCase()
       .trim();
 
-  const usersStore =
-    env[config.usersDb];
+  if (!email) {
 
-  if (!usersStore) {
-
-    throw new Error(
-      `Users KV binding not found: ${config.usersDb}`
+    await deleteSessionById(
+      session.id,
+      env,
+      config
     );
 
+    return null;
+
   }
+
+  const usersStore =
+    getUsersStore(
+      env,
+      config
+    );
 
   const rawUser =
     await usersStore.get(
@@ -387,37 +548,8 @@ export async function getAuthenticatedUser(
 
 
 /*
- * Видаляємо сесію
- * за session ID
- */
-
-export async function deleteSessionById(
-  sessionId,
-  env,
-  config
-) {
-
-  if (!sessionId) {
-
-    return;
-
-  }
-
-  const sessionStore =
-    getSessionStore(
-      env,
-      config
-    );
-
-  await sessionStore.delete(
-    sessionId
-  );
-
-}
-
-
-/*
- * Видаляємо поточну сесію
+ * Видаляємо поточну
+ * серверну сесію
  */
 
 export async function deleteSession(
@@ -445,12 +577,24 @@ export async function deleteSession(
 
 
 /*
- * Створюємо auth cookie
+ * Створюємо HttpOnly
+ * auth cookie
  */
 
 export function createAuthCookie(
   sessionId
 ) {
+
+  if (
+    typeof sessionId !== "string" ||
+    !sessionId
+  ) {
+
+    throw new Error(
+      "Invalid session ID"
+    );
+
+  }
 
   return [
     `auth=${sessionId}`,
