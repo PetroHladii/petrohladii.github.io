@@ -3,21 +3,14 @@ import {
 } from "./access.js";
 
 
-const SESSION_PREFIX =
-  "session:";
-
 const SESSION_TTL =
   60 * 60 * 24;
 
 
-export function getSessionDbName(
-  config
-) {
-
-  return config.sessionsDb;
-
-}
-
+/*
+ * Отримуємо KV namespace
+ * для серверних сесій
+ */
 
 export function getSessionStore(
   env,
@@ -25,7 +18,7 @@ export function getSessionStore(
 ) {
 
   const dbName =
-    getSessionDbName(config);
+    config.sessionsDb;
 
   if (
     !dbName ||
@@ -42,6 +35,10 @@ export function getSessionStore(
 
 }
 
+
+/*
+ * Отримуємо cookie
+ */
 
 export function getCookie(
   request,
@@ -87,6 +84,11 @@ export function getCookie(
 }
 
 
+/*
+ * Отримуємо session ID
+ * з auth cookie
+ */
+
 export function getSessionId(
   request
 ) {
@@ -99,12 +101,21 @@ export function getSessionId(
 }
 
 
+/*
+ * Створюємо випадковий
+ * session ID
+ */
+
 export function createSessionId() {
 
   return crypto.randomUUID();
 
 }
 
+
+/*
+ * Створюємо серверну сесію
+ */
 
 export async function createSession(
   env,
@@ -133,10 +144,10 @@ export async function createSession(
 
   const session = {
 
-    email,
-
-    role:
-      normalizedUser.role,
+    email:
+      email
+        .toLowerCase()
+        .trim(),
 
     createdAt:
       now,
@@ -154,7 +165,7 @@ export async function createSession(
 
   await sessionStore.put(
 
-    SESSION_PREFIX + sessionId,
+    sessionId,
 
     JSON.stringify(session),
 
@@ -177,6 +188,11 @@ export async function createSession(
 
 }
 
+
+/*
+ * Отримуємо та перевіряємо
+ * серверну сесію
+ */
 
 export async function getSession(
   request,
@@ -201,7 +217,7 @@ export async function getSession(
 
   const rawSession =
     await sessionStore.get(
-      SESSION_PREFIX + sessionId
+      sessionId
     );
 
   if (!rawSession) {
@@ -246,8 +262,8 @@ export async function getSession(
   }
 
   if (
-    !session.email ||
-    !session.expiresAt
+    typeof session.email !== "string" ||
+    typeof session.expiresAt !== "number"
   ) {
 
     await deleteSessionById(
@@ -287,6 +303,15 @@ export async function getSession(
 }
 
 
+/*
+ * Отримуємо актуального
+ * авторизованого користувача
+ *
+ * ВАЖЛИВО:
+ * роль та permissions читаються
+ * з USERS/USERST при кожному запиті
+ */
+
 export async function getAuthenticatedUser(
   request,
   env,
@@ -323,10 +348,14 @@ export async function getAuthenticatedUser(
   }
 
   const rawUser =
-    await usersStore.get(email);
+    await usersStore.get(
+      email
+    );
 
   const user =
-    normalizeUserRecord(rawUser);
+    normalizeUserRecord(
+      rawUser
+    );
 
   if (
     !user ||
@@ -357,6 +386,11 @@ export async function getAuthenticatedUser(
 }
 
 
+/*
+ * Видаляємо сесію
+ * за session ID
+ */
+
 export async function deleteSessionById(
   sessionId,
   env,
@@ -376,11 +410,15 @@ export async function deleteSessionById(
     );
 
   await sessionStore.delete(
-    SESSION_PREFIX + sessionId
+    sessionId
   );
 
 }
 
+
+/*
+ * Видаляємо поточну сесію
+ */
 
 export async function deleteSession(
   request,
@@ -406,6 +444,10 @@ export async function deleteSession(
 }
 
 
+/*
+ * Створюємо auth cookie
+ */
+
 export function createAuthCookie(
   sessionId
 ) {
@@ -421,6 +463,10 @@ export function createAuthCookie(
 
 }
 
+
+/*
+ * Видаляємо auth cookie
+ */
 
 export function createExpiredAuthCookie() {
 

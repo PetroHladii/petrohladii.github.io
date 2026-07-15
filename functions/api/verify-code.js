@@ -1,8 +1,15 @@
-import { CONFIG } from "../../config/login-config.js";
+import {
+  CONFIG
+} from "../../config/login-config.js";
 
 import {
   normalizeUserRecord
 } from "../_lib/access.js";
+
+import {
+  createSession,
+  createAuthCookie
+} from "../_lib/auth.js";
 
 
 function textResponse(
@@ -117,7 +124,9 @@ export async function onRequestPost(context) {
      */
 
     const user =
-      normalizeUserRecord(userRaw);
+      normalizeUserRecord(
+        userRaw
+      );
 
     if (!user) {
 
@@ -138,7 +147,9 @@ export async function onRequestPost(context) {
      * Перевіряємо active
      */
 
-    if (user.active !== true) {
+    if (
+      user.active !== true
+    ) {
 
       return textResponse(
         "User disabled",
@@ -149,71 +160,34 @@ export async function onRequestPost(context) {
 
 
     /*
-     * Видаляємо використаний OTP
+     * Створюємо серверну сесію
+     */
+
+    const session =
+      await createSession(
+        env,
+        CONFIG,
+        email,
+        user
+      );
+
+    if (!session) {
+
+      return textResponse(
+        "Session creation failed",
+        500
+      );
+
+    }
+
+
+    /*
+     * OTP видаляємо тільки після
+     * успішного створення сесії
      */
 
     await env[CONFIG.codesDb]
       .delete(email);
-
-
-    /*
-     * Створюємо випадковий session ID
-     */
-
-    const sessionId =
-      crypto.randomUUID();
-
-    const createdAt =
-      Date.now();
-
-    const sessionTtl =
-      86400;
-
-    const expiresAt =
-      createdAt +
-      sessionTtl * 1000;
-
-
-    /*
-     * Дані серверної сесії
-     */
-
-    const session = {
-
-      email,
-
-      role:
-        user.role,
-
-      permissions:
-        user.permissions,
-
-      denyPermissions:
-        user.denyPermissions,
-
-      knowledge:
-        user.knowledge,
-
-      createdAt,
-
-      expiresAt
-
-    };
-
-
-    /*
-     * Зберігаємо сесію
-     */
-
-    await env[CONFIG.sessionsDb]
-      .put(
-        sessionId,
-        JSON.stringify(session),
-        {
-          expirationTtl:
-            sessionTtl
-        }
-      );
 
 
     /*
@@ -234,7 +208,9 @@ export async function onRequestPost(context) {
             "no-store",
 
           "Set-Cookie":
-            `auth=${sessionId}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${sessionTtl}`
+            createAuthCookie(
+              session.id
+            )
 
         }
 
