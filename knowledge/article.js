@@ -2,40 +2,106 @@ const Article = {
 
   article: null,
 
+  currentUser: null,
+
+  permissions: [],
+
+  knowledgeCategories: [],
+
   viewerPhotos: [],
 
   viewerIndex: 0,
 
+
   async init() {
 
-    console.log("Article module initialized");
+    console.log(
+      "Article module initialized"
+    );
 
-    const params =
-      new URLSearchParams(window.location.search);
+    this.bindEvents();
 
-    const id =
-      Number(params.get("id"));
+    const userLoaded =
+      await this.loadCurrentUser();
 
-    this.article =
-      KNOWLEDGE.find(item => item.id === id);
-
-    if (!this.article) {
-
-      console.error("Article not found");
-
-      document.title =
-        "Статтю не знайдено";
-
-      document
-        .getElementById("contentTitle")
-        .textContent =
-        "Статтю не знайдено";
+    if (!userLoaded) {
 
       return;
 
     }
 
-    console.log(this.article);
+    if (
+      !this.hasPermission(
+        "knowledge.view"
+      )
+    ) {
+
+      this.renderAccessDenied();
+
+      return;
+
+    }
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const id =
+      Number(
+        params.get("id")
+      );
+
+    if (
+      !Number.isInteger(id) ||
+      id <= 0
+    ) {
+
+      this.renderArticleNotFound();
+
+      return;
+
+    }
+
+    this.article =
+      KNOWLEDGE.find(
+        item => item.id === id
+      );
+
+    if (!this.article) {
+
+      this.renderArticleNotFound();
+
+      return;
+
+    }
+
+    if (
+      !this.canAccessCategory(
+        this.article.category
+      )
+    ) {
+
+      this.renderAccessDenied();
+
+      return;
+
+    }
+
+    console.log(
+      "Article:",
+      this.article
+    );
+
+    console.log(
+      "Current user:",
+      this.currentUser
+    );
+
+    console.log(
+      "Permissions:",
+      this.permissions
+    );
 
     this.render();
 
@@ -47,9 +113,223 @@ const Article = {
 
     this.renderVideos();
 
-    this.bindEvents();
+  },
+
+
+  async loadCurrentUser() {
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/me",
+          {
+            method: "GET",
+
+            credentials:
+              "same-origin",
+
+            cache:
+              "no-store"
+          }
+        );
+
+      if (
+        response.status === 401
+      ) {
+
+        window.location.replace(
+          "/login.html"
+        );
+
+        return false;
+
+      }
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Failed to load current user"
+        );
+
+      }
+
+      const data =
+        await response.json();
+
+      if (
+        !data.success ||
+        !data.user
+      ) {
+
+        throw new Error(
+          "Invalid current user response"
+        );
+
+      }
+
+      this.currentUser =
+        data.user;
+
+      this.permissions =
+        Array.isArray(
+          data.user.permissions
+        )
+          ? data.user.permissions
+          : [];
+
+      const categories =
+        data.user
+          .knowledge
+          ?.categories;
+
+      if (
+        categories === "*"
+      ) {
+
+        this.knowledgeCategories =
+          "*";
+
+      }
+      else if (
+        Array.isArray(categories)
+      ) {
+
+        this.knowledgeCategories =
+          [...categories];
+
+      }
+      else {
+
+        this.knowledgeCategories =
+          [];
+
+      }
+
+      return true;
+
+    }
+    catch (error) {
+
+      console.error(
+        "Current user error:",
+        error
+      );
+
+      this.renderLoadError();
+
+      return false;
+
+    }
 
   },
+
+
+  hasPermission(permission) {
+
+    return (
+
+      this.permissions.includes("*") ||
+
+      this.permissions.includes(
+        permission
+      )
+
+    );
+
+  },
+
+
+  canAccessCategory(category) {
+
+    if (
+      this.knowledgeCategories === "*"
+    ) {
+
+      return true;
+
+    }
+
+    if (
+      !Array.isArray(
+        this.knowledgeCategories
+      )
+    ) {
+
+      return false;
+
+    }
+
+    return (
+      this.knowledgeCategories
+        .includes(category)
+    );
+
+  },
+
+
+  canSeeMedia() {
+
+    return this.hasPermission(
+      "knowledge.media.see"
+    );
+
+  },
+
+
+  canViewMedia() {
+
+    return this.hasPermission(
+      "knowledge.media.view"
+    );
+
+  },
+
+
+  canViewPhotos() {
+
+    return (
+
+      this.canViewMedia() &&
+
+      this.hasPermission(
+        "knowledge.photos.view"
+      )
+
+    );
+
+  },
+
+
+  canViewFiles() {
+
+    return (
+
+      this.canViewMedia() &&
+
+      this.hasPermission(
+        "knowledge.files.view"
+      )
+
+    );
+
+  },
+
+
+  canViewVideos() {
+
+    return (
+
+      this.canViewMedia() &&
+
+      this.hasPermission(
+        "knowledge.videos.view"
+      )
+
+    );
+
+  },
+
 
   render() {
 
@@ -57,22 +337,114 @@ const Article = {
       this.article.title;
 
     document
-      .getElementById("contentTitle")
+      .getElementById(
+        "contentTitle"
+      )
       .textContent =
       this.article.title;
 
   },
 
+
+  renderArticleNotFound() {
+
+    console.error(
+      "Article not found"
+    );
+
+    document.title =
+      "Статтю не знайдено";
+
+    document
+      .getElementById(
+        "contentTitle"
+      )
+      .textContent =
+      "Статтю не знайдено";
+
+    document
+      .getElementById(
+        "contentBody"
+      )
+      .innerHTML = `
+        <p>
+          Запитану статтю не знайдено.
+        </p>
+      `;
+
+  },
+
+
+  renderAccessDenied() {
+
+    console.warn(
+      "Article access denied"
+    );
+
+    document.title =
+      "Доступ обмежено";
+
+    document
+      .getElementById(
+        "contentTitle"
+      )
+      .textContent =
+      "Доступ обмежено";
+
+    document
+      .getElementById(
+        "contentBody"
+      )
+      .innerHTML = `
+        <p>
+          У вас немає доступу до цієї статті.
+        </p>
+      `;
+
+  },
+
+
+  renderLoadError() {
+
+    document.title =
+      "Помилка";
+
+    document
+      .getElementById(
+        "contentTitle"
+      )
+      .textContent =
+      "Помилка";
+
+    document
+      .getElementById(
+        "contentBody"
+      )
+      .innerHTML = `
+        <p>
+          Не вдалося перевірити права доступу.
+        </p>
+      `;
+
+  },
+
+
   async loadContent() {
 
     const container =
-      document.getElementById("contentBody");
+      document.getElementById(
+        "contentBody"
+      );
 
     try {
 
       const response =
         await fetch(
-          `text/${this.article.contentFile}`
+          `text/${this.article.contentFile}`,
+          {
+            cache:
+              "no-store"
+          }
         );
 
       if (!response.ok) {
@@ -92,7 +464,10 @@ const Article = {
     }
     catch (error) {
 
-      console.error(error);
+      console.error(
+        "Article content error:",
+        error
+      );
 
       container.innerHTML = `
         <p>
@@ -104,89 +479,198 @@ const Article = {
 
   },
 
+
   renderPhotos() {
 
     const section =
-      document.getElementById("photosSection");
+      document.getElementById(
+        "photosSection"
+      );
 
     const container =
-      document.getElementById("contentPhotos");
+      document.getElementById(
+        "contentPhotos"
+      );
 
     container.innerHTML = "";
 
+    section.classList.add(
+      "hidden"
+    );
+
+    this.viewerPhotos = [];
+
     if (
-      !this.article.photos ||
-      this.article.photos.length === 0
+      !this.canSeeMedia()
     ) {
 
       return;
 
     }
 
-    this.viewerPhotos =
-      this.article.photos.filter(photo =>
-        photo.file &&
-        photo.file.trim() !== ""
-      );
-
-    if (this.viewerPhotos.length === 0) {
+    if (
+      !Array.isArray(
+        this.article.photos
+      )
+    ) {
 
       return;
 
     }
 
-    section.classList.remove("hidden");
+    const photos =
+      this.article.photos.filter(
+        photo =>
 
-    this.viewerPhotos.forEach((photo, index) => {
+          photo.file &&
 
-      const card =
-        document.createElement("div");
+          typeof photo.file ===
+            "string" &&
 
-      card.className =
-        "photo-card";
+          photo.file.trim() !== ""
 
-      const image =
-        document.createElement("img");
-
-      image.src =
-        `${CONFIG.knowledgeBase}/${this.article.id}/photos/${photo.file}`;
-
-      image.alt =
-        photo.title;
-
-      image.loading =
-        "lazy";
-
-      image.addEventListener(
-        "click",
-        () => this.openPhotoViewer(index)
       );
 
-      const caption =
-        document.createElement("div");
+    if (
+      photos.length === 0
+    ) {
 
-      caption.className =
-        "photo-title";
+      return;
 
-      caption.textContent =
-        photo.title;
+    }
 
-      card.appendChild(image);
+    section.classList.remove(
+      "hidden"
+    );
 
-      card.appendChild(caption);
+    const canView =
+      this.canViewPhotos();
 
-      container.appendChild(card);
+    if (canView) {
 
-    });
+      this.viewerPhotos =
+        [...photos];
+
+    }
+
+    photos.forEach(
+      (photo, index) => {
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+        card.className =
+          "photo-card";
+
+        if (canView) {
+
+          const image =
+            document.createElement(
+              "img"
+            );
+
+          image.src =
+            `${CONFIG.knowledgeBase}/${this.article.id}/photos/${photo.file}`;
+
+          image.alt =
+            photo.title || "Фото";
+
+          image.loading =
+            "lazy";
+
+          image.addEventListener(
+            "click",
+            () =>
+              this.openPhotoViewer(
+                index
+              )
+          );
+
+          card.appendChild(
+            image
+          );
+
+        }
+        else {
+
+          const locked =
+            document.createElement(
+              "div"
+            );
+
+          locked.className =
+            "article-file";
+
+          locked.textContent =
+            "🔒 Фото";
+
+          locked.setAttribute(
+            "aria-disabled",
+            "true"
+          );
+
+          card.appendChild(
+            locked
+          );
+
+        }
+
+        const caption =
+          document.createElement(
+            "div"
+          );
+
+        caption.className =
+          "photo-title";
+
+        caption.textContent =
+          photo.title ||
+          "Фото";
+
+        card.appendChild(
+          caption
+        );
+
+        container.appendChild(
+          card
+        );
+
+      }
+    );
 
   },
 
+
   openPhotoViewer(index) {
 
-    this.viewerIndex = index;
+    if (
+      !this.canViewPhotos()
+    ) {
+
+      return;
+
+    }
+
+    if (
+      !Number.isInteger(index) ||
+      index < 0 ||
+      index >=
+        this.viewerPhotos.length
+    ) {
+
+      return;
+
+    }
+
+    this.viewerIndex =
+      index;
 
     document
-      .getElementById("photoViewer")
+      .getElementById(
+        "photoViewer"
+      )
       .classList
       .remove("hidden");
 
@@ -194,35 +678,60 @@ const Article = {
 
   },
 
+
   showPhoto() {
 
+    if (
+      !this.canViewPhotos()
+    ) {
+
+      return;
+
+    }
+
     const photo =
-      this.viewerPhotos[this.viewerIndex];
+      this.viewerPhotos[
+        this.viewerIndex
+      ];
+
+    if (!photo) {
+
+      return;
+
+    }
 
     const image =
-      document.getElementById("photoImage");
+      document.getElementById(
+        "photoImage"
+      );
 
     image.src =
       `${CONFIG.knowledgeBase}/${this.article.id}/photos/${photo.file}`;
 
     image.alt =
-      photo.title;
+      photo.title || "Фото";
 
     document
-      .getElementById("photoCaption")
+      .getElementById(
+        "photoCaption"
+      )
       .textContent =
-      photo.title;
+      photo.title || "";
 
     document
-      .getElementById("photoCounter")
+      .getElementById(
+        "photoCounter"
+      )
       .textContent =
       `${this.viewerIndex + 1} / ${this.viewerPhotos.length}`;
 
   },
 
+
   prevPhoto() {
 
     if (
+      !this.canViewPhotos() ||
       this.viewerPhotos.length === 0
     ) {
 
@@ -232,7 +741,9 @@ const Article = {
 
     this.viewerIndex--;
 
-    if (this.viewerIndex < 0) {
+    if (
+      this.viewerIndex < 0
+    ) {
 
       this.viewerIndex =
         this.viewerPhotos.length - 1;
@@ -243,9 +754,11 @@ const Article = {
 
   },
 
+
   nextPhoto() {
 
     if (
+      !this.canViewPhotos() ||
       this.viewerPhotos.length === 0
     ) {
 
@@ -268,28 +781,49 @@ const Article = {
 
   },
 
+
   closePhotoViewer() {
 
     document
-      .getElementById("photoViewer")
+      .getElementById(
+        "photoViewer"
+      )
       .classList
       .add("hidden");
 
   },
 
+
   renderFiles() {
 
     const section =
-      document.getElementById("filesSection");
+      document.getElementById(
+        "filesSection"
+      );
 
     const container =
-      document.getElementById("contentFiles");
+      document.getElementById(
+        "contentFiles"
+      );
 
     container.innerHTML = "";
 
+    section.classList.add(
+      "hidden"
+    );
+
     if (
-      !this.article.files ||
-      this.article.files.length === 0
+      !this.canSeeMedia()
+    ) {
+
+      return;
+
+    }
+
+    if (
+      !Array.isArray(
+        this.article.files
+      )
     ) {
 
       return;
@@ -297,63 +831,119 @@ const Article = {
     }
 
     const files =
-      this.article.files.filter(file =>
-        file.file &&
-        file.file.trim() !== ""
+      this.article.files.filter(
+        file =>
+
+          file.file &&
+
+          typeof file.file ===
+            "string" &&
+
+          file.file.trim() !== ""
+
       );
 
-    if (files.length === 0) {
+    if (
+      files.length === 0
+    ) {
 
       return;
 
     }
 
-    section.classList.remove("hidden");
+    section.classList.remove(
+      "hidden"
+    );
+
+    const canView =
+      this.canViewFiles();
 
     files.forEach(file => {
 
       const button =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
-      button.type = "button";
+      button.type =
+        "button";
 
       button.className =
         "article-file";
 
-      button.textContent =
-        `📄 ${file.title}`;
+      if (canView) {
 
-      button.addEventListener(
-        "click",
-        () => {
+        button.textContent =
+          `📄 ${file.title}`;
 
-          window.open(
-            `${CONFIG.knowledgeBase}/${this.article.id}/files/${file.file}`,
-            "_blank"
-          );
+        button.addEventListener(
+          "click",
+          () => {
 
-        }
+            window.open(
+              `${CONFIG.knowledgeBase}/${this.article.id}/files/${file.file}`,
+              "_blank",
+              "noopener,noreferrer"
+            );
+
+          }
+        );
+
+      }
+      else {
+
+        button.textContent =
+          `🔒 ${file.title}`;
+
+        button.disabled =
+          true;
+
+        button.setAttribute(
+          "aria-disabled",
+          "true"
+        );
+
+      }
+
+      container.appendChild(
+        button
       );
-
-      container.appendChild(button);
 
     });
 
   },
 
+
   renderVideos() {
 
     const section =
-      document.getElementById("videosSection");
+      document.getElementById(
+        "videosSection"
+      );
 
     const container =
-      document.getElementById("contentVideos");
+      document.getElementById(
+        "contentVideos"
+      );
 
     container.innerHTML = "";
 
+    section.classList.add(
+      "hidden"
+    );
+
     if (
-      !this.article.videos ||
-      this.article.videos.length === 0
+      !this.canSeeMedia()
+    ) {
+
+      return;
+
+    }
+
+    if (
+      !Array.isArray(
+        this.article.videos
+      )
     ) {
 
       return;
@@ -361,82 +951,158 @@ const Article = {
     }
 
     const videos =
-      this.article.videos.filter(video =>
-        video.file &&
-        video.file.trim() !== ""
+      this.article.videos.filter(
+        video =>
+
+          video.file &&
+
+          typeof video.file ===
+            "string" &&
+
+          video.file.trim() !== ""
+
       );
 
-    if (videos.length === 0) {
+    if (
+      videos.length === 0
+    ) {
 
       return;
 
     }
 
-    section.classList.remove("hidden");
+    section.classList.remove(
+      "hidden"
+    );
+
+    const canView =
+      this.canViewVideos();
 
     videos.forEach(video => {
 
       const button =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
-      button.type = "button";
+      button.type =
+        "button";
 
       button.className =
         "article-file";
 
-      button.textContent =
-        `🎬 ${video.title}`;
+      if (canView) {
 
-      button.addEventListener(
-        "click",
-        () => this.openVideoViewer(video)
+        button.textContent =
+          `🎬 ${video.title}`;
+
+        button.addEventListener(
+          "click",
+          () =>
+            this.openVideoViewer(
+              video
+            )
+        );
+
+      }
+      else {
+
+        button.textContent =
+          `🔒 ${video.title}`;
+
+        button.disabled =
+          true;
+
+        button.setAttribute(
+          "aria-disabled",
+          "true"
+        );
+
+      }
+
+      container.appendChild(
+        button
       );
-
-      container.appendChild(button);
 
     });
 
   },
 
+
   openVideoViewer(video) {
 
+    if (
+      !this.canViewVideos()
+    ) {
+
+      return;
+
+    }
+
+    if (
+      !video ||
+      !video.file
+    ) {
+
+      return;
+
+    }
+
     const viewer =
-      document.getElementById("videoViewer");
+      document.getElementById(
+        "videoViewer"
+      );
 
     const frame =
-      document.getElementById("videoFrame");
+      document.getElementById(
+        "videoFrame"
+      );
 
     const caption =
-      document.getElementById("videoCaption");
+      document.getElementById(
+        "videoCaption"
+      );
 
     frame.src =
       `${CONFIG.streamBase}/${video.file}/iframe`;
 
     caption.textContent =
-      video.title;
+      video.title || "";
 
-    viewer.classList.remove("hidden");
+    viewer.classList.remove(
+      "hidden"
+    );
 
   },
+
 
   closeVideoViewer() {
 
     const viewer =
-      document.getElementById("videoViewer");
+      document.getElementById(
+        "videoViewer"
+      );
 
     const frame =
-      document.getElementById("videoFrame");
+      document.getElementById(
+        "videoFrame"
+      );
 
     frame.src = "";
 
-    viewer.classList.add("hidden");
+    viewer.classList.add(
+      "hidden"
+    );
 
   },
+
 
   bindEvents() {
 
     document
-      .getElementById("backButton")
+      .getElementById(
+        "backButton"
+      )
       .addEventListener(
         "click",
         () => {
@@ -449,31 +1115,43 @@ const Article = {
       );
 
     document
-      .getElementById("photoClose")
+      .getElementById(
+        "photoClose"
+      )
       .addEventListener(
         "click",
-        () => this.closePhotoViewer()
+        () =>
+          this.closePhotoViewer()
       );
 
     document
-      .getElementById("photoPrev")
+      .getElementById(
+        "photoPrev"
+      )
       .addEventListener(
         "click",
-        () => this.prevPhoto()
+        () =>
+          this.prevPhoto()
       );
 
     document
-      .getElementById("photoNext")
+      .getElementById(
+        "photoNext"
+      )
       .addEventListener(
         "click",
-        () => this.nextPhoto()
+        () =>
+          this.nextPhoto()
       );
 
     document
-      .getElementById("videoClose")
+      .getElementById(
+        "videoClose"
+      )
       .addEventListener(
         "click",
-        () => this.closeVideoViewer()
+        () =>
+          this.closeVideoViewer()
       );
 
     document.addEventListener(
@@ -481,13 +1159,19 @@ const Article = {
       event => {
 
         const photoViewer =
-          document.getElementById("photoViewer");
+          document.getElementById(
+            "photoViewer"
+          );
 
         const videoViewer =
-          document.getElementById("videoViewer");
+          document.getElementById(
+            "videoViewer"
+          );
 
         if (
-          !photoViewer.classList.contains("hidden")
+          !photoViewer
+            .classList
+            .contains("hidden")
         ) {
 
           switch (event.key) {
@@ -512,22 +1196,28 @@ const Article = {
 
           }
 
+          return;
+
         }
 
         if (
-          !videoViewer.classList.contains("hidden") &&
+          !videoViewer
+            .classList
+            .contains("hidden") &&
           event.key === "Escape"
         ) {
 
           this.closeVideoViewer();
 
         }
+
       }
     );
 
   }
 
 };
+
 
 document.addEventListener(
   "DOMContentLoaded",
