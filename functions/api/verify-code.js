@@ -1,10 +1,48 @@
 import { CONFIG } from "../../config/login-config.js";
 
+import {
+  normalizeUserRecord
+} from "../_lib/access.js";
+
+
+function textResponse(
+  message,
+  status
+) {
+
+  return new Response(
+    message,
+    {
+      status,
+
+      headers: {
+
+        "Content-Type":
+          "text/plain; charset=utf-8",
+
+        "Cache-Control":
+          "no-store"
+
+      }
+
+    }
+  );
+
+}
+
+
 export async function onRequestPost(context) {
 
-  const { request, env } = context;
+  const {
+    request,
+    env
+  } = context;
 
   try {
+
+    /*
+     * Читаємо request body
+     */
 
     const body =
       await request.json();
@@ -19,16 +57,20 @@ export async function onRequestPost(context) {
         ?.toString()
         .trim();
 
+
+    /*
+     * Перевіряємо вхідні дані
+     */
+
     if (!email || !code) {
 
-      return new Response(
+      return textResponse(
         "Missing data",
-        {
-          status: 400
-        }
+        400
       );
 
     }
+
 
     /*
      * Перевіряємо OTP-код
@@ -43,14 +85,13 @@ export async function onRequestPost(context) {
       savedCode !== code
     ) {
 
-      return new Response(
+      return textResponse(
         "Invalid code",
-        {
-          status: 401
-        }
+        401
       );
 
     }
+
 
     /*
      * Завантажуємо користувача
@@ -62,38 +103,36 @@ export async function onRequestPost(context) {
 
     if (!userRaw) {
 
-      return new Response(
+      return textResponse(
         "User not found",
-        {
-          status: 403
-        }
+        403
       );
 
     }
 
-    let user;
 
-    try {
+    /*
+     * Нормалізуємо користувача
+     * через access engine
+     */
 
-      user =
-        JSON.parse(userRaw);
+    const user =
+      normalizeUserRecord(userRaw);
 
-    }
-    catch {
+    if (!user) {
 
       console.error(
-        "Invalid user JSON:",
+        "Invalid user configuration:",
         email
       );
 
-      return new Response(
+      return textResponse(
         "Invalid user configuration",
-        {
-          status: 403
-        }
+        403
       );
 
     }
+
 
     /*
      * Перевіряємо active
@@ -101,32 +140,13 @@ export async function onRequestPost(context) {
 
     if (user.active !== true) {
 
-      return new Response(
+      return textResponse(
         "User disabled",
-        {
-          status: 403
-        }
+        403
       );
 
     }
 
-    /*
-     * Перевіряємо роль
-     */
-
-    if (
-      !user.role ||
-      typeof user.role !== "string"
-    ) {
-
-      return new Response(
-        "Invalid user role",
-        {
-          status: 403
-        }
-      );
-
-    }
 
     /*
      * Видаляємо використаний OTP
@@ -134,6 +154,7 @@ export async function onRequestPost(context) {
 
     await env[CONFIG.codesDb]
       .delete(email);
+
 
     /*
      * Створюємо випадковий session ID
@@ -152,26 +173,33 @@ export async function onRequestPost(context) {
       createdAt +
       sessionTtl * 1000;
 
+
     /*
-     * Дані сесії
+     * Дані серверної сесії
      */
 
     const session = {
 
       email,
 
-      role: user.role,
+      role:
+        user.role,
+
+      permissions:
+        user.permissions,
 
       denyPermissions:
-        Array.isArray(user.denyPermissions)
-          ? user.denyPermissions
-          : [],
+        user.denyPermissions,
+
+      knowledge:
+        user.knowledge,
 
       createdAt,
 
       expiresAt
 
     };
+
 
     /*
      * Зберігаємо сесію
@@ -182,9 +210,11 @@ export async function onRequestPost(context) {
         sessionId,
         JSON.stringify(session),
         {
-          expirationTtl: sessionTtl
+          expirationTtl:
+            sessionTtl
         }
       );
+
 
     /*
      * Повертаємо HttpOnly cookie
@@ -198,7 +228,7 @@ export async function onRequestPost(context) {
         headers: {
 
           "Content-Type":
-            "application/json",
+            "application/json; charset=utf-8",
 
           "Cache-Control":
             "no-store",
@@ -207,6 +237,7 @@ export async function onRequestPost(context) {
             `auth=${sessionId}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${sessionTtl}`
 
         }
+
       }
     );
 
@@ -218,11 +249,9 @@ export async function onRequestPost(context) {
       error
     );
 
-    return new Response(
+    return textResponse(
       "Server error",
-      {
-        status: 500
-      }
+      500
     );
 
   }
