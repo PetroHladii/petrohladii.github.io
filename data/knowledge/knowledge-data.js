@@ -336,7 +336,7 @@ const KNOWLEDGE = [
 
     author: "bbps",
 
-    category: "bomberh",
+    category: "fa",
 
     title: "FA",
 
