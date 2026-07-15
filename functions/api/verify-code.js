@@ -228,7 +228,8 @@ export async function onRequestPost(context) {
 
           "Set-Cookie":
             createAuthCookie(
-              session.id
+              session.id,
+              CONFIG
             )
 
         }
