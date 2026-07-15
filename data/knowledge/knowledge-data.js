@@ -316,7 +316,7 @@ const KNOWLEDGE = [
     files: [
       {
         title: "тест",
-        file: "testbtave.pdf"
+        file: "testbrave.pdf"
       }
     ],
 
