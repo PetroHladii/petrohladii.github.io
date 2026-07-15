@@ -1,6 +1,4 @@
-import {
-  CONFIG
-} from "../../config/login-config.js";
+import { CONFIG } from "../../config/login-config.js";
 
 import {
   normalizeUserRecord
@@ -69,7 +67,10 @@ export async function onRequestPost(context) {
      * Перевіряємо вхідні дані
      */
 
-    if (!email || !code) {
+    if (
+      !email ||
+      !code
+    ) {
 
       return textResponse(
         "Missing data",
@@ -80,12 +81,22 @@ export async function onRequestPost(context) {
 
 
     /*
-     * Перевіряємо OTP-код
+     * Перевіряємо OTP
      */
 
+    const codesStore =
+      env[CONFIG.codesDb];
+
+    if (!codesStore) {
+
+      throw new Error(
+        `Codes KV binding not found: ${CONFIG.codesDb}`
+      );
+
+    }
+
     const savedCode =
-      await env[CONFIG.codesDb]
-        .get(email);
+      await codesStore.get(email);
 
     if (
       !savedCode ||
@@ -104,9 +115,19 @@ export async function onRequestPost(context) {
      * Завантажуємо користувача
      */
 
+    const usersStore =
+      env[CONFIG.usersDb];
+
+    if (!usersStore) {
+
+      throw new Error(
+        `Users KV binding not found: ${CONFIG.usersDb}`
+      );
+
+    }
+
     const userRaw =
-      await env[CONFIG.usersDb]
-        .get(email);
+      await usersStore.get(email);
 
     if (!userRaw) {
 
@@ -120,13 +141,10 @@ export async function onRequestPost(context) {
 
     /*
      * Нормалізуємо користувача
-     * через access engine
      */
 
     const user =
-      normalizeUserRecord(
-        userRaw
-      );
+      normalizeUserRecord(userRaw);
 
     if (!user) {
 
@@ -175,7 +193,7 @@ export async function onRequestPost(context) {
 
       return textResponse(
         "Session creation failed",
-        500
+        403
       );
 
     }
@@ -186,12 +204,11 @@ export async function onRequestPost(context) {
      * успішного створення сесії
      */
 
-    await env[CONFIG.codesDb]
-      .delete(email);
+    await codesStore.delete(email);
 
 
     /*
-     * Повертаємо HttpOnly cookie
+     * Повертаємо auth cookie
      */
 
     return new Response(
@@ -199,6 +216,8 @@ export async function onRequestPost(context) {
         success: true
       }),
       {
+        status: 200,
+
         headers: {
 
           "Content-Type":

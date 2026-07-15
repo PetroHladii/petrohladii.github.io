@@ -1,6 +1,4 @@
-import {
-  CONFIG
-} from "../../config/login-config.js";
+import { CONFIG } from "../../config/login-config.js";
 
 import {
   getAuthenticatedUser
@@ -49,17 +47,17 @@ export async function onRequestGet(context) {
 
     /*
      * Отримуємо актуального
-     * авторизованого користувача
+     * користувача через auth engine
      */
 
-    const authenticated =
+    const auth =
       await getAuthenticatedUser(
         request,
         env,
         CONFIG
       );
 
-    if (!authenticated) {
+    if (!auth) {
 
       return jsonResponse(
         {
@@ -73,39 +71,27 @@ export async function onRequestGet(context) {
 
 
     /*
-     * Актуальні дані користувача
-     * вже завантажені з USERS/USERST
-     */
-
-    const {
-      email,
-      user
-    } = authenticated;
-
-
-    /*
-     * Обчислюємо ефективні permissions
+     * Обчислюємо permissions
      */
 
     const permissions =
       getEffectivePermissions(
-        user
+        auth.user
       );
 
 
     /*
-     * Обчислюємо доступні
-     * Knowledge categories
+     * Обчислюємо Knowledge categories
      */
 
     const knowledgeCategories =
       getKnowledgeCategories(
-        user
+        auth.user
       );
 
 
     /*
-     * Відповідь frontend
+     * Повертаємо frontend-safe user
      */
 
     return jsonResponse(
@@ -114,10 +100,11 @@ export async function onRequestGet(context) {
 
         user: {
 
-          email,
+          email:
+            auth.email,
 
           role:
-            user.role,
+            auth.user.role,
 
           permissions,
 

@@ -1,63 +1,48 @@
 import { CONFIG } from "../config/login-config.js";
 
-function getCookie(request, name) {
+import {
+  getAuthenticatedUser,
+  createExpiredAuthCookie
+} from "./_lib/auth.js";
 
-  const cookieHeader =
-    request.headers.get("Cookie") || "";
+import {
+  hasPermission,
+  PERMISSIONS
+} from "./_lib/access.js";
 
-  const cookies =
-    cookieHeader.split(";");
 
-  for (const cookie of cookies) {
+function redirectToLogin(
+  url,
+  clearAuth = false
+) {
 
-    const [cookieName, ...valueParts] =
-      cookie.trim().split("=");
+  const headers = {
 
-    if (cookieName === name) {
+    "Location":
+      url.origin + "/login.html",
 
-      return valueParts.join("=");
+    "Cache-Control":
+      "no-store"
 
-    }
+  };
+
+  if (clearAuth) {
+
+    headers["Set-Cookie"] =
+      createExpiredAuthCookie();
 
   }
-
-  return null;
-
-}
-
-function redirectToLogin(url) {
-
-  return Response.redirect(
-    url.origin + "/login.html",
-    302
-  );
-
-}
-
-function clearAuthAndRedirect(url) {
 
   return new Response(
     null,
     {
       status: 302,
-
-      headers: {
-
-        "Location":
-          url.origin + "/login.html",
-
-        "Cache-Control":
-          "no-store",
-
-        "Set-Cookie":
-          "auth=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0"
-
-      }
-
+      headers
     }
   );
 
 }
+
 
 export async function onRequest(context) {
 
@@ -72,8 +57,9 @@ export async function onRequest(context) {
   const path =
     url.pathname;
 
+
   /*
-   * Публічні сторінки входу
+   * Публічна сторінка входу
    */
 
   if (
@@ -85,8 +71,10 @@ export async function onRequest(context) {
 
   }
 
+
   /*
-   * API обробляють власну логіку доступу
+   * API мають власну
+   * серверну авторизацію
    */
 
   if (
@@ -97,11 +85,12 @@ export async function onRequest(context) {
 
   }
 
+
   /*
    * Публічна статика
    *
-   * На цьому етапі залишаємо поточну
-   * логіку без змін.
+   * Поки залишаємо поточну
+   * логіку для сумісності сайту.
    */
 
   if (
@@ -113,53 +102,87 @@ export async function onRequest(context) {
 
   }
 
-  /*
-   * Отримуємо session ID
-   */
-
-  const sessionId =
-    getCookie(
-      request,
-      "auth"
-    );
-
-  if (!sessionId) {
-
-    return redirectToLogin(url);
-
-  }
-
-  /*
-   * Отримуємо серверну сесію
-   */
-
-  let session;
 
   try {
 
-    session =
-      await env[CONFIG.sessionsDb]
-        .get(
-          sessionId,
-          {
-            type: "json"
+    /*
+     * Перевіряємо session
+     * та актуального користувача
+     */
+
+    const auth =
+      await getAuthenticatedUser(
+        request,
+        env,
+        CONFIG
+      );
+
+    if (!auth) {
+
+      return redirectToLogin(
+        url,
+        true
+      );
+
+    }
+
+
+    /*
+     * Перевіряємо базовий
+     * доступ до сайту
+     */
+
+    if (
+      !hasPermission(
+        auth.user,
+        PERMISSIONS.SITE_ACCESS
+      )
+    ) {
+
+      return new Response(
+        "Forbidden",
+        {
+          status: 403,
+
+          headers: {
+
+            "Content-Type":
+              "text/plain; charset=utf-8",
+
+            "Cache-Control":
+              "no-store"
+
           }
-        );
+
+        }
+      );
+
+    }
+
+
+    /*
+     * Користувач авторизований
+     */
+
+    return context.next();
 
   }
   catch (error) {
 
     console.error(
-      "Session read error:",
+      "Auth middleware error:",
       error
     );
 
     return new Response(
-      "Session service unavailable",
+      "Authentication service unavailable",
       {
         status: 503,
 
         headers: {
+
+          "Content-Type":
+            "text/plain; charset=utf-8",
 
           "Cache-Control":
             "no-store"
@@ -170,83 +193,5 @@ export async function onRequest(context) {
     );
 
   }
-
-  /*
-   * Сесії не існує
-   */
-
-  if (!session) {
-
-    return clearAuthAndRedirect(url);
-
-  }
-
-  /*
-   * Перевірка структури сесії
-   */
-
-  if (
-    typeof session !== "object" ||
-    typeof session.email !== "string" ||
-    typeof session.role !== "string" ||
-    typeof session.expiresAt !== "number"
-  ) {
-
-    console.error(
-      "Invalid session structure:",
-      sessionId
-    );
-
-    try {
-
-      await env[CONFIG.sessionsDb]
-        .delete(sessionId);
-
-    }
-    catch (error) {
-
-      console.error(
-        "Invalid session delete error:",
-        error
-      );
-
-    }
-
-    return clearAuthAndRedirect(url);
-
-  }
-
-  /*
-   * Перевірка завершення сесії
-   */
-
-  if (
-    Date.now() >= session.expiresAt
-  ) {
-
-    try {
-
-      await env[CONFIG.sessionsDb]
-        .delete(sessionId);
-
-    }
-    catch (error) {
-
-      console.error(
-        "Expired session delete error:",
-        error
-      );
-
-    }
-
-    return clearAuthAndRedirect(url);
-
-  }
-
-  /*
-   * Сесія валідна
-   */
-
-  return context.next();
 
 }

@@ -1,6 +1,4 @@
-import {
-  CONFIG
-} from "../../config/login-config.js";
+import { CONFIG } from "../../config/login-config.js";
 
 import {
   deleteSession,
@@ -31,7 +29,7 @@ export async function onRequestPost(context) {
   catch (error) {
 
     console.error(
-      "Logout error:",
+      "Logout session delete error:",
       error
     );
 
@@ -39,13 +37,14 @@ export async function onRequestPost(context) {
 
 
   /*
-   * Cookie видаляємо завжди,
-   * навіть якщо KV недоступний
+   * Cookie видаляємо завжди
    */
 
   return new Response(
     "OK",
     {
+      status: 200,
+
       headers: {
 
         "Content-Type":
