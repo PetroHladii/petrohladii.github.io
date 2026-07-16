@@ -46,8 +46,7 @@ export async function onRequestGet(context) {
   try {
 
     /*
-     * Отримуємо актуального
-     * користувача через auth engine
+     * Отримуємо авторизованого користувача
      */
 
     const auth =
@@ -69,7 +68,6 @@ export async function onRequestGet(context) {
 
     }
 
-
     /*
      * Обчислюємо permissions
      */
@@ -79,9 +77,8 @@ export async function onRequestGet(context) {
         auth.user
       );
 
-
     /*
-     * Обчислюємо Knowledge categories
+     * Обчислюємо доступні категорії
      */
 
     const knowledgeCategories =
@@ -89,42 +86,40 @@ export async function onRequestGet(context) {
         auth.user
       );
 
-
     /*
-     * Повертаємо frontend-safe user
+     * Відповідь frontend
      */
 
-    return jsonResponse(
-      {
-        success: true,
+    return jsonResponse({
 
-        user: {
+      success: true,
 
-          email:
-            auth.email,
+      user: {
 
-          role:
-            auth.user.role,
+        email:
+          auth.email,
 
-          permissions,
+        role:
+          auth.user.role,
 
-          knowledge: {
+        permissions,
 
-            categories:
-              knowledgeCategories
+        knowledge: {
 
-          }
+          categories:
+            knowledgeCategories
 
         }
 
       }
-    );
+
+    });
 
   }
   catch (error) {
 
     console.error(
-      "Me API error:",
+      "api/me error:",
       error
     );
 

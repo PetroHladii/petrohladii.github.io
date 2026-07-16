@@ -3,11 +3,17 @@ export const PERMISSIONS = {
   SITE_ACCESS:
     "site.access",
 
-  BK_VIEW:
-    "bk.view",
+  MODULE_BK:
+    "module.bk",
 
-  KNOWLEDGE_VIEW:
-    "knowledge.view",
+  MODULE_KNOWLEDGE:
+    "module.knowledge",
+
+  MODULE_MODELS3D:
+    "module.models3d",
+
+  BK_ITEM_VIEW:
+    "bk.item.view",
 
   KNOWLEDGE_MEDIA_SEE:
     "knowledge.media.see",
@@ -22,7 +28,13 @@ export const PERMISSIONS = {
     "knowledge.files.view",
 
   KNOWLEDGE_VIDEOS_VIEW:
-    "knowledge.videos.view"
+    "knowledge.videos.view",
+
+  MODELS3D_ITEM_VIEW:
+    "models3d.item.view",
+
+  MODELS3D_DOWNLOAD:
+    "models3d.download"
 
 };
 
@@ -65,9 +77,11 @@ export const ROLES = {
 
       PERMISSIONS.SITE_ACCESS,
 
-      PERMISSIONS.BK_VIEW,
+      PERMISSIONS.MODULE_BK,
 
-      PERMISSIONS.KNOWLEDGE_VIEW,
+      PERMISSIONS.BK_ITEM_VIEW,
+
+      PERMISSIONS.MODULE_KNOWLEDGE,
 
       PERMISSIONS.KNOWLEDGE_MEDIA_SEE,
 
@@ -124,9 +138,11 @@ export const ROLES = {
 
       PERMISSIONS.SITE_ACCESS,
 
-      PERMISSIONS.BK_VIEW,
+      PERMISSIONS.MODULE_BK,
 
-      PERMISSIONS.KNOWLEDGE_VIEW,
+      PERMISSIONS.BK_ITEM_VIEW,
+
+      PERMISSIONS.MODULE_KNOWLEDGE,
 
       PERMISSIONS.KNOWLEDGE_MEDIA_SEE
 
@@ -364,7 +380,7 @@ export function canAccessKnowledgeCategory(
   if (
     !hasPermission(
       user,
-      PERMISSIONS.KNOWLEDGE_VIEW
+      PERMISSIONS.MODULE_KNOWLEDGE
     )
   ) {
 
