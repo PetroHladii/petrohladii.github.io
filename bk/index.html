@@ -10,6 +10,7 @@
 
   <script src="../config/env-config.js"></script>
   <script src="../config/config.js"></script>
+  <script src="../config/access-client.js"></script>
 </head>
 
 <body class="page-root">
@@ -22,11 +23,14 @@
   <!-- HEADER -->
   <header class="topbar">
 
-    <h1 class="logo" id="pageHeader"></h1>
+    <h1
+      class="logo"
+      id="pageHeader">
+    </h1>
 
     <button
       class="logout-btn"
-      onclick="App.logout()">
+      onclick="Access.logout()">
       Вийти
     </button>
 
@@ -52,7 +56,30 @@
   <!-- CONTENT -->
   <main class="center">
 
-    <div class="grid-3">
+    <!-- Access denied -->
+    <section
+      id="accessDenied"
+      class="panel hidden">
+
+      <h2>
+        🔒 Недостатньо прав
+      </h2>
+
+      <p>
+        У вас недостатньо прав для перегляду цього модуля.
+      </p>
+
+      <p>
+        Якщо ви вважаєте, що це помилка —
+        зверніться до адміністратора.
+      </p>
+
+    </section>
+
+    <!-- Module content -->
+    <div
+      id="moduleContent"
+      class="grid-3">
 
       <a
         class="card big"
@@ -90,10 +117,13 @@
 
   <script>
 
-    document.title = CONFIG.indexTitle;
+    document.title =
+      CONFIG.indexTitle;
 
-    document.getElementById("pageHeader")
-      .textContent = CONFIG.indexTitle;
+    document
+      .getElementById("pageHeader")
+      .textContent =
+      CONFIG.indexTitle;
 
     document.addEventListener(
       "DOMContentLoaded",
@@ -106,8 +136,11 @@
           localStorage.getItem("splashShown") === "1";
 
         if (alreadyShown) {
+
           splash.remove();
+
           return;
+
         }
 
         setTimeout(() => {
@@ -115,7 +148,9 @@
           splash.classList.add("hidden");
 
           setTimeout(() => {
+
             splash.remove();
+
           }, 600);
 
           localStorage.setItem(

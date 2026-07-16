@@ -1,3 +1,48 @@
+const PERMISSIONS = {
+
+  SITE_ACCESS:
+    "site.access",
+
+  MODULE_BK:
+    "module.bk",
+
+  MODULE_KNOWLEDGE:
+    "module.knowledge",
+
+  MODULE_MODELS3D:
+    "module.models3d",
+
+  BK_ITEM_VIEW:
+    "bk.item.view",
+
+  KNOWLEDGE_MEDIA_SEE:
+    "knowledge.media.see",
+
+  KNOWLEDGE_MEDIA_VIEW:
+    "knowledge.media.view",
+
+  KNOWLEDGE_PHOTOS_VIEW:
+    "knowledge.photos.view",
+
+  KNOWLEDGE_FILES_VIEW:
+    "knowledge.files.view",
+
+  KNOWLEDGE_VIDEOS_VIEW:
+    "knowledge.videos.view",
+
+  MODELS3D_ITEM_VIEW:
+    "models3d.item.view",
+
+  MODELS3D_DOWNLOAD:
+    "models3d.download"
+
+};
+
+Object.freeze(
+  PERMISSIONS
+);
+
+
 const Access = {
 
   initialized: false,
@@ -262,4 +307,8 @@ Object.freeze(
   Access
 );
 
-window.Access = Access;
+window.PERMISSIONS =
+  PERMISSIONS;
+
+window.Access =
+  Access;

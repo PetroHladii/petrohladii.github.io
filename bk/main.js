@@ -1,80 +1,178 @@
 // main.js
 // Завантажує та парсить CSV, експортує getData()
 
-const App = (function(){
+const App = (function () {
+
   let _data = null;
 
-  // Простий CSV-парсер
-  function parseCSV(text){
-    const rows = text.trim().split(/\r?\n/);
-    if(!rows.length) return [];
 
-    const header = rows[0]
-      .split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/)
-      .map(h => h.replace(/^"|"$/g,'').trim());
+  /*
+   * Простий CSV parser
+   */
 
-    const out = [];
+  function parseCSV(text) {
 
-    for(let i=1;i<rows.length;i++){
-      const line = rows[i];
-      if(!line.trim()) continue;
+    const rows =
+      text
+        .trim()
+        .split(/\r?\n/);
 
-      const values = line
-        .split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/)
-        .map(v => v.replace(/^"|"$/g,'').trim());
+    if (!rows.length) {
 
-      const obj = {};
+      return [];
 
-      header.forEach((h, idx) => {
-        obj[h] = values[idx] === undefined ? '' : values[idx];
-      });
-
-      out.push(obj);
     }
 
-    return out;
-  }
+    const header =
+      rows[0]
+        .split(
+          /,(?=(?:[^"]*"[^"]*")*[^"]*$)/
+        )
+        .map(item =>
+          item
+            .replace(/^"|"$/g, "")
+            .trim()
+        );
 
-  async function loadCSV(path = '../data/bk/BK.csv'){
-    if(_data) return _data;
+    const result = [];
 
-    try{
-      const r = await fetch(path, { cache: "no-store" });
+    for (
+      let rowIndex = 1;
+      rowIndex < rows.length;
+      rowIndex++
+    ) {
 
-      if(!r.ok) throw new Error('CSV not found');
+      const row =
+        rows[rowIndex];
 
-      const txt = await r.text();
-      _data = parseCSV(txt);
+      if (!row.trim()) {
 
-      return _data;
-    }catch(e){
-      console.error('Error loading CSV:', e);
-      _data = [];
-      return _data;
+        continue;
+
+      }
+
+      const values =
+        row
+          .split(
+            /,(?=(?:[^"]*"[^"]*")*[^"]*$)/
+          )
+          .map(item =>
+            item
+              .replace(/^"|"$/g, "")
+              .trim()
+          );
+
+      const object = {};
+
+      header.forEach(
+        (
+          key,
+          index
+        ) => {
+
+          object[key] =
+            values[index] ?? "";
+
+        }
+      );
+
+      result.push(object);
+
     }
+
+    return result;
+
   }
 
-  function unique(arr){
-    return [...new Set(arr)].filter(Boolean);
-  }
 
-  // 🔥 logout через сервер (HttpOnly cookie)
-  async function logout(){
+  /*
+   * Завантаження CSV
+   */
+
+  async function loadCSV(
+    path = "../data/bk/BK.csv"
+  ) {
+
+    if (_data) {
+
+      return _data;
+
+    }
+
     try {
-      await fetch("/api/logout", { method: "POST" });
-    } catch (e) {
-      console.error("Logout error:", e);
+
+      const response =
+        await fetch(
+          path,
+          {
+            cache:
+              "no-store"
+          }
+        );
+
+      if (!response.ok) {
+
+        throw new Error(
+          "CSV not found"
+        );
+
+      }
+
+      const text =
+        await response.text();
+
+      _data =
+        parseCSV(text);
+
+      return _data;
+
+    }
+    catch (error) {
+
+      console.error(
+        "Error loading CSV:",
+        error
+      );
+
+      _data = [];
+
+      return _data;
+
     }
 
-    window.location.href = "/login.html";
   }
+
+
+  /*
+   * Унікальні значення
+   */
+
+  function unique(values) {
+
+    return [
+      ...new Set(values)
+    ].filter(Boolean);
+
+  }
+
 
   return {
+
     loadCSV,
-    getAll: () => _data,
-    utils: { unique },
-    logout // ← додали
+
+    getAll:
+      () => _data,
+
+    utils: {
+
+      unique
+
+    }
+
   };
+
 })();
 
-window.App = App;
+
+window.App =
+  App;
