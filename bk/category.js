@@ -39,6 +39,50 @@
   let mediaIndex = null;
   let cloudCounts = null;
 
+  // ---------------------- ACCESS ----------------------
+
+  let accessReady = false;
+
+  async function ensureAccessReady(){
+
+    if(accessReady){
+      return;
+    }
+
+    if(window.Access &&
+      typeof Access.ready === "function"){
+
+      await Access.ready();
+    }
+
+    accessReady = true;
+  }
+
+  function hasItemAccess(){
+
+    if(!window.Access){
+      return {
+        ok: false,
+        reason: "access"
+      };
+    }
+
+    if(!window.PERMISSIONS ||
+      !PERMISSIONS.BK_ITEM_VIEW){
+      return {
+        ok: false,
+        reason: "permissions"
+      };
+    }
+
+    return {
+      ok: Access.hasPermission(
+        PERMISSIONS.BK_ITEM_VIEW
+      ),
+      reason: "forbidden"
+    };
+  }
+
   // ---------------------- HELPERS ----------------------
   function getCountHTML(value){
     if (value === undefined || value === null) return '';
@@ -114,6 +158,49 @@
       overlay.classList.add('hidden');
       overlay.setAttribute('aria-hidden','true');
     }
+  }
+
+  async function tryOpenModal(item){
+
+    await ensureAccessReady();
+
+    const access = hasItemAccess();
+
+    if(access.ok){
+
+      await openModal(item);
+      return;
+
+    }
+
+    mName.textContent = "Доступ обмежено";
+
+    mType.textContent = "";
+    mAff.textContent = "";
+
+    if(access.reason === "forbidden"){
+
+      mDesc.textContent =
+        "У вас недостатньо прав для перегляду цієї інформації.";
+
+    }else{
+
+      mDesc.textContent =
+        "Помилка перевірки прав доступу. Зверніться до адміністратора.";
+
+    }
+
+    currentImages = [];
+    currentIndex = 0;
+    currentItem = null;
+
+    if(videoBtn){
+      videoBtn.classList.add("hidden");
+    }
+
+    updateCarousel();
+
+    setOverlayVisible(true);
   }
 
   async function openModal(item){
@@ -323,11 +410,11 @@
         <p class="type">${item.Type}</p>
       `;
 
-      card.addEventListener('click', () => openModal(item));
+      card.addEventListener('click', () => tryOpenModal(item));
 
       card.addEventListener('keydown', e => {
         if(e.key === 'Enter'){
-          openModal(item);
+          tryOpenModal(item);
         }
       });
 
@@ -339,6 +426,9 @@
 
   // ---------------------- INIT ----------------------
   async function init(){
+
+    await ensureAccessReady();
+
     let all = [];
 
     if(window.App &&

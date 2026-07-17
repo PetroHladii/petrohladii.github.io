@@ -6,6 +6,7 @@ bk/
 	main.js
 	rozvidka.html
 config/
+    access-client.js
 	config.js
 	env-config.js
 	login-config.js
@@ -18,12 +19,14 @@ data/
 	knowledge/
 		knowledge-data.js
 documentation/
-	architecture.md
 	roles.md
-	structure.md
 functions/
+    _lib/
+        access.js
+        auth.js
 	api/
 		logout.js
+        me.js
 		send-code.js
 		verify-code.js
 	[[path]].js
