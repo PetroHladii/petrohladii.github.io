@@ -166,7 +166,7 @@ const Knowledge = {
 
     if (
       !this.hasPermission(
-        "knowledge.view"
+        "module.knowledge"
       )
     ) {
 
@@ -192,10 +192,7 @@ const Knowledge = {
 
     }
 
-    return (
-      this.allowedCategories
-        .includes(category)
-    );
+    return this.allowedCategories.includes(category);
 
   },
 
