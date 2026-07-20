@@ -166,7 +166,7 @@ const Knowledge = {
 
     if (
       !this.hasPermission(
-        "module.knowledge"
+        "knowledge.view"
       )
     ) {
 
