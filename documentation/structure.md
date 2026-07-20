@@ -19,7 +19,11 @@ data/
 	knowledge/
 		knowledge-data.js
 documentation/
+	architecture.md
+	questions.md
 	roles.md
+	structure.md
+	to-do.md
 functions/
     _lib/
         access.js
