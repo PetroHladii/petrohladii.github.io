@@ -32,7 +32,7 @@ const Article = {
 
     if (
       !this.hasPermission(
-        "knowledge.view"
+        "module.knowledge"
       )
     ) {
 
@@ -243,6 +243,16 @@ const Article = {
   canAccessCategory(category) {
 
     if (
+      !this.hasPermission(
+        "module.knowledge"
+      )
+    ) {
+
+      return false;
+
+    }
+
+    if (
       this.knowledgeCategories === "*"
     ) {
 
@@ -260,10 +270,7 @@ const Article = {
 
     }
 
-    return (
-      this.knowledgeCategories
-        .includes(category)
-    );
+    return this.knowledgeCategories.includes(category);
 
   },
 
