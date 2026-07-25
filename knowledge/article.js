@@ -2,12 +2,6 @@ const Article = {
 
   article: null,
 
-  currentUser: null,
-
-  permissions: [],
-
-  knowledgeCategories: [],
-
   viewerPhotos: [],
 
   viewerIndex: 0,
@@ -21,18 +15,27 @@ const Article = {
 
     this.bindEvents();
 
-    const userLoaded =
-      await this.loadCurrentUser();
+    try {
 
-    if (!userLoaded) {
+      await Access.ready();
+
+    }
+    catch (error) {
+
+      console.error(
+        "Access initialization error:",
+        error
+      );
+
+      this.renderLoadError();
 
       return;
 
     }
 
     if (
-      !this.hasPermission(
-        "module.knowledge"
+      !Access.hasPermission(
+        PERMISSIONS.MODULE_KNOWLEDGE
       )
     ) {
 
@@ -77,7 +80,7 @@ const Article = {
     }
 
     if (
-      !this.canAccessCategory(
+      !Access.canAccessKnowledgeCategory(
         this.article.category
       )
     ) {
@@ -93,16 +96,6 @@ const Article = {
       this.article
     );
 
-    console.log(
-      "Current user:",
-      this.currentUser
-    );
-
-    console.log(
-      "Permissions:",
-      this.permissions
-    );
-
     this.render();
 
     await this.loadContent();
@@ -115,183 +108,21 @@ const Article = {
 
   },
 
-
-  async loadCurrentUser() {
-
-    try {
-
-      const response =
-        await fetch(
-          "/api/me",
-          {
-            method: "GET",
-
-            credentials:
-              "same-origin",
-
-            cache:
-              "no-store"
-          }
-        );
-
-      if (
-        response.status === 401
-      ) {
-
-        window.location.replace(
-          "/login.html"
-        );
-
-        return false;
-
-      }
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Failed to load current user"
-        );
-
-      }
-
-      const data =
-        await response.json();
-
-      if (
-        !data.success ||
-        !data.user
-      ) {
-
-        throw new Error(
-          "Invalid current user response"
-        );
-
-      }
-
-      this.currentUser =
-        data.user;
-
-      this.permissions =
-        Array.isArray(
-          data.user.permissions
-        )
-          ? data.user.permissions
-          : [];
-
-      const categories =
-        data.user
-          .knowledge
-          ?.categories;
-
-      if (
-        categories === "*"
-      ) {
-
-        this.knowledgeCategories =
-          "*";
-
-      }
-      else if (
-        Array.isArray(categories)
-      ) {
-
-        this.knowledgeCategories =
-          [...categories];
-
-      }
-      else {
-
-        this.knowledgeCategories =
-          [];
-
-      }
-
-      return true;
-
-    }
-    catch (error) {
-
-      console.error(
-        "Current user error:",
-        error
-      );
-
-      this.renderLoadError();
-
-      return false;
-
-    }
-
-  },
-
-
-  hasPermission(permission) {
-
-    return (
-
-      this.permissions.includes("*") ||
-
-      this.permissions.includes(
-        permission
-      )
-
-    );
-
-  },
-
-
-  canAccessCategory(category) {
-
-    if (
-      !this.hasPermission(
-        "module.knowledge"
-      )
-    ) {
-
-      return false;
-
-    }
-
-    if (
-      this.knowledgeCategories === "*"
-    ) {
-
-      return true;
-
-    }
-
-    if (
-      !Array.isArray(
-        this.knowledgeCategories
-      )
-    ) {
-
-      return false;
-
-    }
-
-    return this.knowledgeCategories.includes(category);
-
-  },
-
-
   canSeeMedia() {
 
-    return this.hasPermission(
-      "knowledge.media.see"
+    return Access.hasPermission(
+      PERMISSIONS.KNOWLEDGE_MEDIA_SEE
     );
 
   },
-
 
   canViewMedia() {
 
-    return this.hasPermission(
-      "knowledge.media.view"
+    return Access.hasPermission(
+      PERMISSIONS.KNOWLEDGE_MEDIA_VIEW
     );
 
   },
-
 
   canViewPhotos() {
 
@@ -299,14 +130,13 @@ const Article = {
 
       this.canViewMedia() &&
 
-      this.hasPermission(
-        "knowledge.photos.view"
+      Access.hasPermission(
+        PERMISSIONS.KNOWLEDGE_PHOTOS_VIEW
       )
 
     );
 
   },
-
 
   canViewFiles() {
 
@@ -314,14 +144,13 @@ const Article = {
 
       this.canViewMedia() &&
 
-      this.hasPermission(
-        "knowledge.files.view"
+      Access.hasPermission(
+        PERMISSIONS.KNOWLEDGE_FILES_VIEW
       )
 
     );
 
   },
-
 
   canViewVideos() {
 
@@ -329,14 +158,13 @@ const Article = {
 
       this.canViewMedia() &&
 
-      this.hasPermission(
-        "knowledge.videos.view"
+      Access.hasPermission(
+        PERMISSIONS.KNOWLEDGE_VIDEOS_VIEW
       )
 
     );
 
   },
-
 
   render() {
 

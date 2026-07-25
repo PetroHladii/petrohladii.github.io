@@ -4,21 +4,35 @@ const Knowledge = {
 
   filteredArticles: [],
 
-  currentUser: null,
-
-  allowedCategories: [],
-
-
   async init() {
 
     console.log(
       "Knowledge module initialized"
     );
 
-    const accessLoaded =
-      await this.loadAccess();
+    try {
 
-    if (!accessLoaded) {
+      await Access.ready();
+
+    }
+    catch (error) {
+
+      console.error(
+        "Access initialization error:",
+        error
+      );
+
+      document
+        .getElementById("articles")
+        .innerHTML = `
+          <div class="panel">
+            Не вдалося перевірити права доступу.
+          </div>
+        `;
+
+      document
+        .getElementById("resultsInfo")
+        .textContent = "";
 
       return;
 
@@ -36,167 +50,6 @@ const Knowledge = {
 
   },
 
-
-  async loadAccess() {
-
-    console.log(
-      "Loading user access..."
-    );
-
-    try {
-
-      const response =
-        await fetch(
-          "/api/me",
-          {
-            method: "GET",
-
-            credentials:
-              "same-origin",
-
-            cache:
-              "no-store"
-          }
-        );
-
-      if (
-        response.status === 401
-      ) {
-
-        window.location.replace(
-          "/login.html"
-        );
-
-        return false;
-
-      }
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Failed to load access"
-        );
-
-      }
-
-      const data =
-        await response.json();
-
-      if (
-        !data.success ||
-        !data.user
-      ) {
-
-        throw new Error(
-          "Invalid access response"
-        );
-
-      }
-
-      this.currentUser =
-        data.user;
-
-      this.allowedCategories =
-        data.user
-          .knowledge
-          ?.categories ?? [];
-
-      console.log(
-        "Current user:",
-        this.currentUser
-      );
-
-      console.log(
-        "Allowed categories:",
-        this.allowedCategories
-      );
-
-      return true;
-
-    }
-    catch (error) {
-
-      console.error(
-        "Access loading error:",
-        error
-      );
-
-      document
-        .getElementById("articles")
-        .innerHTML = `
-          <div class="panel">
-            Не вдалося перевірити права доступу.
-          </div>
-        `;
-
-      document
-        .getElementById("resultsInfo")
-        .textContent = "";
-
-      return false;
-
-    }
-
-  },
-
-
-  hasPermission(permission) {
-
-    const permissions =
-      this.currentUser
-        ?.permissions;
-
-    if (
-      !Array.isArray(permissions)
-    ) {
-
-      return false;
-
-    }
-
-    return (
-      permissions.includes("*") ||
-      permissions.includes(permission)
-    );
-
-  },
-
-
-  canAccessCategory(category) {
-
-    if (
-      !this.hasPermission(
-        "module.knowledge"
-      )
-    ) {
-
-      return false;
-
-    }
-
-    if (
-      this.allowedCategories === "*"
-    ) {
-
-      return true;
-
-    }
-
-    if (
-      !Array.isArray(
-        this.allowedCategories
-      )
-    ) {
-
-      return false;
-
-    }
-
-    return this.allowedCategories.includes(category);
-
-  },
-
-
   loadData() {
 
     console.log(
@@ -206,7 +59,7 @@ const Knowledge = {
     this.articles =
       KNOWLEDGE.filter(
         article =>
-          this.canAccessCategory(
+          Access.canAccessKnowledgeCategory(
             article.category
           )
       );

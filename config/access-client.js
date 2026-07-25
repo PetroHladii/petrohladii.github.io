@@ -42,7 +42,6 @@ Object.freeze(
   PERMISSIONS
 );
 
-
 const Access = {
 
   initialized: false,
@@ -51,6 +50,14 @@ const Access = {
 
   user: null,
 
+  get knowledge() {
+
+    return (
+      this.user?.knowledge ??
+      {}
+    );
+
+  },
 
   async init() {
 
@@ -67,71 +74,76 @@ const Access = {
     }
 
     this.loadingPromise =
-      (async () => {
+    (async () => {
 
-        const response =
-          await fetch(
-            "/api/me",
-            {
-              cache: "no-store",
-              credentials: "same-origin"
+        try {
+
+            const response =
+                await fetch(
+                    "/api/me",
+                    {
+                        cache: "no-store",
+                        credentials: "same-origin"
+                    }
+                );
+
+            if (!response.ok) {
+
+                this.reset();
+
+                window.location.replace(
+                    "/login.html"
+                );
+
+                return null;
+
             }
-          );
 
-        if (!response.ok) {
+            const data =
+                await response.json();
 
-          this.reset();
+            if (
+                !data.success ||
+                !data.user
+            ) {
 
-          window.location.replace(
-            "/login.html"
-          );
+                this.reset();
 
-          return null;
+                window.location.replace(
+                    "/login.html"
+                );
+
+                return null;
+
+            }
+
+            this.user =
+                data.user;
+
+            this.initialized =
+                true;
+
+            return this.user;
+
+        }
+        finally {
+
+            this.loadingPromise =
+                null;
 
         }
 
-        const data =
-          await response.json();
-
-        if (
-          !data.success ||
-          !data.user
-        ) {
-
-          this.reset();
-
-          window.location.replace(
-            "/login.html"
-          );
-
-          return null;
-
-        }
-
-        this.user =
-          data.user;
-
-        this.initialized =
-          true;
-
-        this.loadingPromise =
-          null;
-
-        return this.user;
-
-      })();
+    })();
 
     return this.loadingPromise;
 
   },
-
 
   async ready() {
 
     return this.init();
 
   },
-
 
   hasPermission(
     permission
@@ -156,7 +168,6 @@ const Access = {
 
   },
 
-
   hasAnyPermission(
     permissions
   ) {
@@ -169,7 +180,6 @@ const Access = {
     );
 
   },
-
 
   hasAllPermissions(
     permissions
@@ -184,21 +194,22 @@ const Access = {
 
   },
 
-
-  canAccessCategory(
+  canAccessKnowledgeCategory(
     category
   ) {
 
-    if (!this.user) {
+    if (
+      !this.hasPermission(
+        PERMISSIONS.MODULE_KNOWLEDGE
+      )
+    ) {
 
       return false;
 
     }
 
     const categories =
-      this.user
-        .knowledge
-        ?.categories;
+      this.knowledge.categories;
 
     if (
       categories === "*"
@@ -224,6 +235,15 @@ const Access = {
 
   },
 
+  canAccessCategory(
+    category
+  ) {
+
+    return this.canAccessKnowledgeCategory(
+      category
+    );
+
+  },
 
   isAdmin() {
 
@@ -234,7 +254,6 @@ const Access = {
 
   },
 
-
   isDuty() {
 
     return (
@@ -243,7 +262,6 @@ const Access = {
     );
 
   },
-
 
   isUser() {
 
@@ -254,7 +272,6 @@ const Access = {
 
   },
 
-
   isGuest() {
 
     return (
@@ -263,7 +280,6 @@ const Access = {
     );
 
   },
-
 
   async logout() {
 
@@ -289,7 +305,6 @@ const Access = {
     }
 
   },
-
 
   reset() {
 
