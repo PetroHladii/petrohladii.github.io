@@ -318,10 +318,6 @@ const Access = {
 
 };
 
-Object.freeze(
-  Access
-);
-
 window.PERMISSIONS =
   PERMISSIONS;
 
