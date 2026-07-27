@@ -156,7 +156,7 @@ export const ROLES = {
 
   },
 
-    testUser: {
+  testUser: {
 
     permissions: [
 
