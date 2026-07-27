@@ -281,6 +281,15 @@ const Access = {
 
   },
 
+  isTestUser() {
+
+    return (
+      this.user?.role ===
+      "testUser"
+    );
+
+  },
+
   async logout() {
 
     try {

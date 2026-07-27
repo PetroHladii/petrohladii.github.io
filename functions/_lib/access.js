@@ -154,9 +154,31 @@ export const ROLES = {
 
     }
 
+  },
+
+    testUser: {
+
+    permissions: [
+
+      PERMISSIONS.SITE_ACCESS,
+
+      PERMISSIONS.MODULE_BK,
+
+      PERMISSIONS.BK_ITEM_VIEW
+
+    ],
+
+    knowledge: {
+
+      categories: "*"
+
+    }
+
   }
 
 };
+
+
 
 
 export function getRoleConfig(role) {
