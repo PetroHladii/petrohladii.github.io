@@ -133,6 +133,8 @@
 
         await Access.ready();
 
+        console.log("Access.ready OK"); // added log
+
         const moduleContent =
           document.getElementById("moduleContent");
 
@@ -147,6 +149,8 @@
           return;
 
         }
+
+        console.log("Permission OK"); // added log
 
         const splash =
           document.getElementById("splash");
