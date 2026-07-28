@@ -127,7 +127,24 @@
 
     document.addEventListener(
       "DOMContentLoaded",
-      () => {
+      async () => {
+
+        await Access.ready();
+
+        const moduleContent =
+          document.getElementById("moduleContent");
+
+        const accessDenied =
+          document.getElementById("accessDenied");
+
+        if (!Access.hasPermission(PERMISSIONS.MODULE_BK)) {
+
+          moduleContent.classList.add("hidden");
+          accessDenied.classList.remove("hidden");
+
+          return;
+
+        }
 
         const splash =
           document.getElementById("splash");

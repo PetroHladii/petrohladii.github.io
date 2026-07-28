@@ -76,9 +76,7 @@
     }
 
     return {
-      ok: Access.hasPermission(
-        PERMISSIONS.BK_ITEM_VIEW
-      ),
+      ok: Access.canViewBkItem(),
       reason: "forbidden"
     };
   }
@@ -428,6 +426,21 @@
   async function init(){
 
     await ensureAccessReady();
+
+    if (!Access.canViewBkGallery()) {
+
+      if (galleryRoot) {
+        galleryRoot.innerHTML =
+          '<p class="muted">Доступ до галереї обмежено.</p>';
+      }
+
+      if (filtersRoot) {
+        filtersRoot.innerHTML = "";
+      }
+
+      return;
+
+    }
 
     let all = [];
 

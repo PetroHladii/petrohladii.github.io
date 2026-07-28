@@ -12,6 +12,9 @@ const PERMISSIONS = {
   MODULE_MODELS3D:
     "module.models3d",
 
+  BK_GALLERY_VIEW:
+    "bk.gallery.view",
+
   BK_ITEM_VIEW:
     "bk.item.view",
 
@@ -190,6 +193,22 @@ const Access = {
         this.hasPermission(
           permission
         )
+    );
+
+  },
+
+  canViewBkGallery() {
+
+    return this.hasPermission(
+      PERMISSIONS.BK_GALLERY_VIEW
+    );
+
+  },
+
+  canViewBkItem() {
+
+    return this.hasPermission(
+      PERMISSIONS.BK_ITEM_VIEW
     );
 
   },

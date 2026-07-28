@@ -12,6 +12,9 @@ export const PERMISSIONS = {
   MODULE_MODELS3D:
     "module.models3d",
 
+  BK_GALLERY_VIEW:
+    "bk.gallery.view",
+
   BK_ITEM_VIEW:
     "bk.item.view",
 
@@ -79,6 +82,8 @@ export const ROLES = {
 
       PERMISSIONS.MODULE_BK,
 
+      PERMISSIONS.BK_GALLERY_VIEW,
+
       PERMISSIONS.BK_ITEM_VIEW,
 
       PERMISSIONS.MODULE_KNOWLEDGE,
@@ -139,6 +144,8 @@ export const ROLES = {
       PERMISSIONS.SITE_ACCESS,
 
       PERMISSIONS.MODULE_BK,
+
+      PERMISSIONS.BK_GALLERY_VIEW,
 
       PERMISSIONS.BK_ITEM_VIEW,
 
