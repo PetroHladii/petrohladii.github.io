@@ -3,74 +3,60 @@ const CONFIG = {
 
   prod: {
 
-    mediaBase:
-    "https://media.125.co.ua",
+    mediaBase:"https://media.125.co.ua",
 
-    knowledgeBase:
-    "https://media.125.co.ua/knowledge",
+    knowledgeBase:"https://media.125.co.ua/knowledge",
 
-    streamBase:
-    "https://customer-ovprf67dzg1lp1nk.cloudflarestream.com",
+    streamBase:"https://customer-ovprf67dzg1lp1nk.cloudflarestream.com",
 
-    cloudflareWorker:
-      "https://old-fog-c80a.tantsa98.workers.dev",
+    cloudflareWorker:"https://old-fog-c80a.tantsa98.workers.dev",
 
-    loginTitle:
-      "Вхід - Довідник",
+    loginTitle:"Вхід - Довідник",
 
-    loginHeader:
-      "Вхід",
+    loginHeader:"Вхід",
 
-    indexTitle:
-      "Довідник",
+    indexTitle:"Довідник",
 
-    bombersTitle:
-      "Бомбери",
+    bombersTitle:"Бомбери",
 
-    fpvTitle:
-      "FPV",
+    fpvTitle:"FPV",
 
-    rozvidkaTitle:
-      "Mavic/Autel",
+    rozvidkaTitle:"Mavic/Autel",
 
-    knowledgeTitle:
-    "Знання"
+    knowledgeTitle:"Знання",
+
+    models3dTitle: "3D Моделі",
+
+    reviewsTitle: "Відгуки"
   },
 
   test: {
 
-    mediaBase:
-    "https://media.125.co.ua",
+    mediaBase:"https://media.125.co.ua",
 
-    knowledgeBase:
-    "https://media.125.co.ua/knowledge",
+    knowledgeBase:"https://media.125.co.ua/knowledge",
 
-    streamBase:
-    "https://customer-ovprf67dzg1lp1nk.cloudflarestream.com",
+    streamBase:"https://customer-ovprf67dzg1lp1nk.cloudflarestream.com",
 
-    cloudflareWorker:
-      "https://silent-sun-7c28.tantsa98.workers.dev",
+    cloudflareWorker:"https://silent-sun-7c28.tantsa98.workers.dev",
 
-    loginTitle:
-      "Вхід - Довідник (тест)",
+    loginTitle:"Вхід - Довідник (тест)",
 
-    loginHeader:
-      "Вхід (тест)",
+    loginHeader:"Вхід (тест)",
 
-    indexTitle:
-      "Довідник (тест)",
+    indexTitle:"Довідник (тест)",
 
-    bombersTitle:
-      "Бомбери (тест)",
+    bombersTitle:"Бомбери (тест)",
 
-    fpvTitle:
-      "FPV (тест)",
+    fpvTitle:"FPV (тест)",
 
-    rozvidkaTitle:
-      "Mavic/Autel (тест)",
+    rozvidkaTitle:"Mavic/Autel (тест)",
 
-    knowledgeTitle:
-    "Знання (тест)"
+    knowledgeTitle:"Знання (тест)",
+
+    models3dTitle: "3D Моделі (тест)",
+
+    reviewsTitle: "Відгуки (тест)"
   }
 };
 
