@@ -9,11 +9,10 @@
   <!-- CONFIG -->
   <script src="config/env-config.js"></script>
 
-  <!-- твій загальний стиль -->
+  <!-- Загальні стилі -->
   <link rel="stylesheet" href="css/style.css" />
 
   <style>
-    /* Центрування форми */
     .login-wrapper {
       min-height: 100vh;
       display: flex;
@@ -57,6 +56,7 @@
       background: #0f0f0f;
       color: #fff;
       outline: none;
+      box-sizing: border-box;
     }
 
     .login-card input:focus {
@@ -68,7 +68,6 @@
       margin-top: 6px;
     }
 
-    /* 🔥 НОВИЙ ВІДСТУП */
     .code-block {
       margin-top: 20px;
     }
@@ -91,12 +90,17 @@
     <p>Введи email, щоб отримати код доступу</p>
 
     <input id="email" type="email" placeholder="Email">
-    <button class="btn" onclick="sendCode()">Отримати код</button>
 
-    <!-- 🔥 ОБГОРТКА ДЛЯ КОДУ -->
+    <button class="btn" onclick="sendCode()">
+      Отримати код
+    </button>
+
     <div class="code-block">
       <input id="code" placeholder="Код">
-      <button class="btn" onclick="verifyCode()">Увійти</button>
+
+      <button class="btn" onclick="verifyCode()">
+        Увійти
+      </button>
     </div>
 
     <div class="login-footer">
@@ -111,7 +115,8 @@ document.title = CONFIG.loginTitle;
 document.getElementById("loginHeader").textContent = CONFIG.loginHeader;
 
 async function sendCode() {
-  const email = document.getElementById("email").value;
+
+  const email = document.getElementById("email").value.trim();
 
   if (!email) {
     alert("Введи email");
@@ -120,7 +125,9 @@ async function sendCode() {
 
   const res = await fetch("/api/send-code", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({ email })
   });
 
@@ -133,8 +140,9 @@ async function sendCode() {
 }
 
 async function verifyCode() {
-  const email = document.getElementById("email").value;
-  const code = document.getElementById("code").value;
+
+  const email = document.getElementById("email").value.trim();
+  const code = document.getElementById("code").value.trim();
 
   if (!email || !code) {
     alert("Введи email і код");
@@ -143,8 +151,13 @@ async function verifyCode() {
 
   const res = await fetch("/api/verify-code", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, code })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      code
+    })
   });
 
   if (!res.ok) {
@@ -152,6 +165,10 @@ async function verifyCode() {
     return;
   }
 
+  // Показати splash лише після успішного входу
+  sessionStorage.setItem("showSplash", "1");
+
+  // Перехід на головну сторінку
   window.location.href = "/";
 }
 </script>
