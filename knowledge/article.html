@@ -39,23 +39,6 @@
 
   </header>
 
-  <!-- APP NAVIGATION -->
-  <nav class="app-nav">
-
-    <a
-      href="../bk/index.html"
-      class="app-nav-btn">
-      БК
-    </a>
-
-    <a
-      href="index.html"
-      class="app-nav-btn active">
-      Знання
-    </a>
-
-  </nav>
-
   <!-- MAIN -->
   <main class="container">
 
@@ -213,21 +196,20 @@
 
   </div>
 
-  <script src="../bk/main.js"></script>
-
   <script src="../data/knowledge/knowledge-data.js"></script>
 
   <script src="article.js"></script>
 
   <script>
 
+    const pageHeader =
+      document.getElementById("pageHeader");
+
     document.title =
       CONFIG.knowledgeTitle;
 
-    document
-      .getElementById("pageHeader")
-      .textContent =
-      CONFIG.indexTitle;
+    pageHeader.textContent =
+      CONFIG.knowledgeTitle;
 
   </script>
 
