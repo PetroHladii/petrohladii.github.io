@@ -15,11 +15,6 @@
 
 <body class="page-root">
 
-  <!-- SPLASH -->
-  <div id="splash">
-    <img src="../new-logo.png" alt="Логотип">
-  </div>
-
   <!-- HEADER -->
   <header class="topbar">
 
@@ -129,11 +124,7 @@
       "DOMContentLoaded",
       async () => {
 
-        console.log("DOMContentLoaded"); // added log
-
         await Access.ready();
-
-        console.log("Access.ready OK"); // added log
 
         const moduleContent =
           document.getElementById("moduleContent");
@@ -149,39 +140,6 @@
           return;
 
         }
-
-        console.log("Permission OK"); // added log
-
-        const splash =
-          document.getElementById("splash");
-
-        const alreadyShown =
-          localStorage.getItem("splashShown") === "1";
-
-        if (alreadyShown) {
-
-          splash.remove();
-
-          return;
-
-        }
-
-        setTimeout(() => {
-
-          splash.classList.add("hidden");
-
-          setTimeout(() => {
-
-            splash.remove();
-
-          }, 600);
-
-          localStorage.setItem(
-            "splashShown",
-            "1"
-          );
-
-        }, 3000);
 
       }
     );
