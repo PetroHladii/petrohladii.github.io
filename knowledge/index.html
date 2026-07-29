@@ -10,12 +10,19 @@
 
   <script src="../config/env-config.js"></script>
   <script src="../config/config.js"></script>
+  <script src="../config/access-client.js"></script>
 </head>
 
 <body class="page-knowledge">
 
   <!-- HEADER -->
   <header class="topbar">
+
+    <a
+      href="/"
+      class="back-icon"
+      title="На головну">
+    </a>
 
     <h1
       class="logo"
@@ -29,23 +36,6 @@
     </button>
 
   </header>
-
-  <!-- APP NAVIGATION -->
-  <nav class="app-nav">
-
-    <a
-      href="../bk/index.html"
-      class="app-nav-btn">
-      БК
-    </a>
-
-    <a
-      href="index.html"
-      class="app-nav-btn active">
-      Знання
-    </a>
-
-  </nav>
 
   <!-- MAIN -->
   <main class="container">
@@ -108,15 +98,18 @@
 
   <script src="../bk/main.js"></script>
   <script src="../data/knowledge/knowledge-data.js"></script>
-  <script src="../config/access-client.js"></script>
   <script src="knowledge.js"></script>
 
   <script>
 
-    document.title = CONFIG.knowledgeTitle;
+    const pageHeader =
+      document.getElementById("pageHeader");
 
-    document.getElementById("pageHeader")
-      .textContent = CONFIG.indexTitle;
+    document.title =
+      CONFIG.knowledgeTitle;
+
+    pageHeader.textContent =
+      CONFIG.knowledgeTitle;
 
   </script>
 

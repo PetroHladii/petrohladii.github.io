@@ -48,65 +48,6 @@ body{
 }
 
 /* ========================================= */
-/*             APP NAVIGATION                */
-/* ========================================= */
-
-.app-nav{
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:12px;
-
-  padding:16px 20px;
-
-  border-bottom:1px solid #222;
-
-  background:#080808;
-}
-
-.app-nav-btn{
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  min-width:140px;
-
-  padding:10px 18px;
-
-  border-radius:10px;
-
-  text-decoration:none;
-
-  color:var(--muted);
-
-  border:1px solid #222;
-
-  background:#111;
-
-  transition:.18s;
-}
-
-.app-nav-btn:hover{
-
-  border-color:var(--accent);
-
-  color:#fff;
-
-  background:#181818;
-}
-
-.app-nav-btn.active{
-
-  background:rgba(253,137,6,.16);
-
-  color:var(--accent);
-
-  border-color:var(--accent);
-}
-
-/* ========================================= */
 /*              LOGOUT BUTTON                */
 /* ========================================= */
 

@@ -13,7 +13,7 @@
   <script src="../config/access-client.js"></script>
 </head>
 
-<body class="page-root">
+<body class="page-models3d">
 
   <!-- HEADER -->
   <header class="topbar">
@@ -37,8 +37,8 @@
 
   </header>
 
-  <!-- CONTENT -->
-  <main class="center">
+  <!-- MAIN -->
+  <main class="container">
 
     <!-- Access denied -->
     <section
@@ -61,35 +61,18 @@
     </section>
 
     <!-- Module content -->
-    <div
-      id="moduleContent"
-      class="grid-3">
+    <section
+      id="moduleContent">
 
-      <a
-        class="card big"
-        href="rozvidka.html">
+      <h2>
+        🚧 Модуль знаходиться у розробці
+      </h2>
 
-        <h2>Mavic/Autel</h2>
+      <p class="lead">
+        Незабаром тут буде доступний каталог 3D моделей.
+      </p>
 
-      </a>
-
-      <a
-        class="card big"
-        href="bombers.html">
-
-        <h2>Бомбери</h2>
-
-      </a>
-
-      <a
-        class="card big"
-        href="fpv.html">
-
-        <h2>FPV</h2>
-
-      </a>
-
-    </div>
+    </section>
 
   </main>
 
@@ -97,37 +80,35 @@
     <small>Власність 125 ОВМБр</small>
   </footer>
 
-  <script src="main.js"></script>
-
   <script>
 
     const pageHeader =
       document.getElementById("pageHeader");
 
     document.title =
-      CONFIG.indexTitle;
+      CONFIG.models3dTitle;
 
     pageHeader.textContent =
-      CONFIG.indexTitle;
+      CONFIG.models3dTitle;
 
     (async () => {
 
-        await Access.ready();
+      await Access.ready();
 
-        const moduleContent =
-          document.getElementById("moduleContent");
+      const moduleContent =
+        document.getElementById("moduleContent");
 
-        const accessDenied =
-          document.getElementById("accessDenied");
+      const accessDenied =
+        document.getElementById("accessDenied");
 
-        if (!Access.hasPermission(PERMISSIONS.MODULE_BK)) {
+      if (!Access.hasPermission(PERMISSIONS.MODULE_MODELS3D)) {
 
-          moduleContent.classList.add("hidden");
-          accessDenied.classList.remove("hidden");
+        moduleContent.classList.add("hidden");
+        accessDenied.classList.remove("hidden");
 
-          return;
+        return;
 
-        }
+      }
 
     })();
 
