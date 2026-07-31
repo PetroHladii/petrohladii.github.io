@@ -200,8 +200,8 @@ const KNOWLEDGE = [
 
     videos: [
       {
-        title: "",
-        file: ""
+        title: "Підготовка БК перед вильотом",
+        file: "4b52c7f6b8fdbb18e3717345f9c75797"
       }        
     ],
     updated: "2026-01-01"
