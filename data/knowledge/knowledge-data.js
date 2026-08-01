@@ -185,6 +185,11 @@ const KNOWLEDGE = [
         title: "Vampire КЛЕ",
         file: "kle_vampire.pdf"
       }
+      ,
+      {
+        title: "ТТХ антенних комплексів",
+        file: "antennas_ttc.pdf"
+      }
     ],
 
     photos: [
