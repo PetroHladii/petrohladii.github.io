@@ -183,7 +183,7 @@ export const ROLES = {
 
     knowledge: {
 
-      categories: ["fa"]
+      categories: ["tacmed","fa"]
 
     }
 
