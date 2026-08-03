@@ -179,7 +179,7 @@ export const ROLES = {
 
     knowledge: {
 
-      categories: "*"
+      categories: "fa"
 
     }
 
