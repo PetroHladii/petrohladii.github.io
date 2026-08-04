@@ -18,6 +18,8 @@ data/
 		media-index.json
 	knowledge/
 		knowledge-data.js
+	models3d/
+		models-data.js
 documentation/
 	architecture.md
 	questions.md
@@ -44,6 +46,12 @@ knowledge/
 	article.js
 	index.html
 	knowledge.js
+models3d/
+	index.html
+	model.html
+	models3d.js
+review/
+	index.html
 index.html
 login.html
 logo.webp
