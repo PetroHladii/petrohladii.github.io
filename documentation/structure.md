@@ -1,3 +1,5 @@
+PROJECT
+
 bk/
 	bombers.html
 	category.js
@@ -57,3 +59,40 @@ login.html
 logo.webp
 new-logo.png
 README.md
+
+
+R2
+
+bk-media/
+	bk/
+		bombers/
+		fpv/
+		rozvidka/
+	knowledge/
+		1/
+			files/
+			photos/
+		2/
+			files/
+			photos/
+		3/
+			files/
+			photos/
+		...
+	models3d/
+		1/
+			preview.webp
+			files/
+			photos/
+			models/
+		2/
+			preview.webp
+			files/
+			photos/
+			models/
+		3/
+			preview.webp
+			files/
+			photos/
+			models/
+		...
