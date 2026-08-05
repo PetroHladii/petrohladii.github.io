@@ -36,8 +36,8 @@ const MODELS = [
     author: "bbps",
     category: "fpv",
     title: "ФПВ тест",
-    description: "",
-    preview: {title: "", file: ""},
+    description: "пупупу",
+    preview: {title: "preview.webp", file: "preview.webp"},
     photos: [
       {title: "",
         file: ""},
@@ -51,8 +51,8 @@ const MODELS = [
         file: ""}
     ],
     models: [
-      {title: "",
-        file: ""},
+      {title: "Тримач кабелю для Вампіра",
+        file: "Vamp_trimach_cable_VMP_000_041-R4.glb"},
       {title: "",
         file: ""},
       {title: "",
@@ -73,7 +73,7 @@ const MODELS = [
     author: "2mb",
     category: "bomberh",
     title: "Бомбери тест",
-    description: "",
+    description: "тарара",
     preview: {title: "", file: ""},
     photos: [
       {title: "",
@@ -110,7 +110,7 @@ const MODELS = [
     author: "2mb",
     category: "bomberh",
     title: "Тест",
-    description: "",
+    description: "парарам",
     preview: {title: "", file: ""},
     photos: [
       {title: "",
