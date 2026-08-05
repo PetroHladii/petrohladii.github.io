@@ -36,6 +36,12 @@ const PERMISSIONS = {
   MODELS3D_ITEM_VIEW:
     "models3d.item.view",
 
+  MODELS3D_MEDIA_SEE:
+    "models3d.media.see",
+
+  MODELS3D_MEDIA_VIEW:
+    "models3d.media.view",
+
   MODELS3D_DOWNLOAD:
     "models3d.download"
 
@@ -209,6 +215,38 @@ const Access = {
 
     return this.hasPermission(
       PERMISSIONS.BK_ITEM_VIEW
+    );
+
+  },
+
+  canViewModels3DItem() {
+
+    return this.hasPermission(
+      PERMISSIONS.MODELS3D_ITEM_VIEW
+    );
+
+  },
+
+  canSeeModels3DMedia() {
+
+    return this.hasPermission(
+      PERMISSIONS.MODELS3D_MEDIA_SEE
+    );
+
+  },
+
+  canViewModels3DMedia() {
+
+    return this.hasPermission(
+      PERMISSIONS.MODELS3D_MEDIA_VIEW
+    );
+
+  },
+
+  canDownloadModels3D() {
+
+    return this.hasPermission(
+      PERMISSIONS.MODELS3D_DOWNLOAD
     );
 
   },

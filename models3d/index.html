@@ -2,7 +2,8 @@
 <html lang="uk">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1" />
 
   <title></title>
 
@@ -11,6 +12,7 @@
   <script src="../config/env-config.js"></script>
   <script src="../config/config.js"></script>
   <script src="../config/access-client.js"></script>
+
 </head>
 
 <body class="page-models3d">
@@ -62,15 +64,62 @@
 
     <!-- Module content -->
     <section
-      id="moduleContent">
+      id="moduleContent"
+      class="container hidden">
 
-      <h2>
-        🚧 Модуль знаходиться у розробці
-      </h2>
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
 
-      <p class="lead">
-        Незабаром тут буде доступний каталог 3D моделей.
-      </p>
+        <div class="panel">
+
+          <h3>Пошук</h3>
+
+          <input
+            id="searchInput"
+            class="search-input"
+            type="text"
+            placeholder="Назва або категорія">
+
+        </div>
+
+        <div class="panel">
+
+          <h3>Автори</h3>
+
+          <div
+            id="authorFilters"
+            class="filters">
+          </div>
+
+        </div>
+
+        <div class="panel">
+
+          <h3>Категорії</h3>
+
+          <div
+            id="categoryFilters"
+            class="filters">
+          </div>
+
+        </div>
+
+      </aside>
+
+      <!-- CONTENT -->
+      <section class="content">
+
+        <div
+          id="resultsInfo"
+          class="results-info">
+        </div>
+
+        <section
+          id="articles"
+          class="articles-list">
+        </section>
+
+      </section>
 
     </section>
 
@@ -79,6 +128,10 @@
   <footer class="footer">
     <small>Власність 125 ОВМБр</small>
   </footer>
+
+  <script src="../data/models3d/models-data.js"></script>
+
+  <script src="models3d.js"></script>
 
   <script>
 
@@ -90,27 +143,6 @@
 
     pageHeader.textContent =
       CONFIG.models3dTitle;
-
-    (async () => {
-
-      await Access.ready();
-
-      const moduleContent =
-        document.getElementById("moduleContent");
-
-      const accessDenied =
-        document.getElementById("accessDenied");
-
-      if (!Access.hasPermission(PERMISSIONS.MODULE_MODELS3D)) {
-
-        moduleContent.classList.add("hidden");
-        accessDenied.classList.remove("hidden");
-
-        return;
-
-      }
-
-    })();
 
   </script>
 
