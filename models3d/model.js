@@ -2,6 +2,14 @@ const ModelPage = {
 
   model: null,
 
+  photos: [],
+
+  currentPhoto: 0,
+
+  models: [],
+
+  currentModel: 0,
+
   async init() {
 
     try {
@@ -73,6 +81,12 @@ const ModelPage = {
     this.initializeHeader();
 
     this.renderHeader();
+
+    this.renderPhotos();
+
+    this.renderModels();
+
+    this.bindEvents();
 
     document
       .getElementById(
@@ -161,7 +175,282 @@ const ModelPage = {
 
       this.model.description || "";
 
-  }
+  },
+
+  renderPhotos() {
+
+    this.photos =
+
+        this.model.photos.filter(
+        photo =>
+            photo.file
+        );
+
+    if (
+        this.photos.length === 0
+    ) {
+
+        return;
+
+    }
+
+    document
+        .getElementById(
+        "photosSection"
+        )
+        .classList
+        .remove("hidden");
+
+    const container =
+        document.getElementById(
+        "contentPhotos"
+        );
+
+    container.innerHTML = "";
+
+    this.photos.forEach(
+        (photo, index) => {
+
+        const image =
+            document.createElement(
+            "img"
+            );
+
+        image.src =
+            `${CONFIG.mediaBase}/models3d/${this.model.id}/photos/${photo.file}`;
+
+        image.alt =
+            photo.title ||
+            this.model.title;
+
+        image.className =
+            "gallery-image";
+
+        image.dataset.index =
+            index;
+
+        image.addEventListener(
+          "click",
+          () =>
+            this.openPhoto(index)
+        );
+
+        container.appendChild(
+            image
+        );
+
+        }
+    );
+
+  },
+
+  openPhoto(index) {
+
+    this.currentPhoto =
+        index;
+
+    const photo =
+        this.photos[index];
+
+        if (!photo) {
+
+          return;
+
+        }
+
+    document
+        .getElementById(
+        "photoImage"
+        )
+        .src =
+        `${CONFIG.mediaBase}/models3d/${this.model.id}/photos/${photo.file}`;
+
+    document
+        .getElementById(
+        "photoCaption"
+        )
+        .textContent =
+        photo.title || "";
+
+    document
+        .getElementById(
+        "photoCounter"
+        )
+        .textContent =
+        `${index + 1} / ${this.photos.length}`;
+
+    document
+        .getElementById(
+        "photoViewer"
+        )
+        .classList
+        .remove("hidden");
+
+  },
+
+  closePhoto() {
+
+    document
+      .getElementById(
+        "photoViewer"
+      )
+      .classList
+      .add("hidden");
+
+  },
+
+  previousPhoto() {
+
+    if (
+      this.photos.length === 0
+    ) {
+
+      return;
+
+    }
+
+    this.currentPhoto--;
+
+    if (
+      this.currentPhoto < 0
+    ) {
+
+      this.currentPhoto =
+        this.photos.length - 1;
+
+    }
+
+    this.openPhoto(
+      this.currentPhoto
+    );
+
+  },
+
+  nextPhoto() {
+
+    if (
+      this.photos.length === 0
+    ) {
+
+      return;
+
+    }
+
+    this.currentPhoto++;
+
+    if (
+      this.currentPhoto >=
+      this.photos.length
+    ) {
+
+      this.currentPhoto = 0;
+
+    }
+
+    this.openPhoto(
+      this.currentPhoto
+    );
+
+  },
+
+  bindEvents() {
+
+    document
+      .getElementById(
+        "photoClose"
+      )
+      .addEventListener(
+        "click",
+        () =>
+          this.closePhoto()
+      );
+
+    document
+      .getElementById(
+        "photoPrev"
+      )
+      .addEventListener(
+        "click",
+        () =>
+          this.previousPhoto()
+      );
+
+    document
+      .getElementById(
+        "photoNext"
+      )
+      .addEventListener(
+        "click",
+        () =>
+          this.nextPhoto()
+      );
+
+    document
+      .getElementById(
+        "photoViewer"
+      )
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target.id ===
+            "photoViewer"
+          ) {
+
+            this.closePhoto();
+
+          }
+
+        }
+      );
+
+    document
+      .addEventListener(
+        "keydown",
+        event => {
+
+          const viewer =
+            document.getElementById(
+              "photoViewer"
+            );
+
+          if (
+            viewer.classList.contains(
+              "hidden"
+            )
+          ) {
+
+            return;
+
+          }
+
+          switch (event.key) {
+
+            case "Escape":
+
+              this.closePhoto();
+
+              break;
+
+            case "ArrowLeft":
+
+              this.previousPhoto();
+
+              break;
+
+            case "ArrowRight":
+
+              this.nextPhoto();
+
+              break;
+
+          }
+
+        }
+      );
+
+  },
 
 };
 
