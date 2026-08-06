@@ -223,53 +223,59 @@
 
   <!-- MODEL VIEWER -->
 
-  <div class="viewer-modal">
+  <div
+    id="modelViewerOverlay"
+    class="overlay hidden">
 
-    <div class="viewer-header">
+    <div class="viewer-modal">
 
-      <h3
-        id="modelTitle">
-      </h3>
+      <div class="viewer-header">
 
-      <button
-        id="modelClose"
-        class="modal-close">
+        <h3
+          id="modelTitle">
+        </h3>
 
-        ×
+        <button
+          id="modelClose"
+          class="modal-close">
 
-      </button>
+          ×
 
-    </div>
+        </button>
 
-    <div class="viewer-body">
+      </div>
 
-      <model-viewer
+      <div class="viewer-body">
 
-        id="modelViewer"
+        <model-viewer
 
-        camera-controls
+          id="modelViewer"
 
-        touch-action="pan-y"
+          camera-controls
 
-        shadow-intensity="1"
+          touch-action="pan-y"
 
-        exposure="1"
+          shadow-intensity="1"
 
-        auto-rotate>
+          exposure="1"
 
-      </model-viewer>
+          auto-rotate>
 
-    </div>
+        </model-viewer>
 
-    <div class="viewer-actions">
+      </div>
 
-      <button
-        id="downloadModel"
-        class="hidden">
+      <div class="viewer-actions">
 
-        Завантажити
+        <button
+          id="downloadModel"
+          class="hidden">
 
-      </button>
+          Завантажити
+
+        </button>
+
+      </div>
 
     </div>
 
