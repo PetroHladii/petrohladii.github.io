@@ -10,6 +10,8 @@ const ModelPage = {
 
   currentModel: 0,
 
+  viewer: null,
+
   async init() {
 
     try {
@@ -81,6 +83,11 @@ const ModelPage = {
     this.initializeHeader();
 
     this.renderHeader();
+
+    this.viewer =
+      document.getElementById(
+        "modelViewer"
+      );
 
     this.renderPhotos();
 
@@ -312,9 +319,70 @@ const ModelPage = {
 
   openModel(index) {
 
-    console.log(
-      this.models[index]
+    this.currentModel =
+      index;
+
+    const model =
+      this.models[index];
+
+    if (!model) {
+
+      return;
+
+    }
+
+    this.loadModel(model);
+
+    this.showViewer(model);
+
+  },
+
+  loadModel(model) {
+
+    this.viewer.src =
+
+      `${CONFIG.mediaBase}/models3d/${this.model.id}/models/${model.file}`;
+
+  },
+
+  showViewer(model) {
+
+    document
+      .getElementById(
+        "modelTitle"
+      )
+      .textContent =
+      model.title;
+
+    document
+      .getElementById(
+        "modelViewerOverlay"
+      )
+      .classList
+      .remove("hidden");
+
+  },
+
+  closeViewer() {
+
+    document
+      .getElementById(
+        "modelViewerOverlay"
+      )
+      .classList
+      .add("hidden");
+
+    document
+      .getElementById(
+        "modelTitle"
+      )
+      .textContent = "";
+
+    this.viewer.removeAttribute(
+      "src"
     );
+
+    this.currentModel = 0;
 
   },
 
@@ -480,19 +548,65 @@ const ModelPage = {
       );
 
     document
+      .getElementById(
+        "modelClose"
+      )
+      .addEventListener(
+        "click",
+        () =>
+          this.closeViewer()
+      );
+
+    document
+      .getElementById(
+        "modelViewerOverlay"
+      )
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target.id ===
+            "modelViewerOverlay"
+          ) {
+
+            this.closeViewer();
+
+          }
+
+        }
+      );
+
+    document
       .addEventListener(
         "keydown",
         event => {
 
-          const viewer =
+          const photoViewer =
             document.getElementById(
               "photoViewer"
             );
 
-          if (
-            viewer.classList.contains(
+          const modelViewer =
+            document.getElementById(
+              "modelViewerOverlay"
+            );
+
+          const photoOpened =
+
+            !photoViewer.classList.contains(
               "hidden"
-            )
+            );
+
+          const modelOpened =
+
+            !modelViewer.classList.contains(
+              "hidden"
+            );
+
+          if (
+            !photoOpened &&
+            !modelOpened
           ) {
 
             return;
@@ -503,19 +617,37 @@ const ModelPage = {
 
             case "Escape":
 
-              this.closePhoto();
+              if (photoOpened) {
+
+                this.closePhoto();
+
+              }
+
+              if (modelOpened) {
+
+                this.closeViewer();
+
+              }
 
               break;
 
             case "ArrowLeft":
 
-              this.previousPhoto();
+              if (photoOpened) {
+
+                this.previousPhoto();
+
+              }
 
               break;
 
             case "ArrowRight":
 
-              this.nextPhoto();
+              if (photoOpened) {
+
+                this.nextPhoto();
+
+              }
 
               break;
 
