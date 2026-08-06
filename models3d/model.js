@@ -341,8 +341,8 @@ const ModelPage = {
 
     this.viewer.src =
 
-      //`${CONFIG.mediaBase}/models3d/${this.model.id}/models/${model.file}`; tbd
-      `https://pub-9b97ff9110c548abb84a882aca3b547c.r2.dev/models3d/${this.model.id}/models/${model.file}`;
+      `${CONFIG.mediaBase}/models3d/${this.model.id}/models/${model.file}`;
+      //`https://pub-9b97ff9110c548abb84a882aca3b547c.r2.dev/models3d/${this.model.id}/models/${model.file}`;
 
   },
 
