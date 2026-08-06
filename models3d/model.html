@@ -252,14 +252,24 @@
           id="modelViewer"
 
           camera-controls
+          auto-rotate
 
           touch-action="pan-y"
 
           shadow-intensity="1"
-
           exposure="1"
 
-          auto-rotate>
+          interaction-prompt="none"
+
+          camera-orbit="45deg 75deg auto"
+          field-of-view="30deg"
+
+          min-camera-orbit="auto auto auto"
+          max-camera-orbit="auto auto auto"
+
+          loading="eager"
+
+          reveal="auto">
 
         </model-viewer>
 

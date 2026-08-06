@@ -410,9 +410,22 @@ const ModelPage = {
   loadModel(model) {
 
     this.viewer.src =
-
       `${CONFIG.mediaBase}/models3d/${this.model.id}/models/${model.file}`;
-      
+
+    this.viewer.addEventListener(
+      "load",
+      () => {
+
+        this.viewer.cameraTarget = "auto auto auto";
+
+        this.viewer.cameraOrbit = "45deg 75deg auto";
+
+        this.viewer.jumpCameraToGoal();
+
+      },
+      { once: true }
+    );
+
   },
 
   showViewer(model) {
