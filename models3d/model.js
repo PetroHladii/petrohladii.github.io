@@ -240,11 +240,17 @@ const ModelPage = {
         image.dataset.index =
             index;
 
-        image.addEventListener(
-          "click",
-          () =>
-            this.openPhoto(index)
-        );
+        if (
+          Access.canViewModels3DMedia()
+        ) {
+
+          image.addEventListener(
+            "click",
+            () =>
+              this.openPhoto(index)
+          );
+
+        }
 
         container.appendChild(
             image
@@ -306,11 +312,17 @@ const ModelPage = {
         button.dataset.index =
           index;
 
-        button.addEventListener(
-          "click",
-          () =>
-            this.openModel(index)
-        );
+        if (
+          Access.canViewModels3DMedia()
+        ) {
+
+          button.addEventListener(
+            "click",
+            () =>
+              this.openModel(index)
+          );
+
+        }
 
         container.appendChild(
           button
@@ -372,11 +384,17 @@ const ModelPage = {
         button.dataset.index =
           index;
 
-        button.addEventListener(
-          "click",
-          () =>
-            this.openFile(index)
-        );
+        if (
+          Access.canViewModels3DMedia()
+        ) {
+
+          button.addEventListener(
+            "click",
+            () =>
+              this.openFile(index)
+          );
+
+        }
 
         container.appendChild(
           button
