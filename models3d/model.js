@@ -243,6 +243,80 @@ const ModelPage = {
     );
 
   },
+  
+  renderModels() {
+
+    this.models =
+
+      this.model.models.filter(
+        model =>
+          model.file
+      );
+
+    if (
+      this.models.length === 0
+    ) {
+
+      return;
+
+    }
+
+    document
+      .getElementById(
+        "modelsSection"
+      )
+      .classList
+      .remove("hidden");
+
+    const container =
+      document.getElementById(
+        "contentModels"
+      );
+
+    container.innerHTML = "";
+
+    this.models.forEach(
+      (model, index) => {
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.type =
+          "button";
+
+        button.className =
+          "article-item";
+
+        button.textContent =
+          model.title;
+
+        button.dataset.index =
+          index;
+
+        button.addEventListener(
+          "click",
+          () =>
+            this.openModel(index)
+        );
+
+        container.appendChild(
+          button
+        );
+
+      }
+    );
+
+  },
+
+  openModel(index) {
+
+    console.log(
+      this.models[index]
+    );
+
+  },
 
   openPhoto(index) {
 
