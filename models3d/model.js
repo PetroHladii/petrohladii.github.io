@@ -443,9 +443,22 @@ const ModelPage = {
         "downloadModel"
       );
 
-    downloadButton.classList.remove(
-      "hidden"
-    );
+    if (
+      Access.canDownloadModels3D()
+    ) {
+
+      downloadButton.classList.remove(
+        "hidden"
+      );
+
+    }
+    else {
+
+      downloadButton.classList.add(
+        "hidden"
+      );
+
+    }
 
     document
       .getElementById(
