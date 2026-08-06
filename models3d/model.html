@@ -223,11 +223,13 @@
 
   <!-- MODEL VIEWER -->
 
-  <div
-    id="modelViewerOverlay"
-    class="overlay hidden">
+  <div class="viewer-modal">
 
-    <div class="viewer-modal">
+    <div class="viewer-header">
+
+      <h3
+        id="modelTitle">
+      </h3>
 
       <button
         id="modelClose"
@@ -237,9 +239,9 @@
 
       </button>
 
-      <h3
-        id="modelTitle">
-      </h3>
+    </div>
+
+    <div class="viewer-body">
 
       <model-viewer
 
@@ -257,17 +259,17 @@
 
       </model-viewer>
 
-      <div class="viewer-actions">
+    </div>
 
-        <button
-          id="downloadModel"
-          class="hidden">
+    <div class="viewer-actions">
 
-          Завантажити
+      <button
+        id="downloadModel"
+        class="hidden">
 
-        </button>
+        Завантажити
 
-      </div>
+      </button>
 
     </div>
 
