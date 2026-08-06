@@ -33,16 +33,16 @@ const MODELS = [
 
   {
     id: 1,
-    author: "bbps",
-    category: "fpv",
-    title: "ФПВ тест",
-    description: "пупупу",
+    author: "2mb",
+    category: "bomberh",
+    title: "Тест. Тримач кабелів для Вампіра",
+    description: "Тестовий запис для відображення можливостей функціоналу",
     preview: {title: "preview.webp", file: "preview.webp"},
     photos: [
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
+      {title: "Дрон Вампір",
+        file: "1.png"},
+      {title: "Монета",
+        file: "2.png"},
       {title: "",
         file: ""},
       {title: "",
@@ -59,87 +59,13 @@ const MODELS = [
         file: ""}
     ],
     files: [
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""}
-    ],
-    upd: "2026-01-01"
-  },
-  {
-    id: 2,
-    author: "2mb",
-    category: "bomberh",
-    title: "Бомбери тест",
-    description: "тарара",
-    preview: {title: "", file: ""},
-    photos: [
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""}
-    ],
-    models: [
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""}
-    ],
-    files: [
-      {title: "",
-        file: ""},
+      {title: "3D модель у форматі .stl",
+        file: "Vamp_trimach_cable.stl"},
       {title: "",
         file: ""},
       {title: "",
         file: ""}
     ],
     upd: "2026-01-01"
-  },
-  {
-    id: 3,
-    author: "2mb",
-    category: "bomberh",
-    title: "Тест",
-    description: "парарам",
-    preview: {title: "", file: ""},
-    photos: [
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""}
-    ],
-    models: [
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""}
-    ],
-    files: [
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""},
-      {title: "",
-        file: ""}
-    ],
-    upd: "2026-01-01"
-  },
+  }
 ];

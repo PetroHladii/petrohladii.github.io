@@ -437,6 +437,16 @@ const ModelPage = {
       .textContent =
       model.title;
 
+    const downloadButton =
+
+      document.getElementById(
+        "downloadModel"
+      );
+
+    downloadButton.classList.remove(
+      "hidden"
+    );
+
     document
       .getElementById(
         "modelViewerOverlay"
@@ -464,6 +474,13 @@ const ModelPage = {
     this.viewer.removeAttribute(
       "src"
     );
+
+    document
+      .getElementById(
+        "downloadModel"
+      )
+      .classList
+      .add("hidden");
 
     this.currentModel = 0;
 
@@ -659,6 +676,51 @@ const ModelPage = {
         "click",
         () =>
           this.closeViewer()
+      );
+
+    document
+      .getElementById(
+        "downloadModel"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          const model =
+            this.models[
+              this.currentModel
+            ];
+
+          if (!model) {
+
+            return;
+
+          }
+
+          const link =
+            document.createElement(
+              "a"
+            );
+
+          link.href =
+            `${CONFIG.mediaBase}/models3d/${this.model.id}/models/${model.file}`;
+
+          link.setAttribute(
+            "download",
+            model.file
+          );
+
+          document.body.appendChild(
+            link
+          );
+
+          link.click();
+
+          document.body.removeChild(
+            link
+          );
+
+        }
       );
 
     document
