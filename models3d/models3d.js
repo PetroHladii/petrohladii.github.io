@@ -28,6 +28,11 @@ const Models3D = {
         .classList
         .add("hidden");
 
+      document
+        .getElementById("moduleSidebar")
+        .classList
+        .add("hidden");
+
       return;
 
     }
@@ -48,12 +53,22 @@ const Models3D = {
         .classList
         .add("hidden");
 
+      document
+        .getElementById("moduleSidebar")
+        .classList
+        .add("hidden");
+
       return;
 
     }
 
     document
       .getElementById("moduleContent")
+      .classList
+      .remove("hidden");
+
+    document
+      .getElementById("moduleSidebar")
       .classList
       .remove("hidden");
 
