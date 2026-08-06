@@ -154,29 +154,12 @@ const ModelPage = {
       .textContent =
       this.model.title;
 
-    const author =
-
-      AUTHORS[
-        this.model.author
-      ] ||
-
-      this.model.author;
-
-    const category =
-
-      CATEGORIES[
-        this.model.category
-      ] ||
-
-      this.model.category;
-
     document
       .getElementById(
         "contentInfo"
       )
-      .textContent =
-
-      `${category} • ${author} • ${this.model.upd}`;
+      .classList
+      .add("hidden");
 
     document
       .getElementById(
@@ -222,23 +205,39 @@ const ModelPage = {
     this.photos.forEach(
         (photo, index) => {
 
+        const card =
+          document.createElement(
+            "div"
+          );
+
+        card.className =
+          "gallery-card";
+
         const image =
-            document.createElement(
+          document.createElement(
             "img"
-            );
+          );
 
         image.src =
-            `${CONFIG.mediaBase}/models3d/${this.model.id}/photos/${photo.file}`;
+          `${CONFIG.mediaBase}/models3d/${this.model.id}/photos/${photo.file}`;
 
         image.alt =
-            photo.title ||
-            this.model.title;
+          photo.title ||
+          this.model.title;
 
         image.className =
-            "gallery-image";
+          "gallery-image";
 
-        image.dataset.index =
-            index;
+        const caption =
+          document.createElement(
+            "div"
+          );
+
+        caption.className =
+          "gallery-caption";
+
+        caption.textContent =
+          photo.title || "";
 
         if (
           Access.canViewModels3DMedia()
@@ -252,8 +251,16 @@ const ModelPage = {
 
         }
 
+        card.appendChild(
+          image
+        );
+
+        card.appendChild(
+          caption
+        );
+
         container.appendChild(
-            image
+          card
         );
 
         }
