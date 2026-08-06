@@ -10,6 +10,8 @@ const ModelPage = {
 
   currentModel: 0,
 
+  files: [],
+
   viewer: null,
 
   async init() {
@@ -92,6 +94,8 @@ const ModelPage = {
     this.renderPhotos();
 
     this.renderModels();
+
+    this.renderFiles();
 
     this.bindEvents();
 
@@ -317,6 +321,72 @@ const ModelPage = {
 
   },
 
+  renderFiles() {
+
+    this.files =
+
+      this.model.files.filter(
+        file =>
+          file.file
+      );
+
+    if (
+      this.files.length === 0
+    ) {
+
+      return;
+
+    }
+
+    document
+      .getElementById(
+        "filesSection"
+      )
+      .classList
+      .remove("hidden");
+
+    const container =
+      document.getElementById(
+        "contentFiles"
+      );
+
+    container.innerHTML = "";
+
+    this.files.forEach(
+      (file, index) => {
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.type =
+          "button";
+
+        button.className =
+          "article-item";
+
+        button.textContent =
+          file.title;
+
+        button.dataset.index =
+          index;
+
+        button.addEventListener(
+          "click",
+          () =>
+            this.openFile(index)
+        );
+
+        container.appendChild(
+          button
+        );
+
+      }
+    );
+
+  },
+
   openModel(index) {
 
     this.currentModel =
@@ -342,8 +412,7 @@ const ModelPage = {
     this.viewer.src =
 
       `${CONFIG.mediaBase}/models3d/${this.model.id}/models/${model.file}`;
-      //`https://pub-9b97ff9110c548abb84a882aca3b547c.r2.dev/models3d/${this.model.id}/models/${model.file}`;
-
+      
   },
 
   showViewer(model) {
@@ -384,6 +453,27 @@ const ModelPage = {
     );
 
     this.currentModel = 0;
+
+  },
+
+  openFile(index) {
+
+    const file =
+      this.files[index];
+
+    if (!file) {
+
+      return;
+
+    }
+
+    window.open(
+
+      `${CONFIG.mediaBase}/models3d/${this.model.id}/files/${file.file}`,
+
+      "_blank"
+
+    );
 
   },
 
