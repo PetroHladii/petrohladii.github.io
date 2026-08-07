@@ -24,6 +24,7 @@ data/
 		models-data.js
 documentation/
 	architecture.md
+	current.md
 	questions.md
 	roles.md
 	structure.md
@@ -51,11 +52,13 @@ knowledge/
 models3d/
 	index.html
 	model.html
+	model.js
 	models3d.js
 review/
 	index.html
 index.html
 login.html
+logo.ico
 logo.webp
 new-logo.png
 README.md
