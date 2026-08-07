@@ -211,7 +211,7 @@ const ModelPage = {
           );
 
         card.className =
-          "gallery-card";
+          "photo-card";
 
         const image =
           document.createElement(
@@ -225,16 +225,13 @@ const ModelPage = {
           photo.title ||
           this.model.title;
 
-        image.className =
-          "gallery-image";
-
         const caption =
           document.createElement(
             "div"
           );
 
         caption.className =
-          "gallery-caption";
+          "photo-title";
 
         caption.textContent =
           photo.title || "";
