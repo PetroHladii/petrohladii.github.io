@@ -164,7 +164,7 @@ const KNOWLEDGE = [
 
     category: "bomberh",
 
-    title: "Важкі бомбери: КЛЕ",
+    title: "Важкі бомбери: Документація",
 
     contentFile: "3.html",
 
@@ -216,36 +216,36 @@ const KNOWLEDGE = [
     {
     id: 4,
 
-    author: "2mb",
+    author: "bbps",
 
-    category: "tacmed",
+    category: "bomberh",
 
-    title: "TACMED",
+    title: "Переобладнання Вампіра на R2D2",
 
-    contentFile: "2.html",
+    contentFile: "4.html",
 
     files: [
       {
-        title: "тест",
-        file: "testbrave.pdf"
+        title: "",
+        file: ""
       }
     ],
 
     photos: [
       {
-        title: "тест 1",
-        file: "testp1.jfif"
+        title: "",
+        file: ""
       },
       {
-        title: "тест 2",
-        file: "testp2.jfif"
+        title: "",
+        file: ""
       }
     ],
 
     videos: [
       {
-        title: "тест відео",
-        file: "3b746e54e1f8b861a44f73efc2b1c917"
+        title: "",
+        file: ""
       }
               
     ],
@@ -258,16 +258,16 @@ const KNOWLEDGE = [
 
     author: "bbps",
 
-    category: "fa",
+    category: "mavic",
 
-    title: "FA",
+    title: "Розвідувальні коптери: Основи",
 
-    contentFile: "3.html",
+    contentFile: "5.html",
 
     files: [
       {
-        title: "Важкі бомбери - шпаргалка",
-        file: "heavy_bombers_cheatsheet.pdf"
+        title: "Розвідувальні коптери: Основи",
+        file: "recon_copters_base.pdf"
       }
     ],
 
@@ -276,7 +276,10 @@ const KNOWLEDGE = [
     ],
 
     videos: [
-            
+      {
+        title: "Скиди на розвідувальних коптерах",
+        file: "5_skyd_recon_copter.mp4"
+      }      
     ],
     updated: "2026-01-01"
 
