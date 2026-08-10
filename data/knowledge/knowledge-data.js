@@ -282,8 +282,8 @@ const KNOWLEDGE = [
         file: "matrice4te.pdf"
       },
       {
-        title: "",
-        file: ""
+        title: "Додаткове ПЗ: Кропива, Вежа, Діскорд, Мілчат",
+        file: "kropyva_vezha_discord_milchat.pdf"
       }
     ],
 
