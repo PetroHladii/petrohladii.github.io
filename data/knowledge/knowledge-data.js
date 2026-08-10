@@ -268,6 +268,22 @@ const KNOWLEDGE = [
       {
         title: "Розвідувальні коптери: Основи",
         file: "recon_copters_base.pdf"
+      },
+      {
+        title: "Настанова Autel Evo Max 4",
+        file: "autel_evo_max_manual_v1.pdf"
+      },
+      {
+        title: "Інструкція для операторів Мавіка",
+        file: "mavic_operators_instruction.pdf"
+      },
+      {
+        title: "Matrice 4T/4E",
+        file: "matrice4te.pdf"
+      },
+      {
+        title: "",
+        file: ""
       }
     ],
 
