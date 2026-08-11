@@ -294,7 +294,7 @@ const KNOWLEDGE = [
     videos: [
       {
         title: "Скиди на розвідувальних коптерах",
-        file: "5_skyd_recon_copter.mp4"
+        file: "bc684d8088b4248edc3b9be77b094be6"
       }      
     ],
     updated: "2026-01-01"
