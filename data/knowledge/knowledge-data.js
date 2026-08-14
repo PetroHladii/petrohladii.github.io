@@ -310,20 +310,8 @@ const KNOWLEDGE = [
         file: "fa_login.pdf"
       },
       {
-        title: "Настанова Autel Evo Max 4",
-        file: "autel_evo_max_manual_v1.pdf"
-      },
-      {
-        title: "Інструкція для операторів Мавіка",
-        file: "mavic_operators_instruction.pdf"
-      },
-      {
-        title: "Matrice 4T/4E",
-        file: "matrice4te.pdf"
-      },
-      {
-        title: "Додаткове ПЗ: Кропива, Вежа, Діскорд, Мілчат",
-        file: "kropyva_vezha_discord_milchat.pdf"
+        title: "FA: Вхід та верифікація події 'Виконане завдання БпЛА'",
+        file: "fa_login_flight_verification.pdf"
       }
     ],
     photos: [
@@ -349,20 +337,20 @@ const KNOWLEDGE = [
         file: "a2_login.pdf"
       },
       {
-        title: "Вхід в систему FA",
-        file: "autel_evo_max_manual_v1.pdf"
+        title: "FA: Вхід та верифікація події 'Втрата БпЛА'",
+        file: "fa_login_loss_verification.pdf"
       },
       {
-        title: "Інструкція для операторів Мавіка",
-        file: "mavic_operators_instruction.pdf"
+        title: "А2 Bot: Важкий бомбер: 'Втрата (БпЛА)'",
+        file: "a2_heavy_bomber_loss_2.pdf"
       },
       {
-        title: "Matrice 4T/4E",
-        file: "matrice4te.pdf"
+        title: "А2 Bot: Розвідувальне крило: 'Втрата (БпЛА)'",
+        file: "a2_recon_wing_loss_2.pdf"
       },
       {
-        title: "Додаткове ПЗ: Кропива, Вежа, Діскорд, Мілчат",
-        file: "kropyva_vezha_discord_milchat.pdf"
+        title: "А2 Bot: Розвідувальний коптер: 'Втрата (БпЛА)'",
+        file: "a2_recon_copter_loss_2.pdf"
       }
     ],
     photos: [ 
