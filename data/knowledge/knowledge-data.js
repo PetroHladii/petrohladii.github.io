@@ -28,7 +28,8 @@ const CATEGORIES = {
   conceal: "Маскування",
   general: "Загальне",
   a2: "А2 Бот",
-  fa: "FA"
+  fa: "FA",
+  delta: "Delta"
 
 
 };
@@ -359,6 +360,29 @@ const KNOWLEDGE = [
       {
         title: "Скиди на розвідувальних коптерах",
         file: "bc684d8088b4248edc3b9be77b094be6"
+      }      
+    ],
+    updated: "2026-01-01"
+  },
+
+  {
+    id: 10,
+    author: "brigade",
+    category: "delta",
+    title: "Корисні матеріали Delta",
+    contentFile: "10.html",
+    files: [
+      {
+        title: "",
+        file: ""
+      }
+    ],
+    photos: [ 
+    ],
+    videos: [
+      {
+        title: "",
+        file: ""
       }      
     ],
     updated: "2026-01-01"
