@@ -23,6 +23,8 @@ const CONFIG = {
 
     rozvidkaTitle:"Mavic/Autel",
 
+    kamikazeWingTitle:"Крило камікадзе",
+
     knowledgeTitle:"Знання",
 
     models3dTitle: "3D Моделі",
@@ -49,6 +51,8 @@ const CONFIG = {
     bombersTitle:"Бомбери (тест)",
 
     fpvTitle:"FPV (тест)",
+
+    kamikazeWingTitle:"Крило камікадзе (тест)",
 
     rozvidkaTitle:"Mavic/Autel (тест)",
 
