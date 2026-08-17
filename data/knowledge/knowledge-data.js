@@ -466,6 +466,29 @@ const KNOWLEDGE = [
       }      
     ],
     updated: "2026-01-01"
+  },
+
+  {
+    id: 12,
+    author: "bbps",
+    category: "fpv",
+    title: "FPV: Налаштування дронів, комплексів керування та плат ініціації (БЕШКЕТ, БЛІНК, СПУК)",
+    contentFile: "12.html",
+    files: [
+      {
+        title: "",
+        file: ""
+      }
+    ],
+    photos: [ 
+    ],
+    videos: [
+      {
+        title: "",
+        file: ""
+      }      
+    ],
+    updated: "2026-01-01"
   }
 
 ];
