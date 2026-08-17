@@ -472,7 +472,7 @@ const KNOWLEDGE = [
     id: 12,
     author: "bbps",
     category: "fpv",
-    title: "FPV: Налаштування дронів, комплексів керування та плат ініціації (БЕШКЕТ, БЛІНК, СПУК)",
+    title: "FPV: Налаштування 'Бешкет', 'Блінк', 'Спук')",
     contentFile: "12.html",
     files: [
       {
