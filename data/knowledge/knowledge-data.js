@@ -449,7 +449,7 @@ const KNOWLEDGE = [
     id: 11,
     author: "bbps",
     category: "fpv",
-    title: "FPV: плати ініціації",
+    title: "FPV: Плати ініціації",
     contentFile: "11.html",
     files: [
       {
