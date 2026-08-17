@@ -6,10 +6,6 @@ const Knowledge = {
 
   async init() {
 
-    console.log(
-      "Knowledge module initialized"
-    );
-
     try {
 
       await Access.ready();
@@ -52,10 +48,6 @@ const Knowledge = {
 
   loadData() {
 
-    console.log(
-      "Loading Knowledge data..."
-    );
-
     this.articles =
       KNOWLEDGE.filter(
         article =>
@@ -76,10 +68,6 @@ const Knowledge = {
 
 
   renderAuthors() {
-
-    console.log(
-      "Render authors"
-    );
 
     const container =
       document.getElementById(
@@ -150,10 +138,6 @@ const Knowledge = {
 
   renderCategories() {
 
-    console.log(
-      "Render categories"
-    );
-
     const container =
       document.getElementById(
         "categoryFilters"
@@ -223,10 +207,6 @@ const Knowledge = {
 
   renderArticles() {
 
-    console.log(
-      "Render articles"
-    );
-
     const container =
       document.getElementById(
         "articles"
@@ -293,10 +273,6 @@ const Knowledge = {
 
 
   applyFilters() {
-
-    console.log(
-      "Apply filters"
-    );
 
     const search =
       document
@@ -378,10 +354,6 @@ const Knowledge = {
 
 
   bindEvents() {
-
-    console.log(
-      "Bind events"
-    );
 
     document
       .getElementById(

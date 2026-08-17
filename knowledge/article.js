@@ -9,10 +9,6 @@ const Article = {
 
   async init() {
 
-    console.log(
-      "Article module initialized"
-    );
-
     this.bindEvents();
 
     try {
@@ -90,11 +86,6 @@ const Article = {
       return;
 
     }
-
-    console.log(
-      "Article:",
-      this.article
-    );
 
     this.render();
 

@@ -80,7 +80,7 @@ export const ROLES = {
   },
 
 
-  user: {
+  pilot: {
 
     permissions: [
 
@@ -119,33 +119,19 @@ export const ROLES = {
     knowledge: {
 
       categories: [
-
         "fpv",
-
         "bomberh",
-
         "bomberl",
-
         "mavic",
-
         "wingrecon",
-
         "wingfpv",
-
         "wingstrike",
-
         "ppo",
-
         "ew",
-
         "tacmed",
-
         "conceal",
-
         "general",
-
         "a2"
-
       ]
 
     }

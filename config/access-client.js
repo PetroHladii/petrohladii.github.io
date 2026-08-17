@@ -320,11 +320,11 @@ const Access = {
 
   },
 
-  isUser() {
+  isPilot() {
 
     return (
       this.user?.role ===
-      "user"
+      "pilot"
     );
 
   },
