@@ -472,7 +472,7 @@ const KNOWLEDGE = [
     id: 12,
     author: "bbps",
     category: "fpv",
-    title: "FPV: Налаштування 'Бешкет', 'Блінк', 'Спук')",
+    title: "FPV: Налаштування 'Бешкет', 'Блінк', 'Спук'",
     contentFile: "12.html",
     files: [
       {
