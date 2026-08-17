@@ -443,6 +443,29 @@ const KNOWLEDGE = [
       }      
     ],
     updated: "2026-01-01"
+  },
+
+  {
+    id: 11,
+    author: "bbps",
+    category: "fpv",
+    title: "FPV: плати ініціації",
+    contentFile: "11.html",
+    files: [
+      {
+        title: "Каталог плат ініціації",
+        file: "catalog_plat_iniciacii.pdf"
+      }
+    ],
+    photos: [ 
+    ],
+    videos: [
+      {
+        title: "",
+        file: ""
+      }      
+    ],
+    updated: "2026-01-01"
   }
 
 ];
