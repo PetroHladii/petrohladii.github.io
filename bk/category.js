@@ -122,29 +122,55 @@
     return all.filter(name => name.startsWith(imgId + "-"));
   }
 
-  // ---------------------- CLOUD COUNTS ----------------------
+  // ---------------------- BK COUNTS ----------------------
   async function loadCloudCounts(){
+
     try {
 
       const res = await fetch(
-        CONFIG.cloudflareWorker,
-        { cache: "no-store" }
+        "/api/bk-amounts",
+        {
+          cache: "no-store",
+          credentials: "same-origin"
+        }
       );
 
-      if(!res.ok) throw new Error('Cloudflare response not ok');
+      if(!res.ok){
 
-      const j = await res.json();
+        throw new Error(
+          `BK amounts API error: ${res.status}`
+        );
 
-      if(pageKey && j && j[pageKey]){
-        cloudCounts = j[pageKey];
-      } else {
-        cloudCounts = null;
       }
 
-    } catch (e){
-      console.warn("Не вдалося підвантажити дані з Cloudflare:", e);
+      const data = await res.json();
+
+      if(
+        data &&
+        data.success === true &&
+        data.counts &&
+        typeof data.counts === "object"
+      ){
+
+        cloudCounts = data.counts;
+
+      } else {
+
+        cloudCounts = null;
+
+      }
+
+    } catch(e){
+
+      console.warn(
+        "Не вдалося підвантажити кількості БК:",
+        e
+      );
+
       cloudCounts = null;
+
     }
+
   }
 
   // ---------------------- MODAL ----------------------
