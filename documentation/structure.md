@@ -5,6 +5,7 @@ bk/
 	category.js
 	fpv.html
 	index.html
+	kamikazeWing.html
 	main.js
 	rozvidka.html
 config/
