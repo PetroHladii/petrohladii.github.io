@@ -124,78 +124,27 @@
 
   // ---------------------- CLOUD COUNTS ----------------------
   async function loadCloudCounts(){
-
     try {
-
-      await ensureAccessReady();
 
       const res = await fetch(
         CONFIG.cloudflareWorker,
-        {
-          cache: "no-store",
-
-          credentials: "include"
-        }
+        { cache: "no-store" }
       );
 
-      /*
-      * 401 — користувач не авторизований
-      * 403 — користувач не має права
-      * бачити кількість БК
-      */
+      if(!res.ok) throw new Error('Cloudflare response not ok');
 
-      if(
-        res.status === 401 ||
-        res.status === 403
-      ){
+      const j = await res.json();
 
+      if(pageKey && j && j[pageKey]){
+        cloudCounts = j[pageKey];
+      } else {
         cloudCounts = null;
-
-        return;
-
       }
 
-      if(!res.ok){
-
-        throw new Error(
-          "Cloudflare response not ok"
-        );
-
-      }
-
-      const j =
-        await res.json();
-
-      if(
-        pageKey &&
-        j &&
-        j[pageKey]
-      ){
-
-        cloudCounts =
-          j[pageKey];
-
-      }
-      else{
-
-        cloudCounts =
-          null;
-
-      }
-
+    } catch (e){
+      console.warn("Не вдалося підвантажити дані з Cloudflare:", e);
+      cloudCounts = null;
     }
-    catch(e){
-
-      console.warn(
-        "Не вдалося підвантажити дані з Cloudflare:",
-        e
-      );
-
-      cloudCounts =
-        null;
-
-    }
-
   }
 
   // ---------------------- MODAL ----------------------
