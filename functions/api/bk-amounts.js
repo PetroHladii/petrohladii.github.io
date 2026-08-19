@@ -83,6 +83,14 @@ export async function onRequestGet(
     const role =
       auth.user.role;
 
+    console.log(
+    "BK amounts access check:",
+    {
+        email: auth.email,
+        role: auth.user.role,
+        active: auth.user.active
+    }
+    );
 
     /*
      * Якщо роль не має доступу —
