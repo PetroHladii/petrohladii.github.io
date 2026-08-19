@@ -84,7 +84,7 @@ export async function onRequestGet(
       auth.user.role;
 
 
-    /*
+    /* 
      * Якщо роль не має доступу —
      * не повертаємо дані БК
      */
