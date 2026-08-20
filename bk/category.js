@@ -173,6 +173,53 @@
 
   }
 
+    function getItemCount(item){
+
+    if(
+      !cloudCounts ||
+      !item
+    ){
+      return null;
+    }
+
+    const affiliation =
+      (item.Affiliation || "")
+        .trim()
+        .toLowerCase();
+
+    const name =
+      item.Name || "";
+
+    const groupMap = {
+
+      "розвідка":
+        "rozvidka",
+
+      "бомбери":
+        "bombers",
+
+      "fpv":
+        "fpv",
+
+      "крило-камікадзе":
+        "kamikazeWing"
+
+    };
+
+    const group =
+      groupMap[affiliation];
+
+    if(!group){
+      return null;
+    }
+
+    return (
+      cloudCounts?.[group]?.[name]
+      ?? null
+    );
+
+  }
+
   // ---------------------- MODAL ----------------------
   function setOverlayVisible(visible){
     if(visible){
@@ -229,7 +276,7 @@
 
   async function openModal(item){
     const name = item.Name || '';
-    const count = cloudCounts?.[name];
+    const count = getItemCount(item);
 
     mName.innerHTML = `${name}${getCountHTML(count)}`;
 
@@ -419,8 +466,12 @@
     const frag = document.createDocumentFragment();
 
     data.forEach(item => {
-      const name = item.Name || '';
-      const count = cloudCounts?.[name];
+
+      const name =
+        item.Name || '';
+
+      const count =
+        getItemCount(item);
 
       const card = document.createElement('div');
 
