@@ -226,7 +226,21 @@ export const ROLES = {
 
     knowledge: {
 
-      categories: "*"
+      categories: [
+        "fpv",
+        "bomberh",
+        "bomberl",
+        "mavic",
+        "wingrecon",
+        "wingfpv",
+        "wingstrike",
+        "ppo",
+        "ew",
+        "tacmed",
+        "conceal",
+        "general",
+        "delta"
+      ]
 
     }
 
