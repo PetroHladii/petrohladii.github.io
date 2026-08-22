@@ -122,30 +122,87 @@
     return all.filter(name => name.startsWith(imgId + "-"));
   }
 
-  // ---------------------- CLOUD COUNTS ----------------------
-  async function loadCloudCounts(){
-    try {
+    // ---------------------- BK AMOUNTS ----------------------
+    async function loadCloudCounts(){
 
-      const res = await fetch(
-        CONFIG.cloudflareWorker,
-        { cache: "no-store" }
-      );
+      try {
 
-      if(!res.ok) throw new Error('Cloudflare response not ok');
+        const res = await fetch(
+          "/api/bk-amounts",
+          {
+            cache: "no-store"
+          }
+        );
 
-      const j = await res.json();
+        if(!res.ok){
 
-      if(pageKey && j && j[pageKey]){
-        cloudCounts = j[pageKey];
-      } else {
+          throw new Error(
+            "BK amounts response not ok"
+          );
+
+        }
+
+        const j =
+          await res.json();
+
+
+        /*
+        * Якщо backend не повернув
+        * дані кількостей
+        *
+        * Наприклад:
+        *
+        * {
+        *   success: true,
+        *   counts: null
+        * }
+        */
+
+        if(
+          !j ||
+          j.success !== true ||
+          !j.counts
+        ){
+
+          cloudCounts = null;
+
+          return;
+
+        }
+
+
+        /*
+        * Беремо тільки
+        * поточну категорію
+        */
+
+        if(
+          pageKey &&
+          j.counts[pageKey]
+        ){
+
+          cloudCounts =
+            j.counts[pageKey];
+
+        } else {
+
+          cloudCounts = null;
+
+        }
+
+      }
+      catch (e){
+
+        console.warn(
+          "Не вдалося підвантажити кількості БК:",
+          e
+        );
+
         cloudCounts = null;
+
       }
 
-    } catch (e){
-      console.warn("Не вдалося підвантажити дані з Cloudflare:", e);
-      cloudCounts = null;
     }
-  }
 
   // ---------------------- MODAL ----------------------
   function setOverlayVisible(visible){

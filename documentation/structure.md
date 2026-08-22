@@ -5,6 +5,7 @@ bk/
 	category.js
 	fpv.html
 	index.html
+	kamikazeWing.html
 	main.js
 	rozvidka.html
 config/
@@ -34,6 +35,7 @@ functions/
         access.js
         auth.js
 	api/
+		bk-amounts.js
 		logout.js
         me.js
 		send-code.js
