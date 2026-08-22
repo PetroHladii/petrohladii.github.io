@@ -73,12 +73,13 @@ export async function onRequestGet(
 
     /*
      * Доступ до кількості БК
-     * мають тільки admin та duty
+     * мають тільки admin, duty, pilotbk
      */
 
     const allowedRoles = [
       "admin",
-      "duty"
+      "duty",
+      "pilotbk"
     ];
 
 
@@ -194,7 +195,7 @@ export async function onRequestGet(
 
     /*
      * Повертаємо дані
-     * тільки для admin / duty
+     * тільки для admin / duty / pilotbk
      */
 
     return jsonResponse({

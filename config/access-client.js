@@ -329,6 +329,15 @@ const Access = {
 
   },
 
+  isPilotBk() {
+
+    return (
+      this.user?.role ===
+      "pilotbk"
+    );
+
+  },
+
   isGuest() {
 
     return (

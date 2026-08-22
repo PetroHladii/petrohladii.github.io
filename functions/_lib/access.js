@@ -140,6 +140,66 @@ export const ROLES = {
   },
 
 
+  pilotbk: {
+
+    permissions: [
+
+      PERMISSIONS.SITE_ACCESS,
+
+      PERMISSIONS.MODULE_BK,
+
+      PERMISSIONS.BK_GALLERY_VIEW,
+
+      PERMISSIONS.BK_ITEM_VIEW,
+
+      PERMISSIONS.MODULE_KNOWLEDGE,
+
+      PERMISSIONS.KNOWLEDGE_MEDIA_SEE,
+
+      PERMISSIONS.KNOWLEDGE_MEDIA_VIEW,
+
+      PERMISSIONS.KNOWLEDGE_PHOTOS_VIEW,
+
+      PERMISSIONS.KNOWLEDGE_FILES_VIEW,
+
+      PERMISSIONS.KNOWLEDGE_VIDEOS_VIEW,
+
+      PERMISSIONS.MODULE_MODELS3D,
+
+      PERMISSIONS.MODELS3D_ITEM_VIEW,
+
+      PERMISSIONS.MODELS3D_MEDIA_SEE,
+
+      PERMISSIONS.MODELS3D_MEDIA_VIEW,
+
+      PERMISSIONS.MODELS3D_DOWNLOAD
+
+    ],
+
+    knowledge: {
+
+      categories: [
+        "fpv",
+        "bomberh",
+        "bomberl",
+        "mavic",
+        "wingrecon",
+        "wingfpv",
+        "wingstrike",
+        "ppo",
+        "ew",
+        "tacmed",
+        "conceal",
+        "general",
+        "a2",
+        "delta"
+      ]
+
+    }
+
+  },
+
+
   guest: {
 
     permissions: [
